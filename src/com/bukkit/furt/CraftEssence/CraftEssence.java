@@ -44,7 +44,6 @@ public class CraftEssence extends JavaPlugin {
 		super(pluginLoader, instance, desc, folder, plugin, cLoader);
 	}
 
-	@Override
 	public boolean onCommand(Player player, Command cmd, String commandLabel,
 			String[] args) {
 		return super.onCommand(player, cmd, commandLabel, args);
@@ -102,8 +101,6 @@ public class CraftEssence extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_JOIN, this.cepl,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.cepl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DEATH, this.cepl,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_ITEM, this.cepl,
 				Event.Priority.Normal, this);

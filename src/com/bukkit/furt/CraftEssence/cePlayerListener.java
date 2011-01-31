@@ -611,8 +611,9 @@ public class cePlayerListener extends PlayerListener {
 
 	private void setspawn(Player player, String[] sects, String[] args) {
 		WorldServer ws = ((CraftWorld) player.getWorld()).getHandle();
-		ws.m = player.getLocation().getBlockX();
-		ws.o = player.getLocation().getBlockZ();
+		ws.spawnX = player.getLocation().getBlockX();
+		ws.spawnY = player.getLocation().getBlockY();
+		ws.spawnZ = player.getLocation().getBlockZ();
 		// ceProperties cep = new ceProperties(new File(file ,
 		// "craftessence.properties"));
 		// y = cep.getInt("y", player.getLocation().getBlockY(),
