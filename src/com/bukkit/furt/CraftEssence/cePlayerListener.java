@@ -9,6 +9,7 @@ import net.minecraft.server.WorldServer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -553,16 +554,17 @@ public class cePlayerListener extends PlayerListener {
 	}
 
 	private void time(Player player, String[] sects, String[] args) {
-		long time = srv.getTime();
+		World world = player.getWorld();
+		long time = world.getTime();
 		time = time - time % 24000;
 		if (args.length < 1) {
 			player.sendMessage(CraftEssence.premessage
 					+ "Usage: /time [day|night]");
 		} else if ("day".equalsIgnoreCase(args[0])) {
-			srv.setTime(time + 24000);
+			world.setTime(time + 24000);
 			player.sendMessage(CraftEssence.premessage + "Time set to day.");
 		} else if ("night".equalsIgnoreCase(args[0])) {
-			srv.setTime(time + 37700);
+			world.setTime(time + 37700);
 			player.sendMessage(CraftEssence.premessage + "Time set to night.");
 		} else {
 			player.sendMessage(CraftEssence.premessage
