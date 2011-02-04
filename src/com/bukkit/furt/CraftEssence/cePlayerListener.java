@@ -76,14 +76,13 @@ public class cePlayerListener extends PlayerListener {
 					new String[] { player.getDisplayName(), player.getName(),
 							location, ip }));
 		}
-		// TODO show mail on login
-
-		/*
-		 * List<String> mail = plugin.readMail(player); if (mail.isEmpty())
-		 * player.sendMessage(ChatColor.GRAY + "You have no new mail."); else
-		 * player.sendMessage("You have " + mail.size() +
-		 * " messages! Type /mail read to view your mail.");
-		 */
+		
+		List<String> mail = plugin.readMail(player);
+		if (mail.isEmpty())
+			player.sendMessage(ChatColor.GRAY + "You have no new mail.");
+		else
+			player.sendMessage("You have " + mail.size() + " messages! Type /mail read to view your mail.");
+		 
 
 		super.onPlayerJoin(event);
 	}
@@ -578,7 +577,6 @@ public class cePlayerListener extends PlayerListener {
 
 	private void mail(Player player, String[] sects, String[] args)
 			throws Exception {
-		// TODO mail
 		if (args.length == 1 && "read".equalsIgnoreCase(args[0])) {
 			List<String> mail = plugin.readMail(player);
 			if (mail.isEmpty())
@@ -593,12 +591,12 @@ public class cePlayerListener extends PlayerListener {
 			plugin.sendMail(player, args[1], sects[1].split(" +", 3)[2]);
 			return;
 		}
-		if (args.length >= 1 && "clear".equalsIgnoreCase(args[0])) {
+		if (args.length >= 1 && "delete".equalsIgnoreCase(args[0])) {
 			plugin.clearMail(player);
 			return;
 		}
 		player.sendMessage(CraftEssence.premessage
-				+ "Usage: /mail [read|clear|send [to] [message]]");
+				+ "Usage: /mail [read|send|delete [to] [message]]");
 	}
 
 	private void clearinventory(Player player, String[] sects, String[] args) {
@@ -616,13 +614,6 @@ public class cePlayerListener extends PlayerListener {
 		ws.spawnX = player.getLocation().getBlockX();
 		ws.spawnY = player.getLocation().getBlockY();
 		ws.spawnZ = player.getLocation().getBlockZ();
-		// ceProperties cep = new ceProperties(new File(file ,
-		// "craftessence.properties"));
-		// y = cep.getInt("y", player.getLocation().getBlockY(),
-		// "y axis for spawn");
-		// rotation = cep.getInt("rotation", (int)
-		// player.getLocation().getYaw(), "Rotation for spawn");
-		// cep.save();
 		player.sendMessage(CraftEssence.premessage + "Spawn position modified.");
 	}
 

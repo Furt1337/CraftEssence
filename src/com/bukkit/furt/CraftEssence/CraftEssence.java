@@ -150,18 +150,80 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public List<String> readMail(String player) {
-		return null;
-		// TODO readMail function
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String reciever = player;
+		ArrayList<String> mailarray = new ArrayList<String>();
 
+		try {
+			conn = ceConnector.getConnection();
+			ps = conn
+					.prepareStatement("Select * FROM mail WHERE `reciever` = '"
+							+ reciever + "'");
+			rs = ps.executeQuery();
+			conn.commit();
+			while (rs.next()) {
+				mailarray.add(rs.getString("sender") + ": "
+						+ rs.getString("text"));
+			}
+		} catch (SQLException ex) {
+			CraftEssence.log.log(Level.SEVERE,
+					"[CraftEssence]: Find SQL Exception", ex);
+		} finally {
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+				if (conn != null)
+					conn.close();
+			} catch (SQLException ex) {
+				CraftEssence.log.log(Level.SEVERE,
+						"[CraftEssence]: Find SQL Exception (on close)");
+			}
+		}
+		return mailarray;
 	}
 
 	public void sendMail(Player player, String string, String string2) {
-		// TODO sendMail function
-
+		Connection conn = null;
+		Statement stmt = null;
+		int count = 0;
+		try {
+			conn = ceConnector.getConnection();
+			stmt = conn.createStatement();
+			count += stmt.executeUpdate("INSERT INTO `mail`"
+					+ " (`sender`, `reciever`, `text`)" + " VALUES ('"
+					+ player.getName() + "', '" + string + "', '" + string2
+					+ "')");
+			stmt.close();
+			player.sendMessage(CraftEssence.premessage + "Mail sent");
+		} catch (SQLException ex) {
+			CraftEssence.log.log(Level.SEVERE,
+					"[CraftEssence]: Find SQL Exception", ex);
+			player.sendMessage(CraftEssence.premessage + "Mail error");
+		}
 	}
 
 	public void clearMail(Player player) {
-		// TODO clearMail function
+		Connection conn = null;
+		PreparedStatement ps = null;
+		String query = "DELETE FROM `mail` WHERE `reciever` = '"
+				+ player.getName() + "'";
+		try {
+			conn = ceConnector.getConnection();
+			ps = conn.prepareStatement(query);
+			ps.execute();
+			ps.close();
+			player.sendMessage(CraftEssence.premessage + "Mail deleted");
+		} catch (SQLException ex) {
+			CraftEssence.log.log(Level.SEVERE,
+					"[CraftEssence]: Find SQL Exception", ex);
+			player.sendMessage(CraftEssence.premessage + "Mail error");
+		}
 
 	}
 
@@ -328,12 +390,13 @@ public class CraftEssence extends JavaPlugin {
 					+ args[0] + "', '" + x + "', '" + y + "', '" + z + "', '"
 					+ yaw + "', '" + pitch + "')");
 			stmt.close();
-			player.sendMessage(CraftEssence.premessage + "Warp '"+args[0]+"' set.");
+			player.sendMessage(CraftEssence.premessage + "Warp '" + args[0]
+					+ "' set.");
 		} catch (SQLException ex) {
 			CraftEssence.log.log(Level.SEVERE,
 					"[CraftEssence]: Find SQL Exception", ex);
 			player.sendMessage(CraftEssence.premessage + "Warp did not save.");
 		}
-		
+
 	}
 }
