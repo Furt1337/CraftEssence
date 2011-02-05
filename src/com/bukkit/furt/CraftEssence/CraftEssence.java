@@ -29,9 +29,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.bukkit.furt.CraftEssence.cePlayerListener.Commands;
 import com.bukkit.furt.CraftEssence.data.ceConnector;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import com.nijiko.permissions.PermissionHandler;
 
 public class CraftEssence extends JavaPlugin {
 	public static Permissions Permissions = null;
+	public static PermissionHandler ph = null;
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
@@ -319,9 +321,103 @@ public class CraftEssence extends JavaPlugin {
 		}
 	}
 
-	public Object getKit(Object string) {
+	public int kitID(Player player, String[] args) {
+		// TODO kitID function
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int id = 0;
+		try {
+			conn = ceConnector.getConnection();
+			ps = conn.prepareStatement("Select * FROM kit WHERE `name` = '"
+					+ args[0] + "'");
+			rs = ps.executeQuery();
+			conn.commit();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (SQLException ex) {
+			CraftEssence.log.log(Level.SEVERE,
+					"[CraftEssence]: Find SQL Exception", ex);
+		}
+		return id;
+	}
+
+	public ArrayList<String> getKit(Player player, Object kitID) {
 		// TODO getKit function
-		return null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<String> itemarray = new ArrayList<String>();
+		try {
+			conn = ceConnector.getConnection();
+			ps = conn
+					.prepareStatement("Select * FROM `kit_items` WHERE `id` = '"
+							+ kitID + "'");
+			rs = ps.executeQuery();
+			conn.commit();
+			while (rs.next()) {
+				itemarray.add(rs.getString("item") + " "
+						+ rs.getString("quanity"));
+			}
+		} catch (SQLException ex) {
+			CraftEssence.log.log(Level.SEVERE,
+					"[CraftEssence]: Find SQL Exception", ex);
+		} finally {
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+				if (conn != null)
+					conn.close();
+			} catch (SQLException ex) {
+				CraftEssence.log.log(Level.SEVERE,
+						"[CraftEssence]: Find SQL Exception (on close)");
+			}
+		}
+		return itemarray;
+	}
+
+	public List<String> kitList(Player player) {
+		return kitList(player.getName());
+	}
+
+	public List<String> kitList(String player) {
+		// TODO kitList function
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<String> namearray = new ArrayList<String>();
+		try {
+			conn = ceConnector.getConnection();
+			ps = conn.prepareStatement("Select * FROM `kit`");
+			rs = ps.executeQuery();
+			conn.commit();
+			while (rs.next()) {
+				namearray.add(rs.getString("name"));
+			}
+		} catch (SQLException ex) {
+			CraftEssence.log.log(Level.SEVERE,
+					"[CraftEssence]: Find SQL Exception", ex);
+		} finally {
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+				if (conn != null)
+					conn.close();
+			} catch (SQLException ex) {
+				CraftEssence.log.log(Level.SEVERE,
+						"[CraftEssence]: Find SQL Exception (on close)");
+			}
+		}
+		return namearray;
 	}
 
 	public Location getWarp(Player player, String[] args) {

@@ -76,13 +76,13 @@ public class cePlayerListener extends PlayerListener {
 					new String[] { player.getDisplayName(), player.getName(),
 							location, ip }));
 		}
-		
+
 		List<String> mail = plugin.readMail(player);
 		if (mail.isEmpty())
 			player.sendMessage(ChatColor.GRAY + "You have no new mail.");
 		else
-			player.sendMessage("You have " + mail.size() + " messages! Type /mail read to view your mail.");
-		 
+			player.sendMessage("You have " + mail.size()
+					+ " messages! Type /mail read to view your mail.");
 
 		super.onPlayerJoin(event);
 	}
@@ -293,6 +293,9 @@ public class cePlayerListener extends PlayerListener {
 
 		switch (page) {
 		case 1:
+			if (plugin.check(player, Commands.SPAWN))
+				player.sendMessage(ChatColor.RED + "/spawn" + ChatColor.YELLOW
+						+ ": Teleport to the spawn");
 			if (plugin.check(player, Commands.TP))
 				player.sendMessage(ChatColor.RED + "/tp" + ChatColor.YELLOW
 						+ " [player]: Teleport to player");
@@ -301,15 +304,11 @@ public class cePlayerListener extends PlayerListener {
 				player.sendMessage(ChatColor.RED + "/tphere" + ChatColor.YELLOW
 						+ " [player]: Teleport player to you");
 
-			if (plugin.check(player, Commands.ITEM))
-				player.sendMessage(ChatColor.RED + "/item" + ChatColor.YELLOW
-						+ " [item|numeric] <amount>: Spawn items");
-
-			if (plugin.check(player, Commands.GIVE))
+			if (plugin.check(player, Commands.SUPPORT))
 				player.sendMessage(ChatColor.RED
-						+ "/give"
+						+ "/support"
 						+ ChatColor.YELLOW
-						+ " [player] [item|numeric] <amount>: Give player items");
+						+ " [message]: Send a message to all online staff members");
 
 			if (plugin.check(player, Commands.PLAYERLIST))
 				player.sendMessage(ChatColor.RED + "/playerlist"
@@ -323,18 +322,31 @@ public class cePlayerListener extends PlayerListener {
 				player.sendMessage(ChatColor.RED + "/sethome"
 						+ ChatColor.YELLOW
 						+ ": Set your home to your current location");
+
+			if (plugin.check(player, Commands.MAIL))
+				player.sendMessage(ChatColor.RED
+						+ "/mail"
+						+ ChatColor.YELLOW
+						+ " ...: Read/send/clear mail; type /mail for more info");
 			break;
 
 		case 2:
+			if (plugin.check(player, Commands.ITEM))
+				player.sendMessage(ChatColor.RED + "/item" + ChatColor.YELLOW
+						+ " [item|numeric] <amount>: Spawn items");
+
+			if (plugin.check(player, Commands.GIVE))
+				player.sendMessage(ChatColor.RED
+						+ "/give"
+						+ ChatColor.YELLOW
+						+ " [player] [item|numeric] <amount>: Give player items");
 			if (plugin.check(player, Commands.CLEARINVENTORY))
 				player.sendMessage(ChatColor.RED + "/clearinventory"
 						+ ChatColor.YELLOW + ": Clear your inventory");
 			if (plugin.check(player, Commands.GETPOS))
 				player.sendMessage(ChatColor.RED + "/getpos" + ChatColor.YELLOW
 						+ ": Get your current coordinates");
-			if (plugin.check(player, Commands.SPAWN))
-				player.sendMessage(ChatColor.RED + "/spawn" + ChatColor.YELLOW
-						+ ": Teleport to the spawn");
+
 			if (plugin.check(player, Commands.SETSPAWN))
 				player.sendMessage(ChatColor.RED + "/setspawn"
 						+ ChatColor.YELLOW
@@ -342,11 +354,13 @@ public class cePlayerListener extends PlayerListener {
 			if (plugin.check(player, Commands.TIME))
 				player.sendMessage(ChatColor.RED + "/time" + ChatColor.YELLOW
 						+ " [day|night]: Change server time to day or night");
+
 			if (plugin.check(player, Commands.KIT))
 				player.sendMessage(ChatColor.RED
 						+ "/kit"
 						+ ChatColor.YELLOW
 						+ " <name>: Spawn the items in a kit, or lists all kits");
+
 			player.sendMessage(ChatColor.RED + "/version <plugin>"
 					+ ChatColor.YELLOW
 					+ ": Information about bukkit or a plugin");
@@ -370,17 +384,11 @@ public class cePlayerListener extends PlayerListener {
 			if (plugin.check(player, Commands.MOTD))
 				player.sendMessage(ChatColor.RED + "/motd" + ChatColor.YELLOW
 						+ ": View the Message Of The Day");
-			if (plugin.check(player, Commands.SUPPORT))
-				player.sendMessage(ChatColor.RED + "/support" + ChatColor.YELLOW
-						+ " [message]: Send a message to all online staff members");
+
 			if (plugin.check(player, Commands.TOP))
 				player.sendMessage(ChatColor.RED + "/top" + ChatColor.YELLOW
 						+ ": Teleport to the highest block at your position");
-			if (plugin.check(player, Commands.MAIL))
-				player.sendMessage(ChatColor.RED
-						+ "/mail"
-						+ ChatColor.YELLOW
-						+ " ...: Read/send/clear mail; type /mail for more info");
+
 			player.sendMessage(ChatColor.RED + "-- Last Page --");
 			// player.sendMessage(ChatColor.RED + "/command" + ChatColor.YELLOW
 			// + ": reference");
@@ -545,11 +553,10 @@ public class cePlayerListener extends PlayerListener {
 	}
 
 	private boolean isAdmin(Player player) {
-		if (!Permissions.Security.permission(player, "*")) {
+		if (!Permissions.Security.permission(player, "*"))
 			return false;
-		} else {
+		else
 			return true;
-		}
 	}
 
 	private void time(Player player, String[] sects, String[] args) {
@@ -619,6 +626,35 @@ public class cePlayerListener extends PlayerListener {
 
 	private void kit(Player player, String[] sects, String[] args) {
 		// TODO kit command
+		if (args.length < 1) {
+			try {
+				List<String> kits = plugin.kitList(player);
+				StringBuilder list = new StringBuilder();
+				for (String k : kits)
+					list.append(" ").append(k);
+				player.sendMessage("Kits:" + list.toString());
+			} catch (Exception ex) {
+				player.sendMessage(CraftEssence.premessage
+						+ "There are no valid kits.");
+			}
+		} else {
+			try {
+				for (String d : plugin.getKit(player,
+						plugin.kitID(player, args))) {
+					String[] parts = d.split("[^0-9]+", 2);
+					int id = Integer.parseInt(parts[0]);
+					int amount = parts.length > 1 ? Integer.parseInt(parts[1])
+							: 1;
+					player.getWorld().dropItem(player.getLocation(),
+							new ItemStack(id, amount));
+				}
+				player.sendMessage(CraftEssence.premessage + "Giving kit "
+						+ args[0].toLowerCase() + ".");
+			} catch (Exception ex) {
+				player.sendMessage("That kit does not exist.");
+				player.sendMessage("Perhaps an item is missing a quantity?");
+			}
+		}
 	}
 
 	private void heal(Player player, String[] sects, String[] args) {
@@ -629,9 +665,14 @@ public class cePlayerListener extends PlayerListener {
 		} else {
 			int heal = Integer.parseInt(args[0]);
 			int hearts = heal / 2;
-			player.setHealth(heal);
-			player.sendMessage(ChatColor.RED + "[CraftEssence] "
-					+ ChatColor.YELLOW + "You now have " + hearts + " hearts");
+			if (heal > 20) {
+				player.sendMessage(CraftEssence.premessage
+						+ "You cannot heal that much!");
+			} else {
+				player.setHealth(heal);
+				player.sendMessage(CraftEssence.premessage + "You now have "
+						+ hearts + " hearts");
+			}
 		}
 	}
 
@@ -659,9 +700,9 @@ public class cePlayerListener extends PlayerListener {
 				"list"), ONLINE("list"), HOME("home"), SETHOME("sethome"), MAIL(
 				"mail"), SUPPORT("support"), CLEARINVENTORY("clearinventory"), GETPOS(
 				"getpos"), COORDS("getpos"), SPAWN("spawn"), SETSPAWN(
-				"setspawn"), TOP("top"), TIME("time"), KIT("kit"), HELP("help"), HEAL("heal"), MOTD("motd"), COMPASS(
-				"compass"), ME("me"), WARP("warp"), SETWARP("setwarp"), TELL(
-				"tell"), ALERT("alert");
+				"setspawn"), TOP("top"), TIME("time"), KIT("kit"), HELP("help"), HEAL(
+				"heal"), MOTD("motd"), COMPASS("compass"), ME("me"), WARP(
+				"warp"), SETWARP("setwarp"), TELL("tell"), ALERT("alert");
 		public final String permNode;
 
 		private Commands(String permNode) {
