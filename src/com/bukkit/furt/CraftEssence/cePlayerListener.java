@@ -29,6 +29,11 @@ public class cePlayerListener extends PlayerListener {
 		this.srv = plugin.getServer();
 
 	}
+	
+	public void onPlayerQuit(PlayerEvent event) {
+	    if (CraftEssence.godmode.contains(event.getPlayer().getName()))
+	      CraftEssence.godmode.remove(event.getPlayer().getName());
+	  }
 
 	public void onPlayerChat(PlayerChatEvent event) {
 		event.setCancelled(false);
@@ -118,6 +123,10 @@ public class cePlayerListener extends PlayerListener {
 
 		try {
 			switch (cmd) {
+			case GOD:
+				god(player);
+				break;
+				
 			case ALERT:
 				alert(player, msg);
 				break;
@@ -238,6 +247,20 @@ public class cePlayerListener extends PlayerListener {
 			player.sendMessage(ex.getMessage());
 			event.setCancelled(true);
 		}
+	}
+
+	private void god(Player player) {
+		// TODO god command
+		if (CraftEssence.godmode.contains(player.getName())) {
+          CraftEssence.godmode.remove(player.getName());
+          player.sendMessage(CraftEssence.premessage + "You have returned to being mortal.");
+        }
+        else {
+          player.sendMessage(CraftEssence.premessage + "You are now invincible!");
+          CraftEssence.godmode.add(player.getName());
+          player.setHealth(20);
+        }
+		
 	}
 
 	private void alert(Player player, String msg) {
@@ -702,7 +725,7 @@ public class cePlayerListener extends PlayerListener {
 				"getpos"), COORDS("getpos"), SPAWN("spawn"), SETSPAWN(
 				"setspawn"), TOP("top"), TIME("time"), KIT("kit"), HELP("help"), HEAL(
 				"heal"), MOTD("motd"), COMPASS("compass"), ME("me"), WARP(
-				"warp"), SETWARP("setwarp"), TELL("tell"), ALERT("alert");
+				"warp"), SETWARP("setwarp"), TELL("tell"), ALERT("alert"), GOD("god");
 		public final String permNode;
 
 		private Commands(String permNode) {

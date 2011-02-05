@@ -32,6 +32,7 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.permissions.PermissionHandler;
 
 public class CraftEssence extends JavaPlugin {
+	public static ArrayList<String> godmode = new ArrayList<String>();
 	public static Permissions Permissions = null;
 	public static PermissionHandler ph = null;
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
@@ -39,6 +40,7 @@ public class CraftEssence extends JavaPlugin {
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public cePlayerListener cepl = new cePlayerListener(this);
 	public ceBlockListener cebl = new ceBlockListener(this);
+	public ceEntityListener ceel = new ceEntityListener(this);
 
 	public CraftEssence(PluginLoader pluginLoader, Server instance,
 			PluginDescriptionFile desc, File folder, File plugin,
@@ -102,6 +104,8 @@ public class CraftEssence extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, this.cepl,
 				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_QUIT, this.cepl,
+				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.cepl,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_ITEM, this.cepl,
@@ -110,6 +114,14 @@ public class CraftEssence extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACED, this.cebl,
 				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_BLOCK, this.ceel,
+				Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_ENTITY, this.ceel,
+				Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_PROJECTILE, this.ceel,
+				Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGED, this.ceel,
+				Event.Priority.Highest, this);
 	}
 
 	public static String string(int i) {
