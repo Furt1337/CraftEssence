@@ -10,30 +10,30 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
+
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class cePlayerListener extends PlayerListener {
 	private final CraftEssence plugin;
 	private final Server srv;
-	public int y;
-	public int rotation;
 
 	public cePlayerListener(CraftEssence instance) {
 		this.plugin = instance;
 		this.srv = plugin.getServer();
 
 	}
-	
+
 	public void onPlayerQuit(PlayerEvent event) {
-	    if (CraftEssence.godmode.contains(event.getPlayer().getName()))
-	      CraftEssence.godmode.remove(event.getPlayer().getName());
-	  }
+		if (CraftEssence.godmode.contains(event.getPlayer().getName()))
+			CraftEssence.godmode.remove(event.getPlayer().getName());
+	}
 
 	public void onPlayerChat(PlayerChatEvent event) {
 		event.setCancelled(false);
@@ -70,6 +70,14 @@ public class cePlayerListener extends PlayerListener {
 		if (motd == null || motd.length < 1) {
 			return;
 		}
+		
+		int intonline = 0;
+		for (@SuppressWarnings("unused") Player p : srv.getOnlinePlayers()) {
+			++intonline;
+		}
+		
+		String online = intonline+"/"+srv.getMaxPlayers();
+		
 		String location = (int) player.getLocation().getX() + "x, "
 				+ (int) player.getLocation().getY() + "y, "
 				+ (int) player.getLocation().getZ() + "z";
@@ -77,16 +85,16 @@ public class cePlayerListener extends PlayerListener {
 
 		for (String line : motd) {
 			player.sendMessage(plugin.argument(line, new String[] {
-					"+dname,+d", "+name,+n", "+location,+l", "+ip" },
+					"+dname,+d", "+name,+n", "+location,+l", "+ip", "+online" },
 					new String[] { player.getDisplayName(), player.getName(),
-							location, ip }));
+							location, ip, online }));
 		}
 
 		List<String> mail = plugin.readMail(player);
 		if (mail.isEmpty())
 			player.sendMessage(ChatColor.GRAY + "You have no new mail.");
 		else
-			player.sendMessage("You have " + mail.size()
+			player.sendMessage(ChatColor.YELLOW+"You have " + mail.size()
 					+ " messages! Type /mail read to view your mail.");
 
 		super.onPlayerJoin(event);
@@ -123,16 +131,24 @@ public class cePlayerListener extends PlayerListener {
 
 		try {
 			switch (cmd) {
+			case MSG:
+				msg(player, sects, args, msg);
+				break;
+
+			case JUMP:
+				jump(player);
+				break;
+
 			case GOD:
 				god(player);
 				break;
-				
+
 			case ALERT:
-				alert(player, msg);
+				alert(sects, msg);
 				break;
 
 			case ME:
-				me(player, msg);
+				me(player, sects, msg);
 				break;
 
 			case COMPASS:
@@ -165,7 +181,7 @@ public class cePlayerListener extends PlayerListener {
 			case PLAYERLIST:
 			case WHO:
 			case ONLINE:
-				list(player, sects, args);
+				playerlist(player, sects, args);
 				break;
 
 			case SETHOME:
@@ -241,33 +257,125 @@ public class cePlayerListener extends PlayerListener {
 			event.setCancelled(true);
 		} catch (NoSuchMethodError ex) {
 			player.sendMessage(CraftEssence.premessage
-					+ "The server is not recent enough to support "
+					+ "CraftBukkit needs updated to support "
 					+ sects[0].toLowerCase() + ".");
 		} catch (Exception ex) {
-			player.sendMessage(ex.getMessage());
+			player.sendMessage("Unknown Command");
 			event.setCancelled(true);
 		}
 	}
 
-	private void god(Player player) {
-		// TODO god command
-		if (CraftEssence.godmode.contains(player.getName())) {
-          CraftEssence.godmode.remove(player.getName());
-          player.sendMessage(CraftEssence.premessage + "You have returned to being mortal.");
-        }
-        else {
-          player.sendMessage(CraftEssence.premessage + "You are now invincible!");
-          CraftEssence.godmode.add(player.getName());
-          player.setHealth(20);
-        }
-		
+	public Player playerMatch(String name) {
+		if (plugin.getServer().getOnlinePlayers().length < 1) {
+			return null;
+		}
+
+		Player[] online = plugin.getServer().getOnlinePlayers();
+		Player lastPlayer = null;
+
+		for (Player player : online) {
+			String playerName = player.getName();
+			String playerDisplayName = player.getDisplayName();
+
+			if (playerName.equalsIgnoreCase(name)) {
+				lastPlayer = player;
+				break;
+			} else if (playerDisplayName.equalsIgnoreCase(name)) {
+				lastPlayer = player;
+				break;
+			}
+
+			if (playerName.toLowerCase().indexOf(name.toLowerCase()) != -1) {
+				if (lastPlayer != null) {
+					return null;
+				}
+
+				lastPlayer = player;
+			} else if (playerDisplayName.toLowerCase().indexOf(
+					name.toLowerCase()) != -1) {
+				if (lastPlayer != null) {
+					return null;
+				}
+
+				lastPlayer = player;
+			}
+		}
+
+		return lastPlayer;
 	}
 
-	private void alert(Player player, String msg) {
-		for (Player localplayer : srv.getOnlinePlayers()) {
-			msg = msg.replace("/alert", "");
-			localplayer.sendMessage(ChatColor.RED + "[Attention]"
-					+ ChatColor.YELLOW + msg);
+	private void msg(Player player, String[] sects, String[] args, String msg)
+			throws IndexOutOfBoundsException, NoSuchFieldException {
+		if (args.length < 1) {
+			player.sendMessage(CraftEssence.premessage
+					+ "Correct usage is: /msg [player] [message]");
+			return;
+		}
+		msg = msg.replace(sects[0] + " " + args[0], "");
+		Player sendto = playerMatch(args[0]);
+		if (sendto != null) {
+			if (sendto.getName().equals(player.getName())) {
+				player.sendMessage(CraftEssence.premessage
+						+ "You can't message yourself!");
+				return;
+			}
+			sendto.sendMessage(ChatColor.GRAY + "[MSG]<" + player.getName()
+					+ ">" + msg);
+		} else {
+			player.sendMessage(CraftEssence.premessage
+					+ "Couldn't find player " + args[0]);
+		}
+	}
+
+	private void jump(Player player) {
+		AimBlock aiming = new AimBlock(player);
+		Block block = aiming.getTargetBlock();
+		if (block == null) {
+			player.sendMessage(ChatColor.RED + "Not pointing to valid block");
+		} else {
+			int x = block.getX();
+			int y = block.getY() + 1;
+			int z = block.getZ();
+			World world = block.getWorld();
+			Location location = new Location(world, x, y, z, player
+					.getLocation().getYaw(), player.getLocation().getPitch());
+			Teleporter tp = new Teleporter(location);
+			tp.setVerbose(false);
+			tp.addTeleportee(player);
+			tp.teleport();
+		}
+
+	}
+
+	/*
+	 * private void kick(Player player, String[] sects, String[] args) { // TODO
+	 * kick command //plugin.kickPlayer(player, args); }
+	 * 
+	 * private void ban(Player player, String[] sects, String[] args) { // TODO
+	 * ban command
+	 * 
+	 * }
+	 */
+
+	private void god(Player player) {
+		if (CraftEssence.godmode.contains(player.getName())) {
+			CraftEssence.godmode.remove(player.getName());
+			player.sendMessage(CraftEssence.premessage
+					+ "You have returned to being mortal.");
+		} else {
+			player.sendMessage(CraftEssence.premessage
+					+ "You are now invincible!");
+			CraftEssence.godmode.add(player.getName());
+			player.setHealth(20);
+		}
+
+	}
+
+	private void alert(String[] sects, String msg) {
+		for (Player player : srv.getOnlinePlayers()) {
+			msg = msg.replace(sects[0], "");
+			player.sendMessage(ChatColor.RED + "[Attention]" + ChatColor.YELLOW
+					+ msg);
 		}
 
 	}
@@ -283,9 +391,9 @@ public class cePlayerListener extends PlayerListener {
 
 	}
 
-	private void me(Player player, String msg) {
+	private void me(Player player, String[] sects, String msg) {
 		for (Player localplayer : srv.getOnlinePlayers()) {
-			msg = msg.replace("/me", "");
+			msg = msg.replace(sects[0], "");
 			localplayer.sendMessage(ChatColor.GRAY + "*" + player.getName()
 					+ msg + "*");
 		}
@@ -525,11 +633,13 @@ public class cePlayerListener extends PlayerListener {
 				+ ".");
 	}
 
-	private void list(Player player, String[] sects, String[] args) {
+	private void playerlist(Player player, String[] sects, String[] args) {
 		StringBuilder online = new StringBuilder();
+		int intonline = 0;
 		for (Player p : srv.getOnlinePlayers()) {
+			++intonline;
 			online.append(online.length() == 0 ? ChatColor.YELLOW
-					+ "Connected players: " + ChatColor.WHITE : ", ");
+					+ "Connected players ("+intonline+"/"+srv.getMaxPlayers()+"): " + ChatColor.WHITE : ", ");
 			online.append(p.getDisplayName());
 		}
 		player.sendMessage(online.toString());
@@ -648,7 +758,6 @@ public class cePlayerListener extends PlayerListener {
 	}
 
 	private void kit(Player player, String[] sects, String[] args) {
-		// TODO kit command
 		if (args.length < 1) {
 			try {
 				List<String> kits = plugin.kitList(player);
@@ -725,7 +834,8 @@ public class cePlayerListener extends PlayerListener {
 				"getpos"), COORDS("getpos"), SPAWN("spawn"), SETSPAWN(
 				"setspawn"), TOP("top"), TIME("time"), KIT("kit"), HELP("help"), HEAL(
 				"heal"), MOTD("motd"), COMPASS("compass"), ME("me"), WARP(
-				"warp"), SETWARP("setwarp"), TELL("tell"), ALERT("alert"), GOD("god");
+				"warp"), SETWARP("setwarp"), TELL("tell"), ALERT("alert"), GOD(
+				"god"), JUMP("jump"), MSG("msg");
 		public final String permNode;
 
 		private Commands(String permNode) {

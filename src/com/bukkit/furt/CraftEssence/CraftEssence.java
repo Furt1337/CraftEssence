@@ -334,7 +334,6 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public int kitID(Player player, String[] args) {
-		// TODO kitID function
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -356,7 +355,6 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public ArrayList<String> getKit(Player player, Object kitID) {
-		// TODO getKit function
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -398,7 +396,6 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public List<String> kitList(String player) {
-		// TODO kitList function
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -506,5 +503,14 @@ public class CraftEssence extends JavaPlugin {
 			player.sendMessage(CraftEssence.premessage + "Warp did not save.");
 		}
 
+	}
+
+	public void kickPlayer(Player player, String[] args) {
+		// TODO Kick Player function
+		
+	}
+	
+	public void banList(Player player) {
+		// TODO Banlist function
 	}
 }
