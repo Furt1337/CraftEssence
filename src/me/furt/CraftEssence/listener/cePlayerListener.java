@@ -80,36 +80,7 @@ public class cePlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerChat(PlayerChatEvent event) {
-		event.setCancelled(false);
-
-		Player player = event.getPlayer();
-		String world = event.getPlayer().getWorld().getName();
-
-		if (player == null) {
-			return;
-		}
-		String group = plugin.Security.getGroup(player.getName());
-
-		if (group == null) {
-			return;
-		}
-		String prefix = plugin.Security.getGroupPrefix(group);
-
-		if ((prefix == null) || (prefix.trim().length() != 1)) {
-			return;
-		}
-		String dn = player.getDisplayName();
-		String out = dn.replaceAll("§.", "");
-
-		player.setDisplayName(out);
-
-		event.setFormat(event.getFormat().replace(
-				"%1$s",
-				ChatColor.getByCode(Integer.parseInt(prefix, 16)) + "%1$s"
-						+ ChatColor.WHITE));
-		String format = event.getFormat();
-		event.setFormat("[" + ChatColor.GOLD + world + ChatColor.WHITE + "]"
-				+ format);
+		// TODO onPlayerChat
 	}
 
 	public void onPlayerJoin(PlayerEvent event) {

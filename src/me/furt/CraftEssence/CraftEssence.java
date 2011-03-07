@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.furt.CraftEssence.commands.broadcastCommand;
+import me.furt.CraftEssence.commands.clearInventoryCommand;
+import me.furt.CraftEssence.commands.timeCommand;
 import me.furt.CraftEssence.listener.ceBlockListener;
 import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
@@ -23,19 +26,12 @@ import me.furt.CraftEssence.sql.ceConnector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import org.anjocaido.groupmanager.GroupManager;
-//import org.anjocaido.groupmanager.dataholder.DataHolder;
-import com.nijiko.permissions.PermissionHandler;
-
 
 public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> godmode = new ArrayList<String>();
@@ -47,9 +43,6 @@ public class CraftEssence extends JavaPlugin {
 	public ceBlockListener cebl = new ceBlockListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
 	public ceCommands ceComm = new ceCommands(this);
-	//private GroupManager groupManager;
-	public PermissionHandler Security;
-
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " Disabled");
@@ -61,91 +54,76 @@ public class CraftEssence extends JavaPlugin {
 		checkFiles();
 		registerEvents();
 		sqlConnection();
+		addCommands();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " v" + pdfFile.getVersion()
 				+ " is enabled!");
 	}
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String commandLabel, String[] args) {
-		String[] trimmedArgs = args;
-		String commandName = command.getName().toLowerCase();
-
-		if (commandName.equals("tp")) {
-			return ceComm.tp(sender, trimmedArgs);
-		} else if (commandName.equals("alert")) {
-			return ceComm.alert(sender, trimmedArgs);
-		} else if (commandName.equals("support")) {
-			return ceComm.support(sender, trimmedArgs);
-		} else if (commandName.equals("msg")) {
-			return ceComm.msg(sender, trimmedArgs);
-		} else if (commandName.equals("me")) {
-			return ceComm.me(sender, trimmedArgs);
-		} else if (commandName.equals("setspawn")) {
-			return ceComm.setspawn(sender, trimmedArgs);
-		} else if (commandName.equals("spawn")) {
-			return ceComm.spawn(sender, trimmedArgs);
-		} else if (commandName.equals("top")) {
-			return ceComm.top(sender, trimmedArgs);
-		} else if (commandName.equals("clear")) {
-			return ceComm.clearinventory(sender, trimmedArgs);
-		} else if (commandName.equals("give")) {
-			return ceComm.give(sender, trimmedArgs);
-		} else if (commandName.equals("item")) {
-			return (ceComm.item(sender, trimmedArgs));
-		} else if (commandName.equals("tphere")) {
-			return ceComm.tphere(sender, trimmedArgs);
-		} else if (commandName.equals("time")) {
-			return ceComm.time(sender, trimmedArgs);
-		} else if (commandName.equals("kill")) {
-			return ceComm.kill(sender, trimmedArgs);
-		} else if (commandName.equals("home")) {
-			return ceComm.home(sender, trimmedArgs);
-		} else if (commandName.equals("sethome")) {
-			return ceComm.sethome(sender, trimmedArgs);
-		} else if (commandName.equals("jump")) {
-			return ceComm.jump(sender);
-		} else if (commandName.equals("ban")) {
-			return ceComm.ban(sender, trimmedArgs);
-		} else if (commandName.equals("pardon")) {
-			return ceComm.unban(sender, trimmedArgs);
-		} else if (commandName.equals("compass")) {
-			return ceComm.compass(sender);
-		} else if (commandName.equals("getpos")) {
-			return ceComm.getpos(sender, trimmedArgs);
-		} else if (commandName.equals("god")) {
-			return ceComm.god(sender, trimmedArgs);
-		} else if (commandName.equals("heal")) {
-			return ceComm.heal(sender, trimmedArgs);
-		} else if (commandName.equals("kick")) {
-			return ceComm.kick(sender, trimmedArgs);
-		} else if (commandName.equals("kickall")) {
-			return ceComm.kickAll(sender, trimmedArgs);
-		} else if (commandName.equals("kit")) {
-			return ceComm.kit(sender, trimmedArgs);
-		} else if (commandName.equals("mail")) {
-			return ceComm.mail(sender, trimmedArgs);
-		} else if (commandName.equals("modify")) {
-			return ceComm.modify(sender, trimmedArgs);
-		} else if (commandName.equals("playerlist")) {
-			return ceComm.playerlist(sender, trimmedArgs);
-		}
-		return false;
+	private void addCommands() {
+		getCommand("time").setExecutor(new timeCommand(this));
+		getCommand("clearinventory").setExecutor(new clearInventoryCommand(this));
+		getCommand("broadcast").setExecutor(new broadcastCommand(this));
+		
 	}
 	
-	private void setupPermissions() {
-		Plugin p = this.getServer().getPluginManager().getPlugin("GroupManager");
-        if (p != null) {
-            if (!p.isEnabled()) {
-                this.getServer().getPluginManager().enablePlugin(p);
-            }
-            GroupManager gm = (GroupManager) p;
-            Security = gm.getPermissionHandler();
+	public boolean isPlayer(CommandSender sender) {
+		// TODO check to see if command is from player or console
+		if (!(sender instanceof Player)) {
+            return false;
         } else {
-            this.getPluginLoader().disablePlugin(this);
+            return true;
         }
+	}
+	
+	public String message(String[] args) {
+		StringBuilder msg = new StringBuilder();
+		for (String loop : args) {
+			msg.append(loop + " ");
+		}
+		return msg.toString();
+	}
+	
+	public Player playerMatch(String name) {
+		if (this.getServer().getOnlinePlayers().length < 1) {
+			return null;
+		}
 
+		Player[] online = this.getServer().getOnlinePlayers();
+		Player lastPlayer = null;
+
+		for (Player player : online) {
+			String playerName = player.getName();
+			String playerDisplayName = player.getDisplayName();
+
+			if (playerName.equalsIgnoreCase(name)) {
+				lastPlayer = player;
+				break;
+			} else if (playerDisplayName.equalsIgnoreCase(name)) {
+				lastPlayer = player;
+				break;
+			}
+
+			if (playerName.toLowerCase().indexOf(name.toLowerCase()) != -1) {
+				if (lastPlayer != null) {
+					return null;
+				}
+
+				lastPlayer = player;
+			} else if (playerDisplayName.toLowerCase().indexOf(
+					name.toLowerCase()) != -1) {
+				if (lastPlayer != null) {
+					return null;
+				}
+
+				lastPlayer = player;
+			}
+		}
+
+		return lastPlayer;
+	}
+
+	private void setupPermissions() {
 	}
 
 	private void checkFiles() {
@@ -153,7 +131,7 @@ public class CraftEssence extends JavaPlugin {
 			this.getDataFolder().mkdirs();
 
 		ceSettings.initialize(getDataFolder());
-		
+
 		if (!new File(getDataFolder(), "motd.properties").exists()) {
 			this.createMotdConfig();
 			log.info("motd.properties not found, creating.");
@@ -463,8 +441,8 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public boolean kitRank(Player player, String[] args) {
-		//String world = player.getWorld().getName();
-		//String rank = "";
+		// String world = player.getWorld().getName();
+		// String rank = "";
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -475,7 +453,7 @@ public class CraftEssence extends JavaPlugin {
 			rs = ps.executeQuery();
 			conn.commit();
 			while (rs.next()) {
-				//rank = rs.getString("rank");
+				// rank = rs.getString("rank");
 				return true;
 			}
 

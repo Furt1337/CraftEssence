@@ -21,33 +21,11 @@ public class ceCommands {
 		new Teleport(this.plugin);
 	}
 
-	private boolean anonymousCheck(CommandSender sender) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("Cannot execute that command, I don't know who you are!");
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean detonate(CommandSender sender) {
-		// TODO write detonate function
-		return false;
-		
-	}
-
-	public boolean modify(CommandSender sender, String[] args) {
-		return false;
-		// TODO modify group command
-	}
-
 	public boolean kickAll(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
 		String pname = player.getName();
-		if (this.anonymousCheck(sender))
-			pname = "Console";
 
-		String msg = this.message(args);
+		String msg = plugin.message(args);
 		if (args.length < 2) {
 			msg = " Dont be a noob!";
 		}
@@ -79,9 +57,6 @@ public class ceCommands {
 		// TODO kill finished needs console support
 		Player player = (Player) sender;
 		String killer = player.getName();
-		if (this.anonymousCheck(sender)) {
-			killer = "Console";
-		}
 		if (args.length < 1) {
 			return false;
 		} else {
@@ -132,7 +107,7 @@ public class ceCommands {
 		if (args.length < 1) {
 			return false;
 		} else {
-			String msg = this.message(args).replace(args[0], "");
+			String msg = plugin.message(args).replace(args[0], "");
 			if (args.length < 2) {
 				msg = " No Grief!";
 			}
@@ -163,7 +138,7 @@ public class ceCommands {
 				player.sendMessage(CraftEssence.premessage
 						+ "Could not find player");
 			} else {
-				String msg = this.message(args).replace(args[0], "");
+				String msg = plugin.message(args).replace(args[0], "");
 				if (args.length < 2) {
 					msg = " Dont be a noob!";
 				}
@@ -241,7 +216,7 @@ public class ceCommands {
 		if (args.length < 1) {
 			return false;
 		} else {
-			String msg = this.message(args).replace(args[0], "");
+			String msg = plugin.message(args).replace(args[0], "");
 			Player sendto = playerMatch(args[0]);
 			if (sendto != null) {
 				if (sendto.getName().equals(player.getName())) {
@@ -299,14 +274,6 @@ public class ceCommands {
 
 	}
 
-	public boolean alert(CommandSender sender, String[] args) {
-		String msg = this.message(args);
-		this.plugin.getServer().broadcastMessage(
-				ChatColor.RED + "[Attention] " + ChatColor.YELLOW + msg);
-		return true;
-
-	}
-
 	public boolean setwarp(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
 		plugin.setWarp(player, player.getLocation(), args);
@@ -329,7 +296,7 @@ public class ceCommands {
 		if (args.length < 1) {
 			return false;
 		} else {
-			String msg = this.message(args);
+			String msg = plugin.message(args);
 			if (ceSettings.prayer) {
 				if ((args[0].equalsIgnoreCase("prays"))
 						&& (args[2].equalsIgnoreCase("day"))) {
@@ -430,12 +397,10 @@ public class ceCommands {
 		// TODO tp finished
 		if (args.length < 1)
 			return false;
-		if (this.anonymousCheck(sender))
-			return false;
 		Player player = (Player) sender;
 		if (this.playerMatch(args[0]) == null) {
-			player.sendMessage("Player not found");
-			return false;
+			player.sendMessage(CraftEssence.premessage + "Player not found");
+			return true;
 		} else {
 			Player p = this.plugin.getServer().getPlayer(args[0]);
 			player.teleportTo(p);
@@ -448,8 +413,6 @@ public class ceCommands {
 	public boolean tphere(CommandSender sender, String[] args) {
 		// TODO tphere finished
 		if (args.length < 1)
-			return false;
-		if (this.anonymousCheck(sender))
 			return false;
 		Player player = (Player) sender;
 		if (this.playerMatch(args[0]) == null) {
@@ -466,8 +429,6 @@ public class ceCommands {
 
 	public boolean item(CommandSender sender, String[] args) {
 		// TODO add wool color and tree types
-		if (this.anonymousCheck(sender))
-			return false;
 
 		Player player = (Player) sender;
 		if (args.length < 1) {
@@ -498,8 +459,6 @@ public class ceCommands {
 
 	public boolean give(CommandSender sender, String[] args) {
 		// TODO add wool color and tree types
-		if (this.anonymousCheck(sender))
-			return false;
 
 		Player player = (Player) sender;
 		if (args.length < 2) {
@@ -542,12 +501,8 @@ public class ceCommands {
 		// TODO command finished needs some touchups for console
 		Player player = null;
 		String pname;
-		if (this.anonymousCheck(sender)) {
-			pname = "Console";
-		} else {
-			player = (Player) sender;
-			pname = player.getName();
-		}
+		player = (Player) sender;
+		pname = player.getName();
 		StringBuilder online = new StringBuilder();
 		int intonline = 0;
 		for (Player p : plugin.getServer().getOnlinePlayers()) {
@@ -613,7 +568,7 @@ public class ceCommands {
 			player.sendMessage(ChatColor.YELLOW
 					+ "type /support, followed by your question.");
 		} else {
-			String msg = this.message(args);
+			String msg = plugin.message(args);
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
 				if (!isAdmin(p))
 					continue;
@@ -630,31 +585,6 @@ public class ceCommands {
 			return false;
 		else
 			return true;
-	}
-
-	public boolean time(CommandSender sender, String[] args) {
-		// TODO time finished
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			player.sendMessage(CraftEssence.premessage
-					+ "Usage: /time [day|night]");
-		} else {
-			World world = player.getWorld();
-			long time = world.getTime();
-			time = time - time % 24000;
-			if ("day".equalsIgnoreCase(args[0])) {
-				world.setTime(time + 24000);
-				player.sendMessage(CraftEssence.premessage + "Time set to day.");
-			} else if ("night".equalsIgnoreCase(args[0])) {
-				world.setTime(time + 37700);
-				player.sendMessage(CraftEssence.premessage
-						+ "Time set to night.");
-			} else {
-				player.sendMessage(CraftEssence.premessage
-						+ "/time only supports day/night.");
-			}
-		}
-		return true;
 	}
 
 	public boolean sethome(CommandSender sender, String[] args) {
@@ -677,7 +607,7 @@ public class ceCommands {
 					for (String s : mail)
 						player.sendMessage(s);
 			}
-			String msg = this.message(args);
+			String msg = plugin.message(args);
 			if (args.length >= 3 && "send".equalsIgnoreCase(args[0])) {
 				plugin.sendMail(player, args[1], msg.split(" +", 3)[2]);
 			}
@@ -688,29 +618,7 @@ public class ceCommands {
 		return true;
 	}
 
-	public boolean clearinventory(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			return false;
-		} else {
-			if (playerMatch(args[0]) != null) {
-				Player p = plugin.getServer().getPlayer(args[0]);
-				p.getInventory().clear();
-				player.sendMessage(CraftEssence.premessage + p.getName()
-						+ "'s inventory is cleared.");
-				p.sendMessage(ChatColor.GRAY + player.getName()
-						+ " cleared your inventory");
-			} else {
-				player.sendMessage(CraftEssence.premessage
-						+ "Player is offline or not found");
-			}
-			return true;
-		}
-	}
-
 	public boolean spawn(CommandSender sender, String[] args) {
-		if (this.anonymousCheck(sender))
-			return false;
 		Player player = (Player) sender;
 		player.teleportTo(player.getWorld().getSpawnLocation());
 		player.sendMessage(CraftEssence.premessage + "Returned to spawn.");
@@ -718,8 +626,6 @@ public class ceCommands {
 	}
 
 	public boolean setspawn(CommandSender sender, String[] args) {
-		if (this.anonymousCheck(sender))
-			return false;
 		Player player = (Player) sender;
 		// WorldServer ws = ((CraftWorld) player.getWorld()).getHandle();
 		// ws.spawnX = player.getLocation().getBlockX();
@@ -862,13 +768,5 @@ public class ceCommands {
 			}
 		}
 		return true;
-	}
-
-	public String message(String[] args) {
-		StringBuilder msg = new StringBuilder();
-		for (String loop : args) {
-			msg.append(loop + " ");
-		}
-		return msg.toString();
 	}
 }

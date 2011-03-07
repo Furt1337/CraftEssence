@@ -39,7 +39,7 @@ commands:
   clearinventory:
     description: Removes all items from players inventory
     usage: |
-           /<command> [player]
+           Usage: /<command> [player]
   warp:
     description: Teleports to desired warp location
     usage: |
@@ -48,10 +48,10 @@ commands:
     description: Creates a warp with desired name
     usage: |
            /<command> [warpname]
-  alert:
+  broadcast:
     description: Sends a server message to everyone online
     usage: |
-           /<command> [msg]
+           Usage: /<command> [message]
   support:
     description: Sends a msg to all admins online
     usage: |
@@ -67,7 +67,7 @@ commands:
   time:
     description: Sets time day/night
     usage: |
-           /<command> [day:night]
+           Usage: /<command> [world] [day:night]
   me:
     description: A emote system
     usage: |
