@@ -23,15 +23,16 @@ public class TimeCommand implements CommandExecutor {
 		}
 		World world = plugin.getServer().getWorld(args[0]);
 		long time = world.getTime();
+		time -= time % 24000L;
 		if (args.length == 2) {
 			if ("day".equalsIgnoreCase(args[1])) {
-				world.setTime(time + 24000);
+				world.setTime(time + 24000L);
 				plugin.getServer().broadcastMessage(
 						CraftEssence.premessage + "Time is set to day.");
 				CraftEssence.log.info("[CraftEssence] Time is set to day");
 				return true;
 			} else if ("night".equalsIgnoreCase(args[1])) {
-				world.setTime(time + 37700);
+				world.setTime(time + 37700L);
 				plugin.getServer().broadcastMessage(
 						CraftEssence.premessage + "Time is set to night.");
 				CraftEssence.log.info("[CraftEssence] Time is set to night");

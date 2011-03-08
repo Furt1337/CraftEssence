@@ -33,19 +33,21 @@ public class HealCommand implements CommandExecutor {
 				p.setHealth(20);
 				p.sendMessage(CraftEssence.premessage + "You are fully healed!");
 				if (plugin.isPlayer(sender)) {
-					Player player = (Player) sender;
-					player.sendMessage(CraftEssence.premessage + "You healed "
+					sender.sendMessage(CraftEssence.premessage + "You healed "
 							+ args[0] + ".");
-					return true;
 				} else {
-					if (plugin.isPlayer(sender)) {
-						Player player = (Player) sender;
-						player.sendMessage(CraftEssence.premessage
-								+ "Player not found.");
-					}
-					CraftEssence.log.info("[CraftEssence] Player not found.");
-					return true;
+					CraftEssence.log.info("[CraftEssence] You healed "
+							+ args[0] + ".");
 				}
+				return true;
+			} else {
+				if (plugin.isPlayer(sender)) {
+					Player player = (Player) sender;
+					player.sendMessage(CraftEssence.premessage
+							+ "Player not found.");
+				}
+				CraftEssence.log.info("[CraftEssence] Player not found.");
+				return true;
 			}
 		}
 		return false;

@@ -10,9 +10,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class EmoteCommand implements CommandExecutor {
+public class MeCommand implements CommandExecutor {
 	CraftEssence plugin;
-	public EmoteCommand(CraftEssence instance) {
+	public MeCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
 
@@ -46,8 +46,8 @@ public class EmoteCommand implements CommandExecutor {
 						if (prayCount == ceSettings.prayAmount) {
 							World world = player.getWorld();
 							long time = world.getTime();
-							time = time - time % 24000;
-							world.setTime(time + 24000);
+							time = time - time % 24000L;
+							world.setTime(time + 24000L);
 							plugin.getServer().broadcastMessage(
 									ChatColor.GRAY + "* " + player.getName()
 											+ " " + msg + "*");
@@ -65,14 +65,14 @@ public class EmoteCommand implements CommandExecutor {
 						}
 					}
 				} else {
-					plugin.getServer()
-							.broadcastMessage(
-									ChatColor.GRAY + "*" + player.getName()
-											+ msg + "*");
+					plugin.getServer().broadcastMessage(
+							ChatColor.GRAY + "* " + player.getName()
+									+ " " + msg + "*");
 				}
 			} else {
 				plugin.getServer().broadcastMessage(
-						ChatColor.GRAY + "*" + player.getName() + msg + "*");
+						ChatColor.GRAY + "* " + player.getName()
+								+ " " + msg + "*");
 			}
 		}
 		return true;

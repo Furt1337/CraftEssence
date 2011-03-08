@@ -17,7 +17,7 @@ public class MotdCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender))
+		if (!plugin.isPlayer(sender))
 			return false;
 		
 		Player player = (Player) sender;

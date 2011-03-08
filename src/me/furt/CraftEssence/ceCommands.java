@@ -14,26 +14,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ceCommands {
-	private CraftEssence plugin;
-
-	public ceCommands(CraftEssence instance) {
-		this.plugin = instance;
-		new Teleport(this.plugin);
-	}
 
 	public boolean unban(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
 		if (args.length < 1) {
 			return false;
 		} else {
-			plugin.removeBan(player, args[0]);
+			this.removeBan(player, args[0]);
 			plugin.getServer().broadcastMessage(
 					"§6" + player.getName() + " has pardoned " + args[0] + ".");
 			return true;
 		}
 	}
 
-	public boolean listWorld(CommandSender sender) {
+	public boolean worldList(CommandSender sender) {
 		Player player = (Player) sender;
 		player.sendMessage(ChatColor.YELLOW + "Worlds running on this Server");
 		for (int i = 0; i < plugin.getServer().getWorlds().size(); i++) {
@@ -46,29 +40,6 @@ public class ceCommands {
 			}
 			player.sendMessage(color
 					+ ((World) plugin.getServer().getWorlds().get(i)).getName());
-		}
-		return true;
-	}
-	
-	public boolean msg(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			return false;
-		} else {
-			String msg = plugin.message(args).replace(args[0], "");
-			Player sendto = plugin.playerMatch(args[0]);
-			if (sendto != null) {
-				if (sendto.getName().equals(player.getName())) {
-					player.sendMessage(CraftEssence.premessage
-							+ "You can't message yourself!");
-				} else {
-					sendto.sendMessage(ChatColor.GRAY + "[MSG]<"
-							+ player.getName() + "> " + msg);
-				}
-			} else {
-				player.sendMessage(CraftEssence.premessage
-						+ "Couldn't find player " + args[0]);
-			}
 		}
 		return true;
 	}
@@ -100,11 +71,10 @@ public class ceCommands {
 	}
 
 	public boolean tp(CommandSender sender, String[] args) {
-		// TODO tp finished
 		if (args.length < 1)
 			return false;
 		Player player = (Player) sender;
-		if (this.playerMatch(args[0]) == null) {
+		if (plugin.playerMatch(args[0]) == null) {
 			player.sendMessage(CraftEssence.premessage + "Player not found");
 			return true;
 		} else {
@@ -117,11 +87,10 @@ public class ceCommands {
 	}
 
 	public boolean tphere(CommandSender sender, String[] args) {
-		// TODO tphere finished
 		if (args.length < 1)
 			return false;
 		Player player = (Player) sender;
-		if (this.playerMatch(args[0]) == null) {
+		if (plugin.playerMatch(args[0]) == null) {
 			player.sendMessage("Player not found");
 			return false;
 		} else {
@@ -129,40 +98,6 @@ public class ceCommands {
 			p.teleportTo(player);
 			sender.sendMessage(CraftEssence.premessage + "Teleporting "
 					+ player.getDisplayName() + " to " + p.getName() + ".");
-			return true;
-		}
-	}
-
-	public boolean playerlist(CommandSender sender, String[] args) {
-		// TODO command finished needs some touchups for console
-		Player player = null;
-		String pname;
-		player = (Player) sender;
-		pname = player.getName();
-		StringBuilder online = new StringBuilder();
-		int intonline = 0;
-		for (Player p : plugin.getServer().getOnlinePlayers()) {
-			if ((p == null) || (!p.isOnline())) {
-				continue;
-			}
-			++intonline;
-		}
-
-		for (Player p : plugin.getServer().getOnlinePlayers()) {
-			if ((p == null) || (!p.isOnline())) {
-				continue;
-			}
-			online.append(online.length() == 0 ? ChatColor.YELLOW
-					+ "Connected players (" + intonline + "/"
-					+ plugin.getServer().getMaxPlayers() + "): "
-					+ ChatColor.WHITE : ", ");
-			online.append(p.getDisplayName());
-		}
-		if (pname.equalsIgnoreCase("Console")) {
-			CraftEssence.log.info(online.toString());
-			return true;
-		} else {
-			player.sendMessage(online.toString());
 			return true;
 		}
 	}
@@ -179,7 +114,6 @@ public class ceCommands {
 	}
 
 	public boolean support(CommandSender sender, String[] args) {
-		// TODO support updated
 		Player player = (Player) sender;
 		if (args.length < 1) {
 			isAdmin(player);
@@ -197,12 +131,6 @@ public class ceCommands {
 						+ ChatColor.WHITE + msg);
 			}
 		}
-		return true;
-	}
-
-	public boolean sethome(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		plugin.setHome(player, player.getLocation());
 		return true;
 	}
 

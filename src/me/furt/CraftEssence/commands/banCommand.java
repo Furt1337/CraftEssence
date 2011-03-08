@@ -90,34 +90,18 @@ public class BanCommand implements CommandExecutor {
 		Player p = plugin.getServer().getPlayer(args[0]);
 		if (p == null || !p.isOnline()) {
 			this.addBan(args[0]);
-			if (plugin.isPlayer(sender)) {
-				Player player = (Player) sender;
-				plugin.getServer().broadcastMessage(
-						"§6" + player.getName() + " has banned " + args[0]
-								+ ".");
-			} else {
-				plugin.getServer().broadcastMessage(
-						"§6" + args[0] + " has been banned.");
-			}
+			plugin.getServer().broadcastMessage(
+					"§6" + args[0] + " has been banned.");
 			CraftEssence.log.info("[CraftEssence] " + args[0]
 					+ " has been banned.");
 			return true;
 		} else {
 			this.addBan(args[0]);
-			if (plugin.isPlayer(sender)) {
-				Player player = (Player) sender;
-				p.kickPlayer("You have been banned by " + player.getName()
-						+ ", reason:" + msg);
-				plugin.getServer().broadcastMessage(
-						"§6" + player.getName() + " has banned " + args[0]
-								+ ".");
-			} else {
-				p.kickPlayer("You have been banned by Console, reason:" + msg);
-				plugin.getServer().broadcastMessage(
-						"§6" + args[0] + " has been banned.");
-			}
+			p.kickPlayer("You have been banned, reason:" + msg);
+			plugin.getServer().broadcastMessage(
+					"§6" + args[0] + "has been banned.");
 			CraftEssence.log.info("[CraftEssence] " + args[0]
-			        + " has been banned.");
+					+ " has been banned.");
 			return true;
 		}
 	}

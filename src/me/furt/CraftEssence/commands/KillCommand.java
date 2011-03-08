@@ -18,17 +18,20 @@ public class KillCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (args[0] == "*") {
+		if (args.length == 0)
+			return false;
+
+		if (args[0].equalsIgnoreCase("*")) {
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
 				if (plugin.isPlayer(sender)) {
-					Player player = (Player) sender;
-					if (player != p)
+					if (sender != p)
 						p.setHealth(0);
 				} else {
 					p.setHealth(0);
 				}
 				plugin.getServer().broadcastMessage(
 						ChatColor.RED + p.getName() + " has died by the gods.");
+				CraftEssence.log.info(p.getName() + " has died by command.");
 			}
 			return true;
 		} else {
@@ -36,10 +39,9 @@ public class KillCommand implements CommandExecutor {
 				Player p = plugin.getServer().getPlayer(args[0]);
 				p.setHealth(0);
 				if (plugin.isPlayer(sender)) {
-					Player player = (Player) sender;
-					if (player == p) {
+					if (sender == p) {
 						plugin.getServer().broadcastMessage(
-								"§6" + player.getName()
+								"§6" + ((Player) sender).getName()
 										+ " has commited suicide, noob.");
 					} else {
 						plugin.getServer().broadcastMessage(
@@ -49,6 +51,8 @@ public class KillCommand implements CommandExecutor {
 					plugin.getServer().broadcastMessage(
 							"§6" + p.getName() + " has died by the gods.");
 				}
+				CraftEssence.log.info("[CraftEssence] " + p.getName()
+						+ " has died by command.");
 			}
 			return true;
 		}

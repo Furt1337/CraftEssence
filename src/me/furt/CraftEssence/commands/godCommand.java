@@ -19,6 +19,7 @@ public class GodCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (args.length == 0) {
 			if (!plugin.isPlayer(sender)) {
+				CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
 				return false;
 			}
 			Player player = (Player) sender;
@@ -35,11 +36,13 @@ public class GodCommand implements CommandExecutor {
 				CraftEssence.godmode.remove(args[0]);
 				p.sendMessage(CraftEssence.premessage
 						+ "You have returned to being mortal.");
+				CraftEssence.log.info("[CraftEssence] " + args[0] + " has returned to being mortal.");
 			} else {
 				CraftEssence.godmode.add(args[0]);
 				p.setHealth(20);
 				p.sendMessage(CraftEssence.premessage
 						+ "You are now invincible!");
+				CraftEssence.log.info("[CraftEssence] " + args[0] + " is now invincible.");
 			}
 			return true;
 		} else {
