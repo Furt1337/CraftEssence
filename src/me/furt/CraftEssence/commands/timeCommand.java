@@ -8,10 +8,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class timeCommand implements CommandExecutor {
+public class TimeCommand implements CommandExecutor {
 	private final CraftEssence plugin;
 
-	public timeCommand(CraftEssence instance) {
+	public TimeCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
 

@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 
 import me.furt.CraftEssence.CraftEssence;
 
-public class compassCommand implements CommandExecutor{
+public class CompassCommand implements CommandExecutor{
 	CraftEssence plugin;
-	public compassCommand(CraftEssence instance) {
+	public CompassCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
 	

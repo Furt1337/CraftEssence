@@ -16,14 +16,19 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import me.furt.CraftEssence.commands.banCommand;
-import me.furt.CraftEssence.commands.broadcastCommand;
-import me.furt.CraftEssence.commands.clearInventoryCommand;
-import me.furt.CraftEssence.commands.compassCommand;
-import me.furt.CraftEssence.commands.giveCommand;
-import me.furt.CraftEssence.commands.godCommand;
-import me.furt.CraftEssence.commands.healCommand;
-import me.furt.CraftEssence.commands.timeCommand;
+import me.furt.CraftEssence.commands.BanCommand;
+import me.furt.CraftEssence.commands.BroadcastCommand;
+import me.furt.CraftEssence.commands.ClearInventoryCommand;
+import me.furt.CraftEssence.commands.CompassCommand;
+import me.furt.CraftEssence.commands.GiveCommand;
+import me.furt.CraftEssence.commands.GodCommand;
+import me.furt.CraftEssence.commands.HealCommand;
+import me.furt.CraftEssence.commands.HomeCommand;
+import me.furt.CraftEssence.commands.ItemCommand;
+import me.furt.CraftEssence.commands.JumpCommand;
+import me.furt.CraftEssence.commands.KickCommand;
+import me.furt.CraftEssence.commands.KillCommand;
+import me.furt.CraftEssence.commands.TimeCommand;
 import me.furt.CraftEssence.listener.ceBlockListener;
 import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
@@ -66,14 +71,22 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	private void addCommands() {
-		getCommand("time").setExecutor(new timeCommand(this));
-		getCommand("clearinventory").setExecutor(new clearInventoryCommand(this));
-		getCommand("broadcast").setExecutor(new broadcastCommand(this));
-		getCommand("ban").setExecutor(new banCommand(this));
-		getCommand("compass").setExecutor(new compassCommand(this));
-		getCommand("give").setExecutor(new giveCommand(this));
-		getCommand("god").setExecutor(new godCommand(this));
-		getCommand("heal").setExecutor(new healCommand(this));
+		getCommand("clearinventory").setExecutor(new ClearInventoryCommand(this));
+		getCommand("clear").setExecutor(new ClearInventoryCommand(this));
+		getCommand("broadcast").setExecutor(new BroadcastCommand(this));
+		getCommand("ban").setExecutor(new BanCommand(this));
+		getCommand("compass").setExecutor(new CompassCommand(this));
+		getCommand("give").setExecutor(new GiveCommand(this));
+		getCommand("g").setExecutor(new GiveCommand(this));
+		getCommand("god").setExecutor(new GodCommand(this));
+		getCommand("heal").setExecutor(new HealCommand(this));
+		getCommand("home").setExecutor(new HomeCommand(this));
+		getCommand("item").setExecutor(new ItemCommand(this));
+		getCommand("i").setExecutor(new ItemCommand(this));
+		getCommand("jump").setExecutor(new JumpCommand(this));
+		getCommand("kick").setExecutor(new KickCommand(this));
+		getCommand("kill").setExecutor(new KillCommand(this));
+		getCommand("time").setExecutor(new TimeCommand(this));
 		
 	}
 	

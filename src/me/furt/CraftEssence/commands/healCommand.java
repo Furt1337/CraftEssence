@@ -7,10 +7,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class healCommand implements CommandExecutor {
+public class HealCommand implements CommandExecutor {
 	CraftEssence plugin;
 
-	public healCommand(CraftEssence instance) {
+	public HealCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
 

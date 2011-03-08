@@ -7,10 +7,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class broadcastCommand implements CommandExecutor {
+public class BroadcastCommand implements CommandExecutor {
 	private final CraftEssence plugin;
 
-	public broadcastCommand(CraftEssence instance) {
+	public BroadcastCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
 

@@ -10,10 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class giveCommand implements CommandExecutor {
+public class GiveCommand implements CommandExecutor {
 	CraftEssence plugin;
 
-	public giveCommand(CraftEssence instance) {
+	public GiveCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
 

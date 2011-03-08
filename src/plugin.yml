@@ -19,7 +19,7 @@ commands:
   item:
     description: Gives items to yourself
     usage: |
-           /<command> [item] [amount]
+           Usage: /<command> [item] [amount]
   spawn:
     description: Teleports player to spawn area
     usage: |
@@ -31,7 +31,7 @@ commands:
   home:
     description: Teleports player to home location
     usage: |
-           /<command>
+           Usage: /<command>
   sethome:
     description: Sets player home location
     usage: |
@@ -61,9 +61,9 @@ commands:
     usage: |
            /<command> [read:send:delete]
   kill:
-    description: Kill player or yourself
+    description: Kill a player, all, or yourself
     usage: |
-           /<command> [player]
+           Usage: /<command> [player/*]
   time:
     description: Sets time day/night
     usage: |
@@ -79,7 +79,7 @@ commands:
   jump:
     description: Aim at a location and use command to teleport there
     usage: |
-           /<command>
+           Usage: /<command>
   top:
     description: Teleports you at the most highest block above you
     usage: |
@@ -112,3 +112,7 @@ commands:
     description: Heal yourself or another player
     usage: |
            Usage: /<command> [player]
+  kick:
+    description: Kick a player or all players
+    usage: |
+           Usage: /<command> [player/*]

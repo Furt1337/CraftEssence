@@ -21,75 +21,6 @@ public class ceCommands {
 		new Teleport(this.plugin);
 	}
 
-	public boolean kickAll(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		String pname = player.getName();
-
-		String msg = plugin.message(args);
-		if (args.length < 2) {
-			msg = " Dont be a noob!";
-		}
-		int online = 0;
-		for (Player p : plugin.getServer().getOnlinePlayers()) {
-			if (p == null || p.isOnline()) {
-				continue;
-			}
-			online++;
-		}
-		if (online < 2) {
-			player.sendMessage(CraftEssence.premessage
-					+ "Your the only one on.");
-			return false;
-		}
-		for (Player p : plugin.getServer().getOnlinePlayers()) {
-			if (p.getName() != pname) {
-				p.kickPlayer("You have been kicked by " + player.getName()
-						+ ". Reason:" + msg);
-				plugin.getServer().broadcastMessage(
-						"§6" + p.getName() + " was kicked by "
-								+ player.getName() + "!");
-			}
-		}
-		return true;
-	}
-
-	public boolean kill(CommandSender sender, String[] args) {
-		// TODO kill finished needs console support
-		Player player = (Player) sender;
-		String killer = player.getName();
-		if (args.length < 1) {
-			return false;
-		} else {
-			if (args.length < 2) {
-				if (!args[0].equalsIgnoreCase("*")) {
-					if (playerMatch(args[0]) != null) {
-						Player p = plugin.getServer().getPlayer(args[0]);
-						p.setHealth(0);
-						if (killer != p.getName()) {
-							plugin.getServer().broadcastMessage(
-									ChatColor.RED + p.getName()
-											+ " was killed by " + killer);
-							CraftEssence.log.info(p.getName()
-									+ " was killed by " + killer);
-						} else {
-							plugin.getServer()
-									.broadcastMessage(
-											ChatColor.RED
-													+ p.getName()
-													+ " has commited suicide, dumbass!");
-						}
-					} else {
-						player.sendMessage(CraftEssence.premessage
-								+ "Player does not exist");
-					}
-				} else {
-					// TODO kill all
-				}
-			}
-		}
-		return true;
-	}
-
 	public boolean unban(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
 		if (args.length < 1) {
@@ -100,31 +31,6 @@ public class ceCommands {
 					"§6" + player.getName() + " has pardoned " + args[0] + ".");
 			return true;
 		}
-	}
-
-	public boolean kick(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			return false;
-		} else {
-			if (playerMatch(args[0]) == null) {
-				player.sendMessage(CraftEssence.premessage
-						+ "Could not find player");
-			} else {
-				String msg = plugin.message(args).replace(args[0], "");
-				if (args.length < 2) {
-					msg = " Dont be a noob!";
-				}
-				Player p = plugin.getServer().getPlayer(args[0]);
-				p.kickPlayer("You have been kicked by " + player.getName()
-						+ ", reason:" + msg);
-				plugin.getServer().broadcastMessage(
-						"§6" + p.getName() + " was kicked by "
-								+ player.getName() + "!");
-			}
-		}
-		return true;
-
 	}
 
 	public boolean listWorld(CommandSender sender) {
@@ -166,30 +72,6 @@ public class ceCommands {
 			}
 		}
 		return true;
-	}
-
-	public boolean jump(CommandSender sender) {
-		Player player = (Player) sender;
-		AimBlock aiming = new AimBlock(player);
-		Block block = aiming.getTargetBlock();
-		if (block == null) {
-			player.sendMessage(ChatColor.RED + "Not pointing to valid block");
-		} else {
-			int x = block.getX();
-			int y = block.getY() + 1;
-			int z = block.getZ();
-			World world = block.getWorld();
-			Location location = new Location(world, x, y, z, player
-					.getLocation().getYaw(), player.getLocation().getPitch());
-			Location tp = new Teleport(plugin).getDestination(location);
-			player.teleportTo(tp);
-			/*
-			 * Teleporter tp = new Teleporter(location); tp.setVerbose(false);
-			 * tp.addTeleportee(player); tp.teleport();
-			 */
-		}
-		return true;
-
 	}
 
 	public boolean setwarp(CommandSender sender, String[] args) {
@@ -309,36 +191,6 @@ public class ceCommands {
 		}
 	}
 
-	public boolean item(CommandSender sender, String[] args) {
-		// TODO add wool color and tree types
-
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			player.sendMessage(CraftEssence.premessage
-					+ "Usage: /item [item] <amount> <type>");
-		} else {
-			int itemId = args[0].matches("[0-9]+") ? Integer.parseInt(args[0])
-					: Item.getItem(args[0]).id;
-			int itemAmount = args.length < 2 ? 1 : Integer.parseInt(args[1]);
-			if (itemId > 400) {
-				player.sendMessage(CraftEssence.premessage + "Invalid item id.");
-			} else {
-				int slot = player.getInventory().firstEmpty();
-				if (slot < 0) {
-					player.getWorld().dropItem(player.getLocation(),
-							new ItemStack(itemId, itemAmount));
-				} else {
-					player.getInventory().addItem(
-							new ItemStack(itemId, itemAmount));
-				}
-				player.sendMessage(CraftEssence.premessage + "Giving "
-						+ itemAmount + " of item #" + itemId + ".");
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public boolean playerlist(CommandSender sender, String[] args) {
 		// TODO command finished needs some touchups for console
 		Player player = null;
@@ -371,13 +223,6 @@ public class ceCommands {
 			player.sendMessage(online.toString());
 			return true;
 		}
-	}
-
-	public boolean home(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		player.teleportTo(plugin.getHome(player));
-		player.sendMessage(CraftEssence.premessage + "Teleporting home...");
-		return true;
 	}
 
 	public boolean top(CommandSender sender, String[] args) {
