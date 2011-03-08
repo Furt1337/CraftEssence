@@ -20,6 +20,7 @@ import me.furt.CraftEssence.commands.BanCommand;
 import me.furt.CraftEssence.commands.BroadcastCommand;
 import me.furt.CraftEssence.commands.ClearInventoryCommand;
 import me.furt.CraftEssence.commands.CompassCommand;
+import me.furt.CraftEssence.commands.EmoteCommand;
 import me.furt.CraftEssence.commands.GiveCommand;
 import me.furt.CraftEssence.commands.GodCommand;
 import me.furt.CraftEssence.commands.HealCommand;
@@ -28,6 +29,9 @@ import me.furt.CraftEssence.commands.ItemCommand;
 import me.furt.CraftEssence.commands.JumpCommand;
 import me.furt.CraftEssence.commands.KickCommand;
 import me.furt.CraftEssence.commands.KillCommand;
+import me.furt.CraftEssence.commands.KitCommand;
+import me.furt.CraftEssence.commands.MailCommand;
+import me.furt.CraftEssence.commands.MotdCommand;
 import me.furt.CraftEssence.commands.TimeCommand;
 import me.furt.CraftEssence.listener.ceBlockListener;
 import me.furt.CraftEssence.listener.ceEntityListener;
@@ -86,6 +90,11 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("jump").setExecutor(new JumpCommand(this));
 		getCommand("kick").setExecutor(new KickCommand(this));
 		getCommand("kill").setExecutor(new KillCommand(this));
+		getCommand("kit").setExecutor(new KitCommand(this));
+		getCommand("mail").setExecutor(new MailCommand(this));
+		getCommand("me").setExecutor(new EmoteCommand(this));
+		getCommand("emote").setExecutor(new EmoteCommand(this));
+		getCommand("motd").setExecutor(new MotdCommand(this));
 		getCommand("time").setExecutor(new TimeCommand(this));
 		
 	}

@@ -59,7 +59,7 @@ commands:
   mail:
     description: Send messages to online/offline players
     usage: |
-           /<command> [read:send:delete]
+           Usage: /<command> [read:send:delete]
   kill:
     description: Kill a player, all, or yourself
     usage: |
@@ -71,7 +71,7 @@ commands:
   me:
     description: A emote system
     usage: |
-           /<command> [msg]
+           Usage: /<command> [msg]
   msg:
     description: Sends private messages to players
     usage: |
@@ -99,7 +99,7 @@ commands:
   motd:
     description: Displays the message of the day
     usage: |
-           /<command>
+           Usage: /<command>
   playerlist:
     description: Shows players that are online
     usage: |
@@ -116,3 +116,7 @@ commands:
     description: Kick a player or all players
     usage: |
            Usage: /<command> [player/*]
+  kit:
+    description: A package of items
+    usage: |
+           Usage: /<command> [kitname]

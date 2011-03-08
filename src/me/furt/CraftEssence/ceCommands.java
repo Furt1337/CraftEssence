@@ -51,13 +51,12 @@ public class ceCommands {
 	}
 	
 	public boolean msg(CommandSender sender, String[] args) {
-		// TODO msg finished
 		Player player = (Player) sender;
 		if (args.length < 1) {
 			return false;
 		} else {
 			String msg = plugin.message(args).replace(args[0], "");
-			Player sendto = playerMatch(args[0]);
+			Player sendto = plugin.playerMatch(args[0]);
 			if (sendto != null) {
 				if (sendto.getName().equals(player.getName())) {
 					player.sendMessage(CraftEssence.premessage
@@ -87,63 +86,6 @@ public class ceCommands {
 		} else {
 			player.teleportTo(plugin.getWarp(player, args));
 			player.sendMessage(CraftEssence.premessage + "Warping...");
-		}
-		return true;
-	}
-
-	public boolean me(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			return false;
-		} else {
-			String msg = plugin.message(args);
-			if (ceSettings.prayer) {
-				if ((args[0].equalsIgnoreCase("prays"))
-						&& (args[2].equalsIgnoreCase("day"))) {
-					if (CraftEssence.prayList.contains(player.getName())) {
-						int health = player.getHealth();
-						health = health - 1;
-						player.setHealth(health);
-						player.sendMessage(ChatColor.RED
-								+ "The gods strike you down");
-					} else {
-						CraftEssence.prayList.add(player.getName());
-						int prayCount = 0;
-						for (@SuppressWarnings("unused")
-						String p : CraftEssence.prayList) {
-							prayCount++;
-						}
-						if (prayCount == ceSettings.prayAmount) {
-							World world = player.getWorld();
-							long time = world.getTime();
-							time = time - time % 24000;
-							world.setTime(time + 24000);
-							plugin.getServer().broadcastMessage(
-									ChatColor.GRAY + "* " + player.getName()
-											+ " " + msg + "*");
-							plugin.getServer()
-									.broadcastMessage(
-											ChatColor.RED
-													+ "The gods have answered your prayers.");
-							CraftEssence.prayList.clear();
-						} else {
-							plugin.getServer().broadcastMessage(
-									ChatColor.GRAY + "* " + player.getName()
-											+ " " + msg + "*");
-							player.sendMessage(ChatColor.RED
-									+ "The gods are pleased with you.");
-						}
-					}
-				} else {
-					plugin.getServer()
-							.broadcastMessage(
-									ChatColor.GRAY + "*" + player.getName()
-											+ msg + "*");
-				}
-			} else {
-				plugin.getServer().broadcastMessage(
-						ChatColor.GRAY + "*" + player.getName() + msg + "*");
-			}
 		}
 		return true;
 	}
@@ -258,41 +200,9 @@ public class ceCommands {
 		return true;
 	}
 
-	private boolean isAdmin(Player player) {
-		if (!player.isOp())
-			return false;
-		else
-			return true;
-	}
-
 	public boolean sethome(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
 		plugin.setHome(player, player.getLocation());
-		return true;
-	}
-
-	public boolean mail(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			return false;
-		} else {
-			if (args.length == 1 && "read".equalsIgnoreCase(args[0])) {
-				List<String> mail = plugin.readMail(player);
-				if (mail.isEmpty())
-					player.sendMessage(CraftEssence.premessage
-							+ "You do not have any mail!");
-				else
-					for (String s : mail)
-						player.sendMessage(s);
-			}
-			String msg = plugin.message(args);
-			if (args.length >= 3 && "send".equalsIgnoreCase(args[0])) {
-				plugin.sendMail(player, args[1], msg.split(" +", 3)[2]);
-			}
-			if (args.length >= 1 && "delete".equalsIgnoreCase(args[0])) {
-				plugin.clearMail(player);
-			}
-		}
 		return true;
 	}
 
@@ -319,75 +229,6 @@ public class ceCommands {
 				.setPitch(player.getLocation().getPitch());
 
 		player.sendMessage(CraftEssence.premessage + "Spawn position modified.");
-		return true;
-	}
-
-	public boolean kit(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			try {
-				List<String> kits = plugin.kitList(player);
-				StringBuilder list = new StringBuilder();
-				for (String k : kits)
-					list.append(" ").append(k);
-				player.sendMessage("Kits:" + list.toString());
-			} catch (Exception ex) {
-				player.sendMessage(CraftEssence.premessage
-						+ "There are no valid kits.");
-			}
-		} else {
-			try {
-				if (plugin.kitRank(player, args) == true) {
-					for (String d : plugin.getKit(player,
-							plugin.kitID(player, args))) {
-						String[] parts = d.split("[^0-9]+", 2);
-						int id = Integer.parseInt(parts[0]);
-						int amount = parts.length > 1 ? Integer
-								.parseInt(parts[1]) : 1;
-						player.getWorld().dropItem(player.getLocation(),
-								new ItemStack(id, amount));
-					}
-					player.sendMessage(CraftEssence.premessage + "Giving kit "
-							+ args[0].toLowerCase() + ".");
-				}
-			} catch (Exception ex) {
-				player.sendMessage("Either the kit does not exist");
-				player.sendMessage("or you do not have proper permmissions");
-				player.sendMessage(ex.getMessage());
-
-			}
-		}
-		return true;
-	}
-
-	public boolean motd(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		String[] motd = plugin.getMotd();
-		if (motd == null || motd.length < 1) {
-			player.sendMessage(ChatColor.GRAY + "No Motd set.");
-		} else {
-			int intonline = 0;
-			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if ((p == null) || (!p.isOnline())) {
-					continue;
-				}
-				++intonline;
-			}
-			String online = intonline + "/"
-					+ plugin.getServer().getMaxPlayers();
-
-			String location = (int) player.getLocation().getX() + "x, "
-					+ (int) player.getLocation().getY() + "y, "
-					+ (int) player.getLocation().getZ() + "z";
-			String ip = player.getAddress().getAddress().getHostAddress();
-
-			for (String line : motd) {
-				player.sendMessage(plugin.argument(line, new String[] {
-						"+dname,+d", "+name,+n", "+location,+l", "+ip",
-						"+online" }, new String[] { player.getDisplayName(),
-						player.getName(), location, ip, online }));
-			}
-		}
 		return true;
 	}
 }
