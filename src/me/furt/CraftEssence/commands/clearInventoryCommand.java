@@ -42,7 +42,7 @@ public class clearInventoryCommand implements CommandExecutor {
 				player.sendMessage(CraftEssence.premessage
 						+ "Player is offline or not found");
 			} else {
-
+				CraftEssence.log.info("Player is offline or not found");
 			}
 		}
 		return true;

@@ -16,8 +16,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.furt.CraftEssence.commands.banCommand;
 import me.furt.CraftEssence.commands.broadcastCommand;
 import me.furt.CraftEssence.commands.clearInventoryCommand;
+import me.furt.CraftEssence.commands.compassCommand;
+import me.furt.CraftEssence.commands.giveCommand;
+import me.furt.CraftEssence.commands.godCommand;
+import me.furt.CraftEssence.commands.healCommand;
 import me.furt.CraftEssence.commands.timeCommand;
 import me.furt.CraftEssence.listener.ceBlockListener;
 import me.furt.CraftEssence.listener.ceEntityListener;
@@ -64,6 +69,11 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("time").setExecutor(new timeCommand(this));
 		getCommand("clearinventory").setExecutor(new clearInventoryCommand(this));
 		getCommand("broadcast").setExecutor(new broadcastCommand(this));
+		getCommand("ban").setExecutor(new banCommand(this));
+		getCommand("compass").setExecutor(new compassCommand(this));
+		getCommand("give").setExecutor(new giveCommand(this));
+		getCommand("god").setExecutor(new godCommand(this));
+		getCommand("heal").setExecutor(new healCommand(this));
 		
 	}
 	
@@ -640,64 +650,5 @@ public class CraftEssence extends JavaPlugin {
 			player.sendMessage(CraftEssence.premessage + "Warp did not save.");
 		}
 
-	}
-
-	public void addBan(String pname, Player player) {
-		try {
-			String[] banList = this.getBans();
-			ArrayList<String> arraylist = new ArrayList<String>();
-			for (String p : banList) {
-				if (p != pname) {
-					arraylist.add(p);
-				}
-			}
-			new File(getDataFolder() + File.separator + "bans.txt")
-					.createNewFile();
-			FileWriter fstream = new FileWriter(new File(getDataFolder()
-					+ File.separator + "bans.txt"));
-			BufferedWriter out = new BufferedWriter(fstream);
-			for (String b : arraylist) {
-				if (!b.equalsIgnoreCase(pname)) {
-					out.write(b + "\n");
-				}
-			}
-			out.write(pname + "\n");
-			out.close();
-			fstream.close();
-		} catch (IOException ex) {
-			log.info("[CraftEssence] Player ban did not save");
-			setEnabled(false);
-		}
-
-	}
-
-	public void removeBan(Player player, String pname) {
-		try {
-			String[] banList = this.getBans();
-			ArrayList<String> arraylist = new ArrayList<String>();
-			for (String p : banList) {
-				if (p != pname) {
-					arraylist.add(p);
-				}
-			}
-			new File(getDataFolder() + File.separator + "bans.txt")
-					.createNewFile();
-			FileWriter fstream = new FileWriter(new File(getDataFolder()
-					+ File.separator + "bans.txt"));
-			BufferedWriter out = new BufferedWriter(fstream);
-			for (String b : arraylist) {
-				if (!b.equalsIgnoreCase(pname)) {
-					out.write(b + "\n");
-					log.info("Banlist builder.");
-					log.info(b);
-				}
-			}
-			out.close();
-			fstream.close();
-		} catch (IOException ex) {
-			log.info("[CraftEssence] " + pname
-					+ "  could not be removed from ban list.");
-			setEnabled(false);
-		}
 	}
 }

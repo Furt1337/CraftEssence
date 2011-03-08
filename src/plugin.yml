@@ -15,7 +15,7 @@ commands:
   give:
     description: Gives items to a player
     usage: |
-           /<command> [player] [item] [amount]
+           Usage: /<command> [player] [item] [amount]
   item:
     description: Gives items to yourself
     usage: |
@@ -87,7 +87,7 @@ commands:
   ban:
     description: Bans a player from the server
     usage: |
-           /<command> [player] [reason]
+           Usage: /<command> [player] [reason]
   pardon:
     description: Removes a player from the banned list
     usage: |
@@ -95,7 +95,7 @@ commands:
   compass:
     description: Shows what direction you are facing
     usage: |
-           /<command>
+           Usage: /<command>
   motd:
     description: Displays the message of the day
     usage: |
@@ -104,3 +104,11 @@ commands:
     description: Shows players that are online
     usage: |
            /<command>
+  god:
+    description: Enables/Disable invincibility
+    usage: |
+           Usage: /<command> [player]
+  heal:
+    description: Heal yourself or another player
+    usage: |
+           Usage: /<command> [player]

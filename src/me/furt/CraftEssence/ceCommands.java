@@ -102,33 +102,6 @@ public class ceCommands {
 		}
 	}
 
-	public boolean ban(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			return false;
-		} else {
-			String msg = plugin.message(args).replace(args[0], "");
-			if (args.length < 2) {
-				msg = " No Grief!";
-			}
-			Player p = plugin.getServer().getPlayer(args[0]);
-			if (p == null || !p.isOnline()) {
-				plugin.addBan(args[0], player);
-				plugin.getServer().broadcastMessage(
-						"§6" + player.getName() + " has banned " + args[0]
-								+ ".");
-			} else {
-				p.kickPlayer("You have been banned by " + player.getName()
-						+ ", reason:" + msg);
-				plugin.addBan(args[0], player);
-				plugin.getServer().broadcastMessage(
-						"§6" + player.getName() + " has banned " + p.getName()
-								+ ".");
-			}
-		}
-		return true;
-	}
-
 	public boolean kick(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
 		if (args.length < 1) {
@@ -170,46 +143,7 @@ public class ceCommands {
 		}
 		return true;
 	}
-
-	public Player playerMatch(String name) {
-		if (plugin.getServer().getOnlinePlayers().length < 1) {
-			return null;
-		}
-
-		Player[] online = plugin.getServer().getOnlinePlayers();
-		Player lastPlayer = null;
-
-		for (Player player : online) {
-			String playerName = player.getName();
-			String playerDisplayName = player.getDisplayName();
-
-			if (playerName.equalsIgnoreCase(name)) {
-				lastPlayer = player;
-				break;
-			} else if (playerDisplayName.equalsIgnoreCase(name)) {
-				lastPlayer = player;
-				break;
-			}
-
-			if (playerName.toLowerCase().indexOf(name.toLowerCase()) != -1) {
-				if (lastPlayer != null) {
-					return null;
-				}
-
-				lastPlayer = player;
-			} else if (playerDisplayName.toLowerCase().indexOf(
-					name.toLowerCase()) != -1) {
-				if (lastPlayer != null) {
-					return null;
-				}
-
-				lastPlayer = player;
-			}
-		}
-
-		return lastPlayer;
-	}
-
+	
 	public boolean msg(CommandSender sender, String[] args) {
 		// TODO msg finished
 		Player player = (Player) sender;
@@ -253,22 +187,6 @@ public class ceCommands {
 			 * Teleporter tp = new Teleporter(location); tp.setVerbose(false);
 			 * tp.addTeleportee(player); tp.teleport();
 			 */
-		}
-		return true;
-
-	}
-
-	public boolean god(CommandSender sender, String[] trimmedArgs) {
-		Player player = (Player) sender;
-		if (CraftEssence.godmode.contains(player.getName())) {
-			CraftEssence.godmode.remove(player.getName());
-			player.sendMessage(CraftEssence.premessage
-					+ "You have returned to being mortal.");
-		} else {
-			player.sendMessage(CraftEssence.premessage
-					+ "You are now invincible!");
-			CraftEssence.godmode.add(player.getName());
-			player.setHealth(20);
 		}
 		return true;
 
@@ -348,42 +266,6 @@ public class ceCommands {
 		return true;
 	}
 
-	public boolean compass(CommandSender sender) {
-		Player player = (Player) sender;
-		double degreeRotation = ((player.getLocation().getYaw() - 90) % 360);
-
-		if (degreeRotation < 0) {
-			degreeRotation += 360.0;
-		}
-		player.sendMessage(ChatColor.RED + "Compass: "
-				+ getDirection(degreeRotation));
-		return true;
-	}
-
-	private String getDirection(double degrees) {
-		if (0 <= degrees && degrees < 22.5) {
-			return "N";
-		} else if (22.5 <= degrees && degrees < 67.5) {
-			return "NE";
-		} else if (67.5 <= degrees && degrees < 112.5) {
-			return "E";
-		} else if (112.5 <= degrees && degrees < 157.5) {
-			return "SE";
-		} else if (157.5 <= degrees && degrees < 202.5) {
-			return "S";
-		} else if (202.5 <= degrees && degrees < 247.5) {
-			return "SW";
-		} else if (247.5 <= degrees && degrees < 292.5) {
-			return "W";
-		} else if (292.5 <= degrees && degrees < 337.5) {
-			return "NW";
-		} else if (337.5 <= degrees && degrees < 360.0) {
-			return "N";
-		} else {
-			return "ERROR";
-		}
-	}
-
 	public static boolean isInteger(String input) {
 		try {
 			Integer.parseInt(input);
@@ -457,46 +339,6 @@ public class ceCommands {
 		return false;
 	}
 
-	public boolean give(CommandSender sender, String[] args) {
-		// TODO add wool color and tree types
-
-		Player player = (Player) sender;
-		if (args.length < 2) {
-			player.sendMessage(CraftEssence.premessage
-					+ "Usage: /give [player] [item] <amount> <type>");
-		} else {
-			if (playerMatch(args[0]) != null) {
-				int itemId = args[1].matches("[0-9]+") ? Integer
-						.parseInt(args[1]) : Item.getItem(args[1]).id;
-				int itemAmount = args.length < 3 ? 1 : Integer
-						.parseInt(args[2]);
-				if (itemId > 350) {
-					player.sendMessage(CraftEssence.premessage
-							+ "Invalid item id.");
-				} else {
-					Player giveTo = plugin.getServer().getPlayer(args[0]);
-					int slot = giveTo.getInventory().firstEmpty();
-					if (slot < 0) {
-						giveTo.getWorld().dropItem(giveTo.getLocation(),
-								new ItemStack(itemId, itemAmount));
-					} else {
-						giveTo.getInventory().addItem(
-								new ItemStack(itemId, itemAmount));
-					}
-					player.sendMessage(CraftEssence.premessage + "Giving "
-							+ itemAmount + " of item #" + itemId + " to "
-							+ giveTo.getDisplayName() + ".");
-					giveTo.sendMessage(ChatColor.GRAY + player.getName()
-							+ " sent you a gift!");
-				}
-			} else {
-				player.sendMessage(CraftEssence.premessage
-						+ "Player is offline or not found");
-			}
-		}
-		return true;
-	}
-
 	public boolean playerlist(CommandSender sender, String[] args) {
 		// TODO command finished needs some touchups for console
 		Player player = null;
@@ -535,15 +377,6 @@ public class ceCommands {
 		Player player = (Player) sender;
 		player.teleportTo(plugin.getHome(player));
 		player.sendMessage(CraftEssence.premessage + "Teleporting home...");
-		return true;
-	}
-
-	public boolean getpos(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		Location coords = player.getLocation();
-		player.sendMessage(CraftEssence.premessage + "Coordinates: "
-				+ ChatColor.WHITE + "(" + coords.getBlockX() + ", "
-				+ coords.getBlockY() + ", " + coords.getBlockZ() + ")");
 		return true;
 	}
 
@@ -680,63 +513,6 @@ public class ceCommands {
 			}
 		}
 		return true;
-	}
-
-	public boolean heal(CommandSender sender, String[] args) {
-		Player player = (Player) sender;
-		if (args.length < 1) {
-			player.setHealth(20);
-			player.sendMessage(CraftEssence.premessage
-					+ "You are fully healed.");
-			return true;
-		}
-		if ((args.length < 2) && (playerMatch(args[0]) == null)) {
-			int heal = Integer.parseInt(args[0]);
-			int hearts = heal / 2;
-			if (heal > 20) {
-				player.sendMessage(CraftEssence.premessage
-						+ "You cannot heal that much!");
-			} else if (heal < 1) {
-				player.sendMessage(CraftEssence.premessage
-						+ "That would kill you not heal you!");
-			} else {
-				player.setHealth(heal);
-				player.sendMessage(CraftEssence.premessage + "You now have "
-						+ hearts + " hearts");
-			}
-			return true;
-		}
-
-		if ((args.length < 2) && (playerMatch(args[0]) != null)) {
-			Player p = plugin.getServer().getPlayer(args[0]);
-			p.setHealth(20);
-			player.sendMessage(CraftEssence.premessage + "You healed "
-					+ p.getName() + "!");
-			p.sendMessage(CraftEssence.premessage + "You are fully healed!");
-			return true;
-		}
-
-		if ((args.length < 3) && (playerMatch(args[0]) != null)) {
-			Player p = plugin.getServer().getPlayer(args[0]);
-			int heal = Integer.parseInt(args[1]);
-			int hearts = heal / 2;
-			if (heal > 20) {
-				player.sendMessage(CraftEssence.premessage
-						+ "You cannot heal that much!");
-			} else if (heal < 1) {
-				player.sendMessage(CraftEssence.premessage
-						+ "That would kill them not heal them!");
-			} else {
-				p.setHealth(heal);
-				player.sendMessage(CraftEssence.premessage + "You you gave "
-						+ p.getName() + " " + hearts + " hearts!");
-				p.sendMessage(CraftEssence.premessage + "You now have "
-						+ hearts + " hearts!");
-			}
-			return true;
-
-		}
-		return false;
 	}
 
 	public boolean motd(CommandSender sender, String[] args) {
