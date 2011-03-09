@@ -2,6 +2,7 @@ package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
 
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,6 +19,13 @@ public class TimeCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
+		if (plugin.isPlayer(sender)) {
+			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.time")) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+		}
 		if (args.length < 2) {
 			return false;
 		}

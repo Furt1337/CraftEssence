@@ -2,9 +2,11 @@ package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class MuteCommand implements CommandExecutor {
 	private final CraftEssence plugin;
@@ -16,6 +18,13 @@ public class MuteCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
+		if (plugin.isPlayer(sender)) {
+			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.mute")) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+		}
 		if (args.length == 0)
 			return false;
 		if (plugin.playerMatch(args[0]) != null) {

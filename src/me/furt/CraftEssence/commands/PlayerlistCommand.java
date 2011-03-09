@@ -18,6 +18,13 @@ public class PlayerlistCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
+		if (plugin.isPlayer(sender)) {
+			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.playerlist")) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+		}
 		StringBuilder online = new StringBuilder();
 		int intonline = 0;
 		for (Player p : plugin.getServer().getOnlinePlayers()) {

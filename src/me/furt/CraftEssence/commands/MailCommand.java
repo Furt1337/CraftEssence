@@ -4,6 +4,7 @@ import java.util.List;
 
 import me.furt.CraftEssence.CraftEssence;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,6 +20,13 @@ public class MailCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
+		if (plugin.isPlayer(sender)) {
+			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.mail")) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+		}
 		if (!plugin.isPlayer(sender))
 			return false;
 

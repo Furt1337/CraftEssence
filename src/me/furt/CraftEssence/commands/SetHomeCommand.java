@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.ceConnector;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,6 +25,13 @@ public class SetHomeCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
+		if (plugin.isPlayer(sender)) {
+			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.sethome")) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+		}
 		if (!plugin.isPlayer(sender))
 			return false;
 

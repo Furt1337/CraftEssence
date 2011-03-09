@@ -27,9 +27,14 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
+
 
 public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> muteList = new ArrayList<String>();
@@ -38,6 +43,7 @@ public class CraftEssence extends JavaPlugin {
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
+	public static PermissionHandler Permissions;
 	public cePlayerListener cepl = new cePlayerListener(this);
 	public ceBlockListener cebl = new ceBlockListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
@@ -148,7 +154,17 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	private void setupPermissions() {
-	}
+	      Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
+
+	      if (CraftEssence.Permissions == null) {
+	          if (test != null) {
+	              CraftEssence.Permissions = ((Permissions)test).getHandler();
+	          } else {
+	              log.info("Permission system not detected, defaulting to OP");
+	          }
+	      }
+	  }
+
 
 	private void checkFiles() {
 		if (!this.getDataFolder().exists())
@@ -502,57 +518,5 @@ public class CraftEssence extends JavaPlugin {
 			}
 		}
 		return namearray;
-	}
-
-	public Location getWarp(Player player, String[] args) {
-		String homeq = "Select * FROM warp WHERE `name` = '" + args[0] + "'";
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		double x = 0;
-		double y = 0;
-		double z = 0;
-		float pitch = 0;
-		float yaw = 0;
-		String wname = null;
-
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn.prepareStatement(homeq);
-			rs = ps.executeQuery();
-			conn.commit();
-			while (rs.next()) {
-				wname = rs.getString("world");
-				x = rs.getDouble("x");
-				y = rs.getDouble("y");
-				z = rs.getDouble("z");
-				yaw = rs.getFloat("yaw");
-				pitch = rs.getFloat("pitch");
-
-			}
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-		} finally {
-			try {
-				if (ps != null) {
-					ps.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-				if (conn != null)
-					conn.close();
-			} catch (SQLException ex) {
-				CraftEssence.log.log(Level.SEVERE,
-						"[CraftEssence]: Find SQL Exception (on close)");
-			}
-		}
-		if (x != 0)
-			return new Location(this.getServer().getWorld(wname), x, y, z, yaw,
-					pitch);
-
-		return player.getWorld().getSpawnLocation();
 	}
 }
