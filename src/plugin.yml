@@ -9,14 +9,20 @@ commands:
     usage: |
            /<command> [player]
   tphere:
+    aliases:
+      - tph
     description: Teleport a player to you
     usage: |
            /<command> [player]
   give:
+    aliases:
+      - g
     description: Gives items to a player
     usage: |
            Usage: /<command> [player] [item] [amount]
   item:
+    aliases:
+      - i
     description: Gives items to yourself
     usage: |
            Usage: /<command> [item] [amount]
@@ -37,6 +43,8 @@ commands:
     usage: |
            /<command>
   clearinventory:
+    aliases:
+      - clear
     description: Removes all items from players inventory
     usage: |
            Usage: /<command> [player]
@@ -101,6 +109,8 @@ commands:
     usage: |
            Usage: /<command>
   playerlist:
+    aliases:
+      - list
     description: Shows players that are online
     usage: |
            /<command>
@@ -120,3 +130,9 @@ commands:
     description: A package of items
     usage: |
            Usage: /<command> [kitname]
+  worldlist:
+    aliases:
+      - world
+    description: Lists all loaded worlds
+    usage: |
+           Usage: /<command>
