@@ -43,11 +43,11 @@ commands:
   warp:
     description: Teleports to desired warp location
     usage: |
-           /<command> [warpname]
+           Usage: /<command> [warpname]
   setwarp:
     description: Creates a warp with desired name
     usage: |
-           /<command> [warpname]
+           Usage: /<command> [warpname]
   broadcast:
     description: Sends a server message to everyone online
     usage: |

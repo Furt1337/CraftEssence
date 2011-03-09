@@ -77,12 +77,16 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("msg").setExecutor(new MsgCommand(this));
 		getCommand("playerlist").setExecutor(new PlayerlistCommand(this));
 		getCommand("sethome").setExecutor(new SetHomeCommand(this));
+		getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
+		getCommand("setwarp").setExecutor(new SetWarpCommand(this));
+		getCommand("spawn").setExecutor(new SpawnCommand(this));
+		getCommand("support").setExecutor(new SupportCommand(this));
 		getCommand("time").setExecutor(new TimeCommand(this));
-		
+		getCommand("top").setExecutor(new TopCommand(this));
+		getCommand("tp").setExecutor(new TpComand(this));
 	}
 	
 	public boolean isPlayer(CommandSender sender) {
-		// TODO check to see if command is from player or console
 		if (!(sender instanceof Player)) {
             return false;
         } else {
@@ -373,87 +377,6 @@ public class CraftEssence extends JavaPlugin {
 
 	}
 
-	public void setHome(Player player, Location home) {
-		Connection conn = null;
-		Statement stmt = null;
-		int count = 0;
-		String getname = player.getName();
-		double x = home.getX();
-		double y = home.getY();
-		double z = home.getZ();
-		float yaw = home.getYaw();
-		float pitch = home.getPitch();
-		String wname = home.getWorld().getName();
-		try {
-			conn = ceConnector.getConnection();
-			stmt = conn.createStatement();
-			count += stmt.executeUpdate("REPLACE INTO `home`"
-					+ " (`name`, `world`, `x`, `y`, `z`, `yaw`, `pitch`)"
-					+ " VALUES ('" + getname + "', '" + wname + "', '" + x
-					+ "', '" + y + "', '" + z + "', '" + yaw + "', '" + pitch
-					+ "')");
-			stmt.close();
-			player.sendMessage(CraftEssence.premessage + "Home set.");
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-			player.sendMessage(CraftEssence.premessage + "Home did not save.");
-		}
-	}
-
-	public Location getHome(Player player) {
-		String getname = player.getName();
-		String homeq = "Select * FROM home WHERE `name` = '" + getname + "'";
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		double x = 0;
-		double y = 0;
-		double z = 0;
-		float pitch = 0;
-		float yaw = 0;
-		String wname = null;
-
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn.prepareStatement(homeq);
-			rs = ps.executeQuery();
-			conn.commit();
-			while (rs.next()) {
-				wname = rs.getString("world");
-				x = rs.getDouble("x");
-				y = rs.getDouble("y");
-				z = rs.getDouble("z");
-				yaw = rs.getFloat("yaw");
-				pitch = rs.getFloat("pitch");
-
-			}
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-		} finally {
-			try {
-				if (ps != null) {
-					ps.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-				if (conn != null)
-					conn.close();
-			} catch (SQLException ex) {
-				CraftEssence.log.log(Level.SEVERE,
-						"[CraftEssence]: Find SQL Exception (on close)");
-			}
-		}
-		if (x != 0)
-			return new Location(this.getServer().getWorld(wname), x, y, z, yaw,
-					pitch);
-
-		return player.getWorld().getSpawnLocation();
-	}
-
 	public boolean kitRank(Player player, String[] args) {
 		// String world = player.getWorld().getName();
 		// String rank = "";
@@ -625,34 +548,5 @@ public class CraftEssence extends JavaPlugin {
 					pitch);
 
 		return player.getWorld().getSpawnLocation();
-	}
-
-	public void setWarp(Player player, Location home, String[] args) {
-		Connection conn = null;
-		Statement stmt = null;
-		int count = 0;
-		double x = home.getX();
-		double y = home.getY();
-		double z = home.getZ();
-		float yaw = home.getYaw();
-		float pitch = home.getPitch();
-		String wname = home.getWorld().getName();
-		try {
-			conn = ceConnector.getConnection();
-			stmt = conn.createStatement();
-			count += stmt.executeUpdate("REPLACE INTO `warp`"
-					+ " (`name`, `world`, `x`, `y`, `z`, `yaw`, `pitch`)"
-					+ " VALUES ('" + args[0] + "', '" + wname + "', '" + x
-					+ "', '" + y + "', '" + z + "', '" + yaw + "', '" + pitch
-					+ "')");
-			stmt.close();
-			player.sendMessage(CraftEssence.premessage + "Warp '" + args[0]
-					+ "' set.");
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-			player.sendMessage(CraftEssence.premessage + "Warp did not save.");
-		}
-
 	}
 }
