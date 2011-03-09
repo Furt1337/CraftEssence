@@ -48,35 +48,6 @@ public class BanCommand implements CommandExecutor {
 
 	}
 
-	public void removeBan(Player player, String pname) {
-		try {
-			String[] banList = plugin.getBans();
-			ArrayList<String> arraylist = new ArrayList<String>();
-			for (String p : banList) {
-				if (p != pname) {
-					arraylist.add(p);
-				}
-			}
-			new File(plugin.getDataFolder() + File.separator + "bans.txt")
-					.createNewFile();
-			FileWriter fstream = new FileWriter(new File(plugin.getDataFolder()
-					+ File.separator + "bans.txt"));
-			BufferedWriter out = new BufferedWriter(fstream);
-			for (String b : arraylist) {
-				if (!b.equalsIgnoreCase(pname)) {
-					out.write(b + "\n");
-					CraftEssence.log.info("Banlist builder.");
-					CraftEssence.log.info(b);
-				}
-			}
-			out.close();
-			fstream.close();
-		} catch (IOException ex) {
-			CraftEssence.log.info("[CraftEssence] " + pname
-					+ "  could not be removed from ban list.");
-		}
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {

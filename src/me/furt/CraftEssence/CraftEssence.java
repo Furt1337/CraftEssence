@@ -75,6 +75,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("me").setExecutor(new MeCommand(this));
 		getCommand("motd").setExecutor(new MotdCommand(this));
 		getCommand("msg").setExecutor(new MsgCommand(this));
+		getCommand("pardon").setExecutor(new PardonCommand(this));
 		getCommand("playerlist").setExecutor(new PlayerlistCommand(this));
 		getCommand("sethome").setExecutor(new SetHomeCommand(this));
 		getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
@@ -84,6 +85,9 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("time").setExecutor(new TimeCommand(this));
 		getCommand("top").setExecutor(new TopCommand(this));
 		getCommand("tp").setExecutor(new TpComand(this));
+		getCommand("tphere").setExecutor(new TpHereCommand(this));
+		getCommand("warp").setExecutor(new WarpCommand(this));
+		getCommand("worldlist").setExecutor(new WorldListCommand(this));
 	}
 	
 	public boolean isPlayer(CommandSender sender) {
