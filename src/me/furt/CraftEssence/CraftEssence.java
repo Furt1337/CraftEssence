@@ -32,6 +32,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CraftEssence extends JavaPlugin {
+	public static ArrayList<String> muteList = new ArrayList<String>();
 	public static ArrayList<String> godmode = new ArrayList<String>();
 	public static ArrayList<String> prayList = new ArrayList<String>();
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
@@ -75,6 +76,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("me").setExecutor(new MeCommand(this));
 		getCommand("motd").setExecutor(new MotdCommand(this));
 		getCommand("msg").setExecutor(new MsgCommand(this));
+		getCommand("mute").setExecutor(new MuteCommand(this));
 		getCommand("pardon").setExecutor(new PardonCommand(this));
 		getCommand("playerlist").setExecutor(new PlayerlistCommand(this));
 		getCommand("sethome").setExecutor(new SetHomeCommand(this));

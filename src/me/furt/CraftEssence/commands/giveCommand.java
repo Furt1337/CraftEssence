@@ -63,9 +63,9 @@ public class GiveCommand implements CommandExecutor {
 			if (plugin.isPlayer(sender)) {
 				Player player = (Player) sender;
 				player.sendMessage(CraftEssence.premessage
-						+ "Player is offline or not found");
+						+ "Player is offline or not found.");
 			}
-			CraftEssence.log.info("[CraftEssence] Item id not found.");
+			CraftEssence.log.info("[CraftEssence] Player is offline or not found.");
 			return true;
 		}
 	}

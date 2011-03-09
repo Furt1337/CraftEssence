@@ -81,6 +81,13 @@ public class cePlayerListener extends PlayerListener {
 
 	public void onPlayerChat(PlayerChatEvent event) {
 		// TODO onPlayerChat
+		Player player = event.getPlayer();
+		if (CraftEssence.muteList.contains(player.getName())) {
+			plugin.getServer().broadcastMessage(
+					ChatColor.YELLOW + player.getName()
+							+ " tried to chat but they are muted.");
+			event.setCancelled(true);
+		}
 	}
 
 	public void onPlayerJoin(PlayerEvent event) {

@@ -131,8 +131,10 @@ commands:
     usage: |
            Usage: /<command> [kitname]
   worldlist:
-    aliases:
-      - world
     description: Lists all loaded worlds
     usage: |
            Usage: /<command>
+  mute:
+    description: Mutes player so that they cannot talk in chat
+    usage: |
+           Usage: /<command> [player]
