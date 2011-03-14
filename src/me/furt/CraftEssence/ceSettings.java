@@ -7,10 +7,7 @@ public class ceSettings {
 	public static String mysqlUser = "user";
 	public static String mysqlPass = "pass";
 	public static String mysqlDB = "jdbc:mysql://localhost:3306/craftessence";
-	public static boolean globalRespawn = false;
-	public static boolean alternateRespawn = false;
-	public static boolean worldsEnabled = true;
-	public static int cooldown = 5000;
+	public static boolean mysql = false;
 	public static boolean prayer = true;
 	public static int prayAmount = 3;
 
@@ -29,13 +26,7 @@ public class ceSettings {
 		mysqlDB = cep.getString("mysqlDB",
 				"jdbc:mysql://localhost:3306/craftessence",
 				"DB for MySQL (if applicable)");
-		globalRespawn = cep.getBoolean("globalrespawn", false,
-				"Set to true if you want a global respawn");
-		alternateRespawn = cep.getBoolean("alternaterespawn", false,
-				"Set to true if you want a alternate respawn");
-		worldsEnabled = cep.getBoolean("worldsEnabled", true,
-				"set to false to disable multiworlds");
-		cooldown = cep.getInt("cooldown", 5000, "Port cooldown in milliseconds");
+		mysql = cep.getBoolean("mysql", false, "If set to false sqlite will be used");
 		prayer = cep.getBoolean("prayer", true, "set to false to disable emote prayers");
 		prayAmount = cep.getInt("prayAmount", 3, "amount of prayers needed");
 		cep.save();

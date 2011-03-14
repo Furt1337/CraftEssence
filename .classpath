@@ -14,6 +14,6 @@
 			<attribute name="javadoc_location" value="http://javadoc.lukegb.com/BukkitJD/index.html"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/games/minecraft/bukkit/ServerFolder/plugins/Permissions.jar"/>
+	<classpathentry kind="lib" path="D:/games/minecraft/bukkit/ServerFolder/plugins/backup/Permissions.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

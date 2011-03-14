@@ -1,7 +1,6 @@
 package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,18 +28,10 @@ public class SetSpawnCommand implements CommandExecutor {
 			return false;
 		
 		Player player = (Player) sender;
-		// WorldServer ws = ((CraftWorld) player.getWorld()).getHandle();
-		// ws.spawnX = player.getLocation().getBlockX();
-		// ws.spawnY = player.getLocation().getBlockY();
-		// ws.spawnZ = player.getLocation().getBlockZ();
-
-		player.getWorld().getSpawnLocation().setX(player.getLocation().getX());
-		player.getWorld().getSpawnLocation().setY(player.getLocation().getY());
-		player.getWorld().getSpawnLocation().setZ(player.getLocation().getZ());
-		player.getWorld().getSpawnLocation()
-				.setYaw(player.getLocation().getYaw());
-		player.getWorld().getSpawnLocation()
-				.setPitch(player.getLocation().getPitch());
+		int x = (int) player.getLocation().getX();
+		int y = (int) player.getLocation().getY();
+		int z = (int) player.getLocation().getZ();
+		player.getWorld().setSpawnLocation(x, y, z);
 
 		player.sendMessage(CraftEssence.premessage + "Spawn position modified.");
 		return true;

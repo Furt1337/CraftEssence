@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import me.furt.CraftEssence.CraftEssence;
-import me.furt.CraftEssence.ceSettings;
+//import me.furt.CraftEssence.ceSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -59,7 +59,7 @@ public class cePlayerListener extends PlayerListener {
 		return true;
 	}
 
-	public boolean getTeleportable(Player player) {
+	/*public boolean getTeleportable(Player player) {
 		Long time = Long.valueOf(new Date().getTime());
 		if (this.playerCooldown.containsKey(player)) {
 			Long old = Long.valueOf(((Long) this.playerCooldown.get(player))
@@ -69,7 +69,7 @@ public class cePlayerListener extends PlayerListener {
 		}
 
 		return true;
-	}
+	}*/
 
 	public void setCooldown(Player player) {
 		Long time = Long.valueOf(new Date().getTime());
@@ -82,6 +82,23 @@ public class cePlayerListener extends PlayerListener {
 	public void onPlayerChat(PlayerChatEvent event) {
 		// TODO onPlayerChat
 		Player player = event.getPlayer();
+		String world = event.getPlayer().getWorld().getName();
+		String group = CraftEssence.Permissions.getGroup(world,
+				player.getName());
+
+		String prefix = CraftEssence.Permissions.getGroupPrefix(world, group);
+		String suffix = CraftEssence.Permissions.getGroupSuffix(world, group);
+
+		if ((prefix == null) || (prefix.trim().length() != 1)) {
+			return;
+		}
+
+		String format = event.getFormat();
+		event.setFormat("[" + ChatColor.getByCode(Integer.parseInt(prefix, 16))
+				+ suffix + ChatColor.WHITE + "]" + format);
+		// event.setFormat(event.getFormat().replace("%1$s",
+		// ChatColor.getByCode(Integer.parseInt(prefix, 16)) + "%1$s" +
+		// ChatColor.WHITE));
 		if (CraftEssence.muteList.contains(player.getName())) {
 			plugin.getServer().broadcastMessage(
 					ChatColor.YELLOW + player.getName()

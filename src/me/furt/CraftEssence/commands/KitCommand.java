@@ -24,7 +24,7 @@ public class KitCommand implements CommandExecutor {
 		if (plugin.isPlayer(sender)) {
 			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.kit")) {
 				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
+						+ "You to dont have permission to use that command.");
 				return true;
 			}
 		}
@@ -59,8 +59,7 @@ public class KitCommand implements CommandExecutor {
 							+ args[0].toLowerCase() + ".");
 				}
 			} catch (Exception ex) {
-				player.sendMessage("Either the kit does not exist");
-				player.sendMessage("or you do not have proper permmissions");
+				player.sendMessage("That kit does not exist");
 				player.sendMessage(ex.getMessage());
 
 			}

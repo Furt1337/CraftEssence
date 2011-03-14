@@ -30,7 +30,7 @@ public class SpawnCommand implements CommandExecutor {
 		
 		Player player = (Player) sender;
 		player.teleportTo(player.getWorld().getSpawnLocation());
-		player.sendMessage(CraftEssence.premessage + "Returned to spawn.");
+		sender.sendMessage(CraftEssence.premessage + "Returned to spawn.");
 		return true;
 	}
 
