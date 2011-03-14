@@ -15,5 +15,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/games/minecraft/bukkit/ServerFolder/plugins/backup/Permissions.jar"/>
+	<classpathentry kind="lib" path="D:/games/minecraft/bukkit/ServerFolder/plugins/OddItem.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
