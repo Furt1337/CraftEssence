@@ -21,7 +21,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 	public void onEntityDamage(EntityDamageEvent event) {
 		if ((event.getEntity() instanceof Player)) {
 			Player player = (Player) event.getEntity();
-			if (CraftEssence.godmode.contains(player.getName())) {
+			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
 				int life = player.getHealth();
 				if (life != 20)
 					player.setHealth(20);
@@ -35,7 +35,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 		event.setCancelled(true);
 		if ((event.getEntity() instanceof Player)) {
 			Player player = (Player) event.getEntity();
-			if (CraftEssence.godmode.contains(player.getName())) {
+			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
 				int life = player.getHealth();
 				if (life != 20)
 					player.setHealth(20);
@@ -48,7 +48,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if ((event.getEntity() instanceof Player)) {
 			Player player = (Player) event.getEntity();
-			if (CraftEssence.godmode.contains(player.getName())) {
+			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
 				int life = player.getHealth();
 				if (life != 20)
 					player.setHealth(20);
@@ -61,7 +61,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 	public void onEntityDamageByProjectile(EntityDamageByProjectileEvent event) {
 		if ((event.getEntity() instanceof Player)) {
 			Player player = (Player) event.getEntity();
-			if (CraftEssence.godmode.contains(player.getName())) {
+			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
 				int life = player.getHealth();
 				if (life != 20)
 					player.setHealth(20);

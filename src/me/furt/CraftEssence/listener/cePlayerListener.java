@@ -34,8 +34,8 @@ public class cePlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerQuit(PlayerEvent event) {
-		if (CraftEssence.godmode.contains(event.getPlayer().getName()))
-			CraftEssence.godmode.remove(event.getPlayer().getName());
+		if (CraftEssence.godmode.contains(event.getPlayer().getName().toLowerCase()))
+			CraftEssence.godmode.remove(event.getPlayer().getName().toLowerCase());
 	}
 
 	public void sendAlert(Player player, String msg) {
@@ -59,18 +59,6 @@ public class cePlayerListener extends PlayerListener {
 		return true;
 	}
 
-	/*public boolean getTeleportable(Player player) {
-		Long time = Long.valueOf(new Date().getTime());
-		if (this.playerCooldown.containsKey(player)) {
-			Long old = Long.valueOf(((Long) this.playerCooldown.get(player))
-					.longValue());
-
-			return time.longValue() - old.longValue() > ceSettings.cooldown;
-		}
-
-		return true;
-	}*/
-
 	public void setCooldown(Player player) {
 		Long time = Long.valueOf(new Date().getTime());
 		if (this.playerCooldown.containsKey(player)) {
@@ -82,27 +70,10 @@ public class cePlayerListener extends PlayerListener {
 	public void onPlayerChat(PlayerChatEvent event) {
 		// TODO onPlayerChat
 		Player player = event.getPlayer();
-		String world = event.getPlayer().getWorld().getName();
-		String group = CraftEssence.Permissions.getGroup(world,
-				player.getName());
-
-		String prefix = CraftEssence.Permissions.getGroupPrefix(world, group);
-		String suffix = CraftEssence.Permissions.getGroupSuffix(world, group);
-
-		if ((prefix == null) || (prefix.trim().length() != 1)) {
-			return;
-		}
-
-		String format = event.getFormat();
-		event.setFormat("[" + ChatColor.getByCode(Integer.parseInt(prefix, 16))
-				+ suffix + ChatColor.WHITE + "]" + format);
-		// event.setFormat(event.getFormat().replace("%1$s",
-		// ChatColor.getByCode(Integer.parseInt(prefix, 16)) + "%1$s" +
-		// ChatColor.WHITE));
-		if (CraftEssence.muteList.contains(player.getName())) {
+		if (CraftEssence.muteList.contains(player.getName().toLowerCase())) {
 			plugin.getServer().broadcastMessage(
 					ChatColor.YELLOW + player.getName()
-							+ " tried to chat but they are muted.");
+							+ " tried chatting but is muted.");
 			event.setCancelled(true);
 		}
 	}

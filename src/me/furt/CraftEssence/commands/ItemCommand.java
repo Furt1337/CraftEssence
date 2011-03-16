@@ -39,10 +39,12 @@ public class ItemCommand implements CommandExecutor {
 		ItemStack stack = null;
 		try {
 			stack = OddItem.getItemStack(args[0]);
-		    } catch (IllegalArgumentException iae) {
-		        sender.sendMessage("Item " + args[0] + " unknown. Closest match: " + iae.getMessage());
-		        CraftEssence.log.info("[CraftEssence] Item " + args[0] + " unknown. Closest match: " + iae.getMessage());
-		    }
+		} catch (IllegalArgumentException iae) {
+			sender.sendMessage("Item " + args[0] + " unknown. Closest match: "
+					+ iae.getMessage());
+			CraftEssence.log.info("[CraftEssence] Item " + args[0]
+					+ " unknown. Closest match: " + iae.getMessage());
+		}
 
 		stack.setAmount(itemAmount);
 		player.getInventory().addItem(new ItemStack[] { stack });

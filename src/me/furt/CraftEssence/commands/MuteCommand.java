@@ -19,7 +19,8 @@ public class MuteCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.mute")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.mute")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -28,16 +29,18 @@ public class MuteCommand implements CommandExecutor {
 		if (args.length == 0)
 			return false;
 		if (plugin.playerMatch(args[0]) != null) {
-			if (CraftEssence.muteList.contains(args[0])) {
-				CraftEssence.muteList.remove(args[0]);
+			if (CraftEssence.muteList.contains(args[0].toLowerCase())) {
+				CraftEssence.muteList.remove(args[0].toLowerCase());
 				plugin.getServer().broadcastMessage(
-						args[0] + " has been unmuted.");
-				CraftEssence.log.info(args[0] + " has been unmuted.");
+						CraftEssence.premessage + args[0] + " has been unmuted.");
+				CraftEssence.log.info("[CraftEssence] " + args[0]
+						+ " has been unmuted.");
 			} else {
-				CraftEssence.muteList.add(args[0]);
+				CraftEssence.muteList.add(args[0].toLowerCase());
 				plugin.getServer().broadcastMessage(
-						args[0] + " has been muted.");
-				CraftEssence.log.info(args[0] + " has been muted.");
+						CraftEssence.premessage + args[0] + " has been muted.");
+				CraftEssence.log.info("[CraftEssence] " + args[0]
+						+ " has been muted.");
 			}
 		} else {
 			if (plugin.isPlayer(sender))

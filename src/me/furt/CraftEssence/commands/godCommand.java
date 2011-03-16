@@ -27,30 +27,39 @@ public class GodCommand implements CommandExecutor {
 		}
 		if (args.length == 0) {
 			if (!plugin.isPlayer(sender)) {
-				CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
+				CraftEssence.log.info("[CraftEssence] Cannot be used in console without argument.");
 				return false;
 			}
+			
 			Player player = (Player) sender;
-			CraftEssence.godmode.add(player.getName());
-			player.setHealth(20);
-			player.sendMessage(CraftEssence.premessage
-					+ "You are now invincible!");
+			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
+				CraftEssence.godmode.remove(player.getName().toLowerCase());
+				player.sendMessage(CraftEssence.premessage
+						+ "You have returned to being mortal.");
+				CraftEssence.log.info("[CraftEssence] " + player.getName() + " has returned to being mortal.");
+			} else {
+				CraftEssence.godmode.add(player.getName().toLowerCase());
+				player.setHealth(20);
+				player.sendMessage(CraftEssence.premessage
+						+ "You are now invincible!");
+				CraftEssence.log.info("[CraftEssence] " + player.getName() + " is now invincible.");
+			}
 			return true;
 		}
 
 		if (plugin.playerMatch(args[0]) != null) {
 			Player p = plugin.getServer().getPlayer(args[0]);
-			if (CraftEssence.godmode.contains(args[0])) {
-				CraftEssence.godmode.remove(args[0]);
+			if (CraftEssence.godmode.contains(p.getName().toLowerCase())) {
+				CraftEssence.godmode.remove(p.getName().toLowerCase());
 				p.sendMessage(CraftEssence.premessage
 						+ "You have returned to being mortal.");
-				CraftEssence.log.info("[CraftEssence] " + args[0] + " has returned to being mortal.");
+				CraftEssence.log.info("[CraftEssence] " + p.getName() + " has returned to being mortal.");
 			} else {
-				CraftEssence.godmode.add(args[0]);
+				CraftEssence.godmode.add(p.getName().toLowerCase());
 				p.setHealth(20);
 				p.sendMessage(CraftEssence.premessage
 						+ "You are now invincible!");
-				CraftEssence.log.info("[CraftEssence] " + args[0] + " is now invincible.");
+				CraftEssence.log.info("[CraftEssence] " + p.getName() + " is now invincible.");
 			}
 			return true;
 		} else {

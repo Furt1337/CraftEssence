@@ -85,6 +85,8 @@ commands:
     usage: |
            /<command> [msg]
   jump:
+    aliases:
+      - j
     description: Aim at a location and use command to teleport there
     usage: |
            Usage: /<command>
