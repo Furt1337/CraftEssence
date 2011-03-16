@@ -34,8 +34,10 @@ public class cePlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerQuit(PlayerEvent event) {
-		if (CraftEssence.godmode.contains(event.getPlayer().getName().toLowerCase()))
-			CraftEssence.godmode.remove(event.getPlayer().getName().toLowerCase());
+		if (CraftEssence.godmode.contains(event.getPlayer().getName()
+				.toLowerCase()))
+			CraftEssence.godmode.remove(event.getPlayer().getName()
+					.toLowerCase());
 	}
 
 	public void sendAlert(Player player, String msg) {

@@ -22,7 +22,8 @@ public class KitCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.kit")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.kit")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have permission to use that command.");
 				return true;
@@ -30,7 +31,7 @@ public class KitCommand implements CommandExecutor {
 		}
 		if (!plugin.isPlayer(sender))
 			return false;
-		
+
 		Player player = (Player) sender;
 		if (args.length < 1) {
 			try {
@@ -38,7 +39,8 @@ public class KitCommand implements CommandExecutor {
 				StringBuilder list = new StringBuilder();
 				for (String k : kits)
 					list.append(" ").append(k);
-				player.sendMessage("Kits:" + list.toString());
+				player.sendMessage(ChatColor.YELLOW + "Kits:" + ChatColor.WHITE
+						+ list.toString());
 			} catch (Exception ex) {
 				player.sendMessage(CraftEssence.premessage
 						+ "There are no valid kits.");
@@ -55,8 +57,8 @@ public class KitCommand implements CommandExecutor {
 						player.getWorld().dropItem(player.getLocation(),
 								new ItemStack(id, amount));
 					}
-					player.sendMessage(CraftEssence.premessage + "Giving kit "
-							+ args[0].toLowerCase() + ".");
+					player.sendMessage(CraftEssence.premessage + "Giving "
+							+ args[0].toLowerCase() + " kit.");
 				}
 			} catch (Exception ex) {
 				player.sendMessage("That kit does not exist");

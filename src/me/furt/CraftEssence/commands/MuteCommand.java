@@ -32,7 +32,8 @@ public class MuteCommand implements CommandExecutor {
 			if (CraftEssence.muteList.contains(args[0].toLowerCase())) {
 				CraftEssence.muteList.remove(args[0].toLowerCase());
 				plugin.getServer().broadcastMessage(
-						CraftEssence.premessage + args[0] + " has been unmuted.");
+						CraftEssence.premessage + args[0]
+								+ " has been unmuted.");
 				CraftEssence.log.info("[CraftEssence] " + args[0]
 						+ " has been unmuted.");
 			} else {

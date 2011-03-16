@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 import me.furt.CraftEssence.ceSettings;
 
-
 public class ceConnector {
 	public static ResultSet result;
 

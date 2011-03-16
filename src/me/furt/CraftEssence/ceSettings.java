@@ -26,8 +26,10 @@ public class ceSettings {
 		mysqlDB = cep.getString("mysqlDB",
 				"jdbc:mysql://localhost:3306/craftessence",
 				"DB for MySQL (if applicable)");
-		mysql = cep.getBoolean("mysql", false, "If set to false sqlite will be used");
-		prayer = cep.getBoolean("prayer", true, "set to false to disable emote prayers");
+		mysql = cep.getBoolean("mysql", false,
+				"If set to false sqlite will be used");
+		prayer = cep.getBoolean("prayer", true,
+				"set to false to disable emote prayers");
 		prayAmount = cep.getInt("prayAmount", 3, "amount of prayers needed");
 		cep.save();
 	}

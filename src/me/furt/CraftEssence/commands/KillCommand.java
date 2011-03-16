@@ -19,7 +19,8 @@ public class KillCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.kill")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.kill")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -48,15 +49,17 @@ public class KillCommand implements CommandExecutor {
 				if (plugin.isPlayer(sender)) {
 					if (sender == p) {
 						plugin.getServer().broadcastMessage(
-								"§6" + ((Player) sender).getName()
+								ChatColor.GOLD + ((Player) sender).getName()
 										+ " has commited suicide, noob.");
 					} else {
 						plugin.getServer().broadcastMessage(
-								"§6" + p.getName() + " has died by the gods.");
+								ChatColor.GOLD + p.getName()
+										+ " has died by the gods.");
 					}
 				} else {
 					plugin.getServer().broadcastMessage(
-							"§6" + p.getName() + " has died by the gods.");
+							ChatColor.GOLD + p.getName()
+									+ " has died by the gods.");
 				}
 				CraftEssence.log.info("[CraftEssence] " + p.getName()
 						+ " has died by command.");

@@ -19,7 +19,8 @@ public class SpawnCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.spawn")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.spawn")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -27,7 +28,7 @@ public class SpawnCommand implements CommandExecutor {
 		}
 		if (!plugin.isPlayer(sender))
 			return false;
-		
+
 		Player player = (Player) sender;
 		player.teleportTo(player.getWorld().getSpawnLocation());
 		sender.sendMessage(CraftEssence.premessage + "Returned to spawn.");

@@ -17,10 +17,11 @@ import org.bukkit.entity.Player;
 
 public class SetWarpCommand implements CommandExecutor {
 	CraftEssence plugin;
+
 	public SetWarpCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
-	
+
 	public void setWarp(Player player, Location home, String[] args) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -40,8 +41,7 @@ public class SetWarpCommand implements CommandExecutor {
 					+ "', '" + y + "', '" + z + "', '" + yaw + "', '" + pitch
 					+ "')");
 			stmt.close();
-			player.sendMessage(CraftEssence.premessage + "Warp '" + args[0]
-					+ "' set.");
+			player.sendMessage(CraftEssence.premessage + args[0] + " warp set.");
 		} catch (SQLException ex) {
 			CraftEssence.log.log(Level.SEVERE,
 					"[CraftEssence]: Find SQL Exception", ex);
@@ -54,7 +54,8 @@ public class SetWarpCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.setwarp")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.setwarp")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -62,7 +63,7 @@ public class SetWarpCommand implements CommandExecutor {
 		}
 		if (!plugin.isPlayer(sender))
 			return false;
-		
+
 		Player player = (Player) sender;
 		this.setWarp(player, player.getLocation(), args);
 		return true;

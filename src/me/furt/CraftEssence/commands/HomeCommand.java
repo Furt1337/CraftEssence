@@ -27,7 +27,8 @@ public class HomeCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.home")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.home")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -39,11 +40,12 @@ public class HomeCommand implements CommandExecutor {
 		}
 		return false;
 	}
-	
+
 	public Location getHome(Player player) {
 		String world = player.getWorld().getName();
 		String getname = player.getName();
-		String homeq = "Select * FROM home WHERE `name` = '" + getname + "' AND `world` = '" + world + "'";
+		String homeq = "Select * FROM home WHERE `name` = '" + getname
+				+ "' AND `world` = '" + world + "'";
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -86,8 +88,7 @@ public class HomeCommand implements CommandExecutor {
 			}
 		}
 		if (x != 0)
-			return new Location(player.getWorld(), x, y, z, yaw,
-					pitch);
+			return new Location(player.getWorld(), x, y, z, yaw, pitch);
 
 		return player.getWorld().getSpawnLocation();
 	}

@@ -10,14 +10,17 @@ import me.furt.CraftEssence.CraftEssence;
 
 public class MsgCommand implements CommandExecutor {
 	CraftEssence plugin;
+
 	public MsgCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.msg")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.msg")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -25,7 +28,7 @@ public class MsgCommand implements CommandExecutor {
 		}
 		if (!plugin.isPlayer(sender))
 			return false;
-		
+
 		Player player = (Player) sender;
 		if (args.length == 0) {
 			return false;

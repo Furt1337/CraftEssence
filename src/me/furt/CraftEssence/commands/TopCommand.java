@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 public class TopCommand implements CommandExecutor {
 	CraftEssence plugin;
+
 	public TopCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
@@ -19,7 +20,8 @@ public class TopCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.top")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.top")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -27,7 +29,7 @@ public class TopCommand implements CommandExecutor {
 		}
 		if (!plugin.isPlayer(sender))
 			return false;
-		
+
 		Player player = (Player) sender;
 		int topX = player.getLocation().getBlockX();
 		int topZ = player.getLocation().getBlockZ();

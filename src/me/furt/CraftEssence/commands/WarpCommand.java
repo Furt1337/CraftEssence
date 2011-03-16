@@ -27,7 +27,8 @@ public class WarpCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.warp")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.warp")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -39,13 +40,14 @@ public class WarpCommand implements CommandExecutor {
 		if (args.length == 0)
 			return false;
 		Player player = (Player) sender;
-		player.teleportTo(this.getWarp(player, args));
-		player.sendMessage(CraftEssence.premessage + "Warping...");
+		player.sendMessage(CraftEssence.premessage + "Warping to " + args[0]
+				+ "...");
+		player.teleportTo(this.getWarp(player, args[0]));
 		return true;
 	}
-	
-	public Location getWarp(Player player, String[] args) {
-		String homeq = "Select * FROM warp WHERE `name` = '" + args[0] + "'";
+
+	public Location getWarp(Player player, String args) {
+		String homeq = "Select * FROM warp WHERE `name` = '" + args + "'";
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -90,8 +92,8 @@ public class WarpCommand implements CommandExecutor {
 			}
 		}
 		if (x != 0)
-			return new Location(plugin.getServer().getWorld(wname), x, y, z, yaw,
-					pitch);
+			return new Location(plugin.getServer().getWorld(wname), x, y, z,
+					yaw, pitch);
 
 		return player.getWorld().getSpawnLocation();
 	}

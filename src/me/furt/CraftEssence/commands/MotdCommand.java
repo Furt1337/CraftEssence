@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 public class MotdCommand implements CommandExecutor {
 	CraftEssence plugin;
+
 	public MotdCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
@@ -18,7 +19,8 @@ public class MotdCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.motd")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.motd")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -26,7 +28,7 @@ public class MotdCommand implements CommandExecutor {
 		}
 		if (!plugin.isPlayer(sender))
 			return false;
-		
+
 		Player player = (Player) sender;
 		String[] motd = plugin.getMotd();
 		if (motd == null || motd.length < 1) {

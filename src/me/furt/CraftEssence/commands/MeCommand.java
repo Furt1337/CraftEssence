@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 public class MeCommand implements CommandExecutor {
 	CraftEssence plugin;
+
 	public MeCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
@@ -20,7 +21,8 @@ public class MeCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.me")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.me")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -28,7 +30,7 @@ public class MeCommand implements CommandExecutor {
 		}
 		if (!plugin.isPlayer(sender))
 			return false;
-		
+
 		Player player = (Player) sender;
 		if (args.length < 1) {
 			return false;
@@ -73,13 +75,13 @@ public class MeCommand implements CommandExecutor {
 					}
 				} else {
 					plugin.getServer().broadcastMessage(
-							ChatColor.GRAY + "* " + player.getName()
-									+ " " + msg + "*");
+							ChatColor.GRAY + "* " + player.getName() + " "
+									+ msg + "*");
 				}
 			} else {
 				plugin.getServer().broadcastMessage(
-						ChatColor.GRAY + "* " + player.getName()
-								+ " " + msg + "*");
+						ChatColor.GRAY + "* " + player.getName() + " " + msg
+								+ "*");
 			}
 		}
 		return true;

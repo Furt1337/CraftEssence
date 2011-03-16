@@ -35,7 +35,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-
 public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> muteList = new ArrayList<String>();
 	public static ArrayList<String> godmode = new ArrayList<String>();
@@ -47,6 +46,7 @@ public class CraftEssence extends JavaPlugin {
 	public cePlayerListener cepl = new cePlayerListener(this);
 	public ceBlockListener cebl = new ceBlockListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
+
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " Disabled");
@@ -65,14 +65,15 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	private void addCommands() {
-		getCommand("clearinventory").setExecutor(new ClearInventoryCommand(this));
+		getCommand("clearinventory").setExecutor(
+				new ClearInventoryCommand(this));
 		getCommand("broadcast").setExecutor(new BroadcastCommand(this));
 		getCommand("ban").setExecutor(new BanCommand(this));
 		getCommand("compass").setExecutor(new CompassCommand(this));
 		getCommand("give").setExecutor(new GiveCommand(this));
 		getCommand("god").setExecutor(new GodCommand(this));
 		getCommand("heal").setExecutor(new HealCommand(this));
-		//getCommand("help").setExecutor(new HelpCommand(this));
+		// getCommand("help").setExecutor(new HelpCommand(this));
 		getCommand("home").setExecutor(new HomeCommand(this));
 		getCommand("item").setExecutor(new ItemCommand(this));
 		getCommand("jump").setExecutor(new JumpCommand(this));
@@ -98,15 +99,15 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("warp").setExecutor(new WarpCommand(this));
 		getCommand("worldlist").setExecutor(new WorldListCommand(this));
 	}
-	
+
 	public boolean isPlayer(CommandSender sender) {
 		if (!(sender instanceof Player)) {
-            return false;
-        } else {
-            return true;
-        }
+			return false;
+		} else {
+			return true;
+		}
 	}
-	
+
 	public String message(String[] args) {
 		StringBuilder msg = new StringBuilder();
 		for (String loop : args) {
@@ -114,7 +115,7 @@ public class CraftEssence extends JavaPlugin {
 		}
 		return msg.toString();
 	}
-	
+
 	public Player playerMatch(String name) {
 		if (this.getServer().getOnlinePlayers().length < 1) {
 			return null;
@@ -155,17 +156,17 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	private void setupPermissions() {
-	      Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
+		Plugin test = this.getServer().getPluginManager()
+				.getPlugin("Permissions");
 
-	      if (CraftEssence.Permissions == null) {
-	          if (test != null) {
-	              CraftEssence.Permissions = ((Permissions)test).getHandler();
-	          } else {
-	              log.info("Permission system not detected, defaulting to OP");
-	          }
-	      }
-	  }
-
+		if (CraftEssence.Permissions == null) {
+			if (test != null) {
+				CraftEssence.Permissions = ((Permissions) test).getHandler();
+			} else {
+				log.info("Permission system not detected, defaulting to OP");
+			}
+		}
+	}
 
 	private void checkFiles() {
 		if (!this.getDataFolder().exists())

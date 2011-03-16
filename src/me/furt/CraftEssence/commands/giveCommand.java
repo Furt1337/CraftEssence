@@ -38,8 +38,8 @@ public class GiveCommand implements CommandExecutor {
 			try {
 				stack = OddItem.getItemStack(args[1]);
 			} catch (IllegalArgumentException iae) {
-				sender.sendMessage("Item " + args[1] + " unknown. Closest match: "
-						+ iae.getMessage());
+				sender.sendMessage("Item " + args[1]
+						+ " unknown. Closest match: " + iae.getMessage());
 				CraftEssence.log.info("[CraftEssence] Item " + args[1]
 						+ " unknown. Closest match: " + iae.getMessage());
 			}
@@ -49,8 +49,8 @@ public class GiveCommand implements CommandExecutor {
 			if (plugin.isPlayer(sender)) {
 				Player player = (Player) sender;
 				player.sendMessage(CraftEssence.premessage + "Giving "
-						+ itemAmount + " of " + stack.getType().toString() + " to "
-						+ giveTo.getDisplayName() + ".");
+						+ itemAmount + " of " + stack.getType().toString()
+						+ " to " + giveTo.getDisplayName() + ".");
 				giveTo.sendMessage(ChatColor.GRAY + player.getName()
 						+ " sent you a gift!");
 			} else {

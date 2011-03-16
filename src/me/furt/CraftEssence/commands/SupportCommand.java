@@ -10,6 +10,7 @@ import me.furt.CraftEssence.CraftEssence;
 
 public class SupportCommand implements CommandExecutor {
 	CraftEssence plugin;
+
 	public SupportCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
@@ -18,7 +19,8 @@ public class SupportCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.support")) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.support")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -33,8 +35,12 @@ public class SupportCommand implements CommandExecutor {
 		} else {
 			String msg = plugin.message(args);
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (p.isOp())
+				if (!CraftEssence.Permissions.has((Player) sender,
+						"craftessence.support.op")) {
+					sender.sendMessage(ChatColor.YELLOW
+							+ "You to dont have proper permissions for that command.");
 					continue;
+				}
 				p.sendMessage(ChatColor.RED + "[Support]" + ChatColor.GRAY
 						+ "<" + ((Player) sender).getDisplayName() + "> "
 						+ ChatColor.WHITE + msg);
