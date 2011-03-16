@@ -75,7 +75,7 @@ commands:
   time:
     description: Sets time day/night
     usage: |
-           Usage: /<command> [world] [day:night]
+           Usage: /<command> [day:night] [world]
   me:
     description: A emote system
     usage: |

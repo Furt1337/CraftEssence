@@ -27,24 +27,56 @@ public class TimeCommand implements CommandExecutor {
 				return true;
 			}
 		}
-		if (args.length < 2) {
-			return false;
+		World world = null;
+
+		if (args.length == 1) {
+			if (plugin.isPlayer(sender)) {
+				Player player = (Player) sender;
+				world = player.getWorld();
+			} else {
+				return false;
+			}
+			long time = world.getTime();
+			time -= time % 24000L;
+			if ("day".equalsIgnoreCase(args[0])) {
+				world.setTime(time + 24000L);
+				plugin.getServer().broadcastMessage(
+						CraftEssence.premessage + world.getName() + "'s time is set to day.");
+				CraftEssence.log.info("[CraftEssence] " + world.getName() + "'s time is set to day");
+				return true;
+			} else if ("night".equalsIgnoreCase(args[0])) {
+				world.setTime(time + 37700L);
+				plugin.getServer().broadcastMessage(
+						CraftEssence.premessage + world.getName() + "'s time is set to night.");
+				CraftEssence.log.info("[CraftEssence] " + world.getName() + "'s time is set to night");
+				return true;
+			} else {
+				if (plugin.isPlayer(sender)) {
+					Player player = (Player) sender;
+					player.sendMessage(CraftEssence.premessage
+							+ "/time only supports day/night.");
+				} else {
+					CraftEssence.log
+							.info("[CraftEssence] /time only supports day/night");
+				}
+				return true;
+			}
 		}
-		World world = plugin.getServer().getWorld(args[0]);
+		world = plugin.getServer().getWorld(args[1]);
 		long time = world.getTime();
 		time -= time % 24000L;
 		if (args.length == 2) {
-			if ("day".equalsIgnoreCase(args[1])) {
+			if ("day".equalsIgnoreCase(args[0])) {
 				world.setTime(time + 24000L);
 				plugin.getServer().broadcastMessage(
-						CraftEssence.premessage + "Time is set to day.");
-				CraftEssence.log.info("[CraftEssence] Time is set to day");
+						CraftEssence.premessage + world.getName() + "'s time is set to day.");
+				CraftEssence.log.info("[CraftEssence] " + world.getName() + "'s time is set to day");
 				return true;
-			} else if ("night".equalsIgnoreCase(args[1])) {
+			} else if ("night".equalsIgnoreCase(args[0])) {
 				world.setTime(time + 37700L);
 				plugin.getServer().broadcastMessage(
-						CraftEssence.premessage + "Time is set to night.");
-				CraftEssence.log.info("[CraftEssence] Time is set to night");
+						CraftEssence.premessage + world.getName() + "'s time is set to night.");
+				CraftEssence.log.info("[CraftEssence] " + world.getName() + "'s time is set to night");
 				return true;
 			} else {
 				if (plugin.isPlayer(sender)) {
