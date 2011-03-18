@@ -19,13 +19,13 @@ commands:
       - g
     description: Gives items to a player
     usage: |
-           Usage: /<command> [player] [item] [amount]
+           /<command> [player] [item] [amount]
   item:
     aliases:
       - i
     description: Gives items to yourself
     usage: |
-           Usage: /<command> [item] [amount]
+           /<command> [item] [amount]
   spawn:
     description: Teleports player to spawn area
     usage: |
@@ -37,7 +37,7 @@ commands:
   home:
     description: Teleports player to home location
     usage: |
-           Usage: /<command>
+           /<command>
   sethome:
     description: Sets player home location
     usage: |
@@ -47,19 +47,19 @@ commands:
       - clear
     description: Removes all items from players inventory
     usage: |
-           Usage: /<command> [player]
+           /<command> [player]
   warp:
     description: Teleports to desired warp location
     usage: |
-           Usage: /<command> [warpname]
+           /<command> [warpname]
   setwarp:
     description: Creates a warp with desired name
     usage: |
-           Usage: /<command> [warpname]
+           /<command> [warpname]
   broadcast:
     description: Sends a server message to everyone online
     usage: |
-           Usage: /<command> [message]
+           /<command> [message]
   support:
     description: Sends a msg to all admins online
     usage: |
@@ -67,19 +67,19 @@ commands:
   mail:
     description: Send messages to online/offline players
     usage: |
-           Usage: /<command> [read:send:delete]
+           /<command> [read:send:delete]
   kill:
     description: Kill a player, all, or yourself
     usage: |
-           Usage: /<command> [player/*]
+           /<command> [player/*]
   time:
     description: Sets time day/night
     usage: |
-           Usage: /<command> [day:night] [world]
+           /<command> [day:night] [world]
   me:
     description: A emote system
     usage: |
-           Usage: /<command> [msg]
+           /<command> [msg]
   msg:
     description: Sends private messages to players
     usage: |
@@ -89,7 +89,7 @@ commands:
       - j
     description: Aim at a location and use command to teleport there
     usage: |
-           Usage: /<command>
+           /<command>
   top:
     description: Teleports you at the most highest block above you
     usage: |
@@ -97,7 +97,7 @@ commands:
   ban:
     description: Bans a player from the server
     usage: |
-           Usage: /<command> [player] [reason]
+           /<command> [player] [reason]
   pardon:
     description: Removes a player from the banned list
     usage: |
@@ -105,11 +105,11 @@ commands:
   compass:
     description: Shows what direction you are facing
     usage: |
-           Usage: /<command>
+           /<command>
   motd:
     description: Displays the message of the day
     usage: |
-           Usage: /<command>
+           /<command>
   playerlist:
     aliases:
       - list
@@ -119,24 +119,24 @@ commands:
   god:
     description: Enables/Disable invincibility
     usage: |
-           Usage: /<command> [player]
+           /<command> [player]
   heal:
     description: Heal yourself or another player
     usage: |
-           Usage: /<command> [player]
+           /<command> [player]
   kick:
     description: Kick a player or all players
     usage: |
-           Usage: /<command> [player/*]
+           /<command> [player/*]
   kit:
     description: A package of items
     usage: |
-           Usage: /<command> [kitname]
+           /<command> [kitname]
   worldlist:
     description: Lists all loaded worlds
     usage: |
-           Usage: /<command>
+           /<command>
   mute:
     description: Mutes player so that they cannot talk in chat
     usage: |
-           Usage: /<command> [player]
+           /<command> [player]

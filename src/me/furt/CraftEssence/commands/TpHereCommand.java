@@ -3,7 +3,6 @@ package me.furt.CraftEssence.commands;
 import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,10 +32,11 @@ public class TpHereCommand implements CommandExecutor {
 		if (args.length == 0)
 			return false;
 
+		Player player = (Player) sender;
 		if (args[0].equalsIgnoreCase("*")) {
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (sender != p)
-					p.teleportTo((Location) sender);
+				if (player != p)
+					p.teleportTo(player);
 			}
 			return true;
 		} else {
@@ -45,10 +45,9 @@ public class TpHereCommand implements CommandExecutor {
 				return false;
 			} else {
 				Player p = this.plugin.getServer().getPlayer(args[0]);
-				p.teleportTo((Location) sender);
+				p.teleportTo(player);
 				sender.sendMessage(CraftEssence.premessage + "Teleporting "
-						+ ((Player) sender).getDisplayName() + " to "
-						+ p.getName() + ".");
+						+ player.getDisplayName() + " to " + p.getName() + ".");
 				return true;
 			}
 		}
