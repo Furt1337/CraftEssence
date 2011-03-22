@@ -91,6 +91,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
 		getCommand("setwarp").setExecutor(new SetWarpCommand(this));
 		getCommand("spawn").setExecutor(new SpawnCommand(this));
+		//getCommand("spawnmob").setExecutor(new SpawnMobCommand(this));
 		getCommand("support").setExecutor(new SupportCommand(this));
 		getCommand("time").setExecutor(new TimeCommand(this));
 		getCommand("top").setExecutor(new TopCommand(this));
