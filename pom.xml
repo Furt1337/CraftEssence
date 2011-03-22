@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.furt</groupId>
   <artifactId>craftessence</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.1.1-SNAPSHOT</version>
   <name>CraftEssence</name>
   <url>http://www.puffgamer.com</url>
   <build>
@@ -19,12 +19,5 @@
       </plugins>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
 </project>
