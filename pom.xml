@@ -6,6 +6,11 @@
   <name>CraftEssence</name>
   <url>http://www.puffgamer.com</url>
   <build>
+    <scm>
+        <connection>scm:git:ssh://github.com/Furt/CraftEssence.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:Furt/CraftEssence.git</developerConnection>
+        <url>https://github.com/Furt/CraftEssence</url>
+    </scm>
       <plugins>
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
