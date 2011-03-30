@@ -34,7 +34,7 @@ public class HomeCommand implements CommandExecutor {
 				return true;
 			}
 			Player player = (Player) sender;
-			player.teleportTo(this.getHome(player));
+			player.teleport(this.getHome(player));
 			player.sendMessage(CraftEssence.premessage + "Teleporting home...");
 			return true;
 		}

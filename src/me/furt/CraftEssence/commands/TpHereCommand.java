@@ -36,7 +36,7 @@ public class TpHereCommand implements CommandExecutor {
 		if (args[0].equalsIgnoreCase("*")) {
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
 				if (player != p)
-					p.teleportTo(player);
+					p.teleport(player);
 			}
 			return true;
 		} else {
@@ -45,7 +45,7 @@ public class TpHereCommand implements CommandExecutor {
 				return false;
 			} else {
 				Player p = this.plugin.getServer().getPlayer(args[0]);
-				p.teleportTo(player);
+				p.teleport(player);
 				sender.sendMessage(CraftEssence.premessage + "Teleporting "
 						+ player.getDisplayName() + " to " + p.getName() + ".");
 				return true;

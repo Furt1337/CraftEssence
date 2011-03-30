@@ -39,7 +39,7 @@ public class TpComand implements CommandExecutor {
 				return true;
 			} else {
 				Player p = this.plugin.getServer().getPlayer(args[0]);
-				player.teleportTo(p);
+				player.teleport(p);
 				sender.sendMessage(CraftEssence.premessage + "Teleporting to "
 						+ args[0] + ".");
 				return true;
@@ -48,7 +48,7 @@ public class TpComand implements CommandExecutor {
 		if (args.length == 2) {
 			Player a = this.plugin.getServer().getPlayer(args[0]);
 			Player b = this.plugin.getServer().getPlayer(args[1]);
-			a.teleportTo(b);
+			a.teleport(b);
 			if (plugin.isPlayer(sender))
 				sender.sendMessage(CraftEssence.premessage + "Teleporting "
 						+ args[0] + "to " + args[1] + ".");

@@ -24,6 +24,7 @@ import me.furt.CraftEssence.sql.ceConnector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -43,6 +44,7 @@ public class CraftEssence extends JavaPlugin {
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions;
+	public Permissions permission = null;
 	public cePlayerListener cepl = new cePlayerListener(this);
 	public ceBlockListener cebl = new ceBlockListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
@@ -91,7 +93,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
 		getCommand("setwarp").setExecutor(new SetWarpCommand(this));
 		getCommand("spawn").setExecutor(new SpawnCommand(this));
-		//getCommand("spawnmob").setExecutor(new SpawnMobCommand(this));
+		// getCommand("spawnmob").setExecutor(new SpawnMobCommand(this));
 		getCommand("support").setExecutor(new SupportCommand(this));
 		getCommand("time").setExecutor(new TimeCommand(this));
 		getCommand("top").setExecutor(new TopCommand(this));
@@ -102,11 +104,10 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public boolean isPlayer(CommandSender sender) {
-		if (!(sender instanceof Player)) {
-			return false;
-		} else {
+		if (sender instanceof Player)
 			return true;
-		}
+
+		return false;
 	}
 
 	public String message(String[] args) {
@@ -163,9 +164,12 @@ public class CraftEssence extends JavaPlugin {
 		if (CraftEssence.Permissions == null) {
 			if (test != null) {
 				CraftEssence.Permissions = ((Permissions) test).getHandler();
+
 			} else {
-				log.info("Permission system not detected, defaulting to OP");
+				log.info("Permission system not detected, disabling CraftEssence");
+				this.getServer().getPluginManager().disablePlugin(this);
 			}
+
 		}
 	}
 
@@ -198,17 +202,17 @@ public class CraftEssence extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.cepl,
 				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_ITEM, this.cepl,
+		pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, this.cepl,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.cepl,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_KICK, this.cepl,
 				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_DAMAGED, this.cebl,
+		pm.registerEvent(Event.Type.BLOCK_DAMAGE, this.cebl,
 				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACED, this.cebl,
+		pm.registerEvent(Event.Type.BLOCK_PLACE, this.cebl,
 				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGED, this.ceel,
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.ceel,
 				Event.Priority.Highest, this);
 	}
 
@@ -521,5 +525,26 @@ public class CraftEssence extends JavaPlugin {
 			}
 		}
 		return namearray;
+	}
+
+	public String getPrefix(Player player) {
+		World world = player.getWorld();
+		if (this.permission != null) {
+			String userPrefix = this.permission.getHandler()
+					.getUserPermissionString(world.getName(), player.getName(),
+							"prefix");
+			if ((userPrefix != null) && (!userPrefix.isEmpty())) {
+				return userPrefix;
+			}
+
+			String group = this.permission.getHandler().getGroup(
+					world.getName(), player.getName());
+			if (group == null)
+				return null;
+			String groupPrefix = this.permission.getHandler().getGroupPrefix(
+					world.getName(), group);
+			return groupPrefix;
+		}
+		return null;
 	}
 }

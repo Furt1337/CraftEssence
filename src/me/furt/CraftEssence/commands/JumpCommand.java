@@ -47,7 +47,7 @@ public class JumpCommand implements CommandExecutor {
 			Location location = new Location(world, x, y, z, player
 					.getLocation().getYaw(), player.getLocation().getPitch());
 			Location tp = new Teleport(plugin).getDestination(location);
-			player.teleportTo(tp);
+			player.teleport(tp);
 		}
 		return true;
 	}

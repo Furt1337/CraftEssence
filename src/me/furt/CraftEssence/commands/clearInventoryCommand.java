@@ -19,7 +19,8 @@ public class ClearInventoryCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender,
+			Player player = (Player) sender;
+			if (!CraftEssence.Permissions.has(player,
 					"craftessence.clearinventory")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");

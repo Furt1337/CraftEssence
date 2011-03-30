@@ -42,7 +42,7 @@ public class WarpCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		player.sendMessage(CraftEssence.premessage + "Warping to " + args[0]
 				+ "...");
-		player.teleportTo(this.getWarp(player, args[0]));
+		player.teleport(this.getWarp(player, args[0]));
 		return true;
 	}
 

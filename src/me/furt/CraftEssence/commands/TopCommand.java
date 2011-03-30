@@ -34,7 +34,7 @@ public class TopCommand implements CommandExecutor {
 		int topX = player.getLocation().getBlockX();
 		int topZ = player.getLocation().getBlockZ();
 		int topY = player.getWorld().getHighestBlockYAt(topX, topZ);
-		player.teleportTo(new Location(player.getWorld(), player.getLocation()
+		player.teleport(new Location(player.getWorld(), player.getLocation()
 				.getX(), topY + 1, player.getLocation().getZ()));
 		player.sendMessage(CraftEssence.premessage + "Teleported up.");
 		return true;

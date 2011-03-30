@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import me.furt.CraftEssence.CraftEssence;
-//import me.furt.CraftEssence.ceSettings;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class cePlayerListener extends PlayerListener {
 	private final CraftEssence plugin;
@@ -33,7 +33,7 @@ public class cePlayerListener extends PlayerListener {
 		}
 	}
 
-	public void onPlayerQuit(PlayerEvent event) {
+	public void onPlayerQuit(PlayerQuitEvent event) {
 		if (CraftEssence.godmode.contains(event.getPlayer().getName()
 				.toLowerCase()))
 			CraftEssence.godmode.remove(event.getPlayer().getName()
@@ -70,17 +70,22 @@ public class cePlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerChat(PlayerChatEvent event) {
-		// TODO onPlayerChat
 		Player player = event.getPlayer();
+		String prefixData = this.plugin.getPrefix(player);
 		if (CraftEssence.muteList.contains(player.getName().toLowerCase())) {
 			plugin.getServer().broadcastMessage(
 					ChatColor.YELLOW + player.getName()
 							+ " tried chatting but is muted.");
 			event.setCancelled(true);
 		}
+		if (prefixData != null) {
+			String prefix = prefixData.replaceAll("(&([a-f0-9]))", "§$2");
+			event.setFormat(event.getFormat().replace("%1$s",
+					prefix + "%1$s" + ChatColor.WHITE));
+		}
 	}
 
-	public void onPlayerJoin(PlayerEvent event) {
+	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		String[] motd = plugin.getMotd();
 		if (motd == null || motd.length < 1) {
