@@ -77,7 +77,7 @@ public class CraftEssence extends JavaPlugin {
 		// getCommand("help").setExecutor(new HelpCommand(this));
 		getCommand("home").setExecutor(new HomeCommand(this));
 		getCommand("item").setExecutor(new ItemCommand(this));
-		getCommand("newitem").setExecutor(new NewItemCommand(this));
+		// getCommand("newitem").setExecutor(new NewItemCommand(this));
 		getCommand("jump").setExecutor(new JumpCommand(this));
 		getCommand("kick").setExecutor(new KickCommand(this));
 		getCommand("kill").setExecutor(new KillCommand(this));
