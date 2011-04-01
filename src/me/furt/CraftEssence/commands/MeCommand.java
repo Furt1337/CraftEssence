@@ -1,8 +1,7 @@
 package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
-import me.furt.CraftEssence.ceSettings;
-
+import me.furt.CraftEssence.ceConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -36,7 +35,7 @@ public class MeCommand implements CommandExecutor {
 			return false;
 		} else {
 			String msg = plugin.message(args);
-			if (ceSettings.prayer) {
+			if (ceConfig.prayer) {
 				if ((args[0].equalsIgnoreCase("prays"))
 						&& (args[2].equalsIgnoreCase("day"))) {
 					if (CraftEssence.prayList.contains(player.getName())) {
@@ -52,7 +51,7 @@ public class MeCommand implements CommandExecutor {
 						String p : CraftEssence.prayList) {
 							prayCount++;
 						}
-						if (prayCount == ceSettings.prayAmount) {
+						if (prayCount == ceConfig.prayAmount) {
 							World world = player.getWorld();
 							long time = world.getTime();
 							time = time - time % 24000L;

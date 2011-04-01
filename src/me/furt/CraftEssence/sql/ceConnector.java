@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import me.furt.CraftEssence.ceSettings;
+import me.furt.CraftEssence.ceConfig;
 
 public class ceConnector {
 	public static ResultSet result;
@@ -28,8 +28,8 @@ public class ceConnector {
 	public static Connection createConnection() {
 		try {
 			new JDCConnectionDriver("com.mysql.jdbc.Driver",
-					ceSettings.mysqlDB, ceSettings.mysqlUser,
-					ceSettings.mysqlPass);
+					ceConfig.mysqlDB, ceConfig.mysqlUser,
+					ceConfig.mysqlPass);
 			Connection ret = DriverManager.getConnection("jdbc:jdc:jdcpool");
 			ret.setAutoCommit(false);
 			return ret;

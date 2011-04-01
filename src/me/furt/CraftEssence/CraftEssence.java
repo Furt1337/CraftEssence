@@ -21,7 +21,6 @@ import me.furt.CraftEssence.listener.ceBlockListener;
 import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
 import me.furt.CraftEssence.sql.ceConnector;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -78,6 +77,7 @@ public class CraftEssence extends JavaPlugin {
 		// getCommand("help").setExecutor(new HelpCommand(this));
 		getCommand("home").setExecutor(new HomeCommand(this));
 		getCommand("item").setExecutor(new ItemCommand(this));
+		getCommand("newitem").setExecutor(new NewItemCommand(this));
 		getCommand("jump").setExecutor(new JumpCommand(this));
 		getCommand("kick").setExecutor(new KickCommand(this));
 		getCommand("kill").setExecutor(new KillCommand(this));
@@ -177,9 +177,9 @@ public class CraftEssence extends JavaPlugin {
 		if (!this.getDataFolder().exists())
 			this.getDataFolder().mkdirs();
 
-		ceSettings.initialize(getDataFolder());
+		ceConfig.Load(getConfiguration());
 
-		if (!new File(getDataFolder(), "motd.properties").exists()) {
+		if (!new File(getDataFolder(), "motd.txt").exists()) {
 			this.createMotdConfig();
 			log.info("motd.properties not found, creating.");
 		}
@@ -237,9 +237,9 @@ public class CraftEssence extends JavaPlugin {
 
 	public void createMotdConfig() {
 		try {
-			new File(this.getDataFolder(), "motd.properties").createNewFile();
+			new File(this.getDataFolder(), "motd.txt").createNewFile();
 			FileWriter fstream = new FileWriter(new File(getDataFolder(),
-					"motd.properties"));
+					"motd.txt"));
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.write("§4Welcome to our §9Minecraft Server§4,§f +d§4!\n");
 			out.write("§4There are +online players online!\n");
@@ -314,7 +314,7 @@ public class CraftEssence extends JavaPlugin {
 
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(
-					getDataFolder() + File.separator + "motd.properties"));
+					getDataFolder() + File.separator + "motd.txt"));
 			String str;
 			while ((str = in.readLine()) != null) {
 				motd.add(str);
