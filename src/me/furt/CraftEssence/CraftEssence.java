@@ -93,7 +93,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
 		getCommand("setwarp").setExecutor(new SetWarpCommand(this));
 		getCommand("spawn").setExecutor(new SpawnCommand(this));
-		// getCommand("spawnmob").setExecutor(new SpawnMobCommand(this));
+		getCommand("spawnmob").setExecutor(new SpawnMobCommand(this));
 		getCommand("support").setExecutor(new SupportCommand(this));
 		getCommand("time").setExecutor(new TimeCommand(this));
 		getCommand("top").setExecutor(new TopCommand(this));
@@ -213,6 +213,8 @@ public class CraftEssence extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_PLACE, this.cebl,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.ceel,
+				Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.CREATURE_SPAWN, this.ceel,
 				Event.Priority.Highest, this);
 	}
 

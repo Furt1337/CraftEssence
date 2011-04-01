@@ -26,6 +26,12 @@ commands:
     description: Gives items to yourself
     usage: |
            /<command> [item] [amount]
+  spawnmob:
+    aliases:
+      - sm
+    description: Spawns a creature by player
+    usage: |
+           /<command> [mob:size] [amount]
   spawn:
     description: Teleports player to spawn area
     usage: |
