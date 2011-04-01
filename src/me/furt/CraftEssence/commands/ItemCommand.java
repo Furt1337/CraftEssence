@@ -1,6 +1,6 @@
 package me.furt.CraftEssence.commands;
 
-import info.somethingodd.bukkit.OddItem.OddItem;
+import info.somethingodd.bukkit.odd.item.OddItem;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -23,8 +23,7 @@ public class ItemCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
 			Player player = (Player) sender;
-			if (!CraftEssence.Permissions.has(player,
-					"craftessence.item")) {
+			if (!CraftEssence.Permissions.has(player, "craftessence.item")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -41,15 +40,14 @@ public class ItemCommand implements CommandExecutor {
 		try {
 			stack = OddItem.getItemStack(args[0]);
 		} catch (IllegalArgumentException iae) {
-			sender.sendMessage("Item " + args[0] + " unknown. Closest match: "
-					+ iae.getMessage());
-			CraftEssence.log.info("[CraftEssence] Item " + args[0]
+			sender.sendMessage(CraftEssence.premessage + "Item " + args[0]
 					+ " unknown. Closest match: " + iae.getMessage());
+			return true;
 		}
 
 		stack.setAmount(itemAmount);
 		player.getInventory().addItem(new ItemStack[] { stack });
-		player.sendMessage(CraftEssence.premessage + "Giving " + itemAmount
+		sender.sendMessage(CraftEssence.premessage + "Giving " + itemAmount
 				+ " of " + stack.getType().toString() + ".");
 		return true;
 	}

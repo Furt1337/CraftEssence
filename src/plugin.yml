@@ -1,6 +1,6 @@
 name: CraftEssence
 main: me.furt.CraftEssence.CraftEssence
-version: 1.1.1
+version: 1.2
 author: furt
 description: A general plugin with all commands from hMod
 commands:

@@ -1,6 +1,6 @@
 package me.furt.CraftEssence.commands;
 
-import info.somethingodd.bukkit.OddItem.OddItem;
+import info.somethingodd.bukkit.odd.item.OddItem;
 import me.furt.CraftEssence.CraftEssence;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -38,36 +38,23 @@ public class GiveCommand implements CommandExecutor {
 			try {
 				stack = OddItem.getItemStack(args[1]);
 			} catch (IllegalArgumentException iae) {
-				sender.sendMessage("Item " + args[1]
+				sender.sendMessage(CraftEssence.premessage + "Item " + args[1]
 						+ " unknown. Closest match: " + iae.getMessage());
-				CraftEssence.log.info("[CraftEssence] Item " + args[1]
-						+ " unknown. Closest match: " + iae.getMessage());
+				return true;
 			}
 
 			stack.setAmount(itemAmount);
 			giveTo.getInventory().addItem(new ItemStack[] { stack });
 			if (plugin.isPlayer(sender)) {
-				Player player = (Player) sender;
-				player.sendMessage(CraftEssence.premessage + "Giving "
-						+ itemAmount + " of " + stack.getType().toString()
+				sender.sendMessage(CraftEssence.premessage + "Giving "
+						+ itemAmount + " " + stack.getType().toString()
 						+ " to " + giveTo.getDisplayName() + ".");
-				giveTo.sendMessage(ChatColor.GRAY + player.getName()
-						+ " sent you a gift!");
-			} else {
-				CraftEssence.log.info("[CraftEssence] Giving " + itemAmount
-						+ " of of " + stack.getType().toString() + " to "
-						+ giveTo.getDisplayName() + ".");
 				giveTo.sendMessage(ChatColor.GRAY + "You got a gift!");
 			}
 			return true;
 		} else {
-			if (plugin.isPlayer(sender)) {
-				Player player = (Player) sender;
-				player.sendMessage(CraftEssence.premessage
-						+ "Player is offline or not found.");
-			}
-			CraftEssence.log
-					.info("[CraftEssence] Player is offline or not found.");
+			sender.sendMessage(CraftEssence.premessage
+					+ "Player is offline or not found.");
 			return true;
 		}
 	}
