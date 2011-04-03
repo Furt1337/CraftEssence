@@ -44,7 +44,7 @@ public class GiveCommand implements CommandExecutor {
 			}
 
 			stack.setAmount(itemAmount);
-			giveTo.getInventory().addItem(new ItemStack[] { stack });
+			giveTo.getInventory().addItem( new ItemStack[] { stack } );
 			if (plugin.isPlayer(sender)) {
 				sender.sendMessage(CraftEssence.premessage + "Giving "
 						+ itemAmount + " " + stack.getType().toString()

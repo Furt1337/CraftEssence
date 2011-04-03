@@ -1,8 +1,7 @@
 package me.furt.CraftEssence.commands;
 
-import info.somethingodd.bukkit.odd.item.OddItem;
-
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,10 +10,10 @@ import org.bukkit.inventory.ItemStack;
 
 import me.furt.CraftEssence.CraftEssence;
 
-public class ItemCommand implements CommandExecutor {
+public class NewItemCommand implements CommandExecutor {
 	CraftEssence plugin;
 
-	public ItemCommand(CraftEssence instance) {
+	public NewItemCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
 
@@ -36,20 +35,29 @@ public class ItemCommand implements CommandExecutor {
 			return false;
 
 		Player player = (Player) sender;
+		String item = args[0];
 		int itemAmount = args.length < 2 ? 1 : Integer.parseInt(args[1]);
 		ItemStack stack = null;
+		String[] itemsplit = item.split(";");
+		int itemid;
 		try {
-			stack = OddItem.getItemStack(args[0]);
-		} catch (IllegalArgumentException iae) {
-			sender.sendMessage(CraftEssence.premessage + "Item " + args[0]
-					+ " unknown. Closest match: " + iae.getMessage());
+			if (item.contains("A-Za-Z")) {
+				itemid = Material.valueOf(item).getId();
+				stack = new ItemStack(itemid);
+				stack.setAmount(itemAmount);
+			} else {
+				if (itemsplit.length == 2) {
+					stack = new ItemStack(Integer.parseInt(itemsplit[0]));
+					stack.setDurability(Short.parseShort(itemsplit[1]));
+					stack.setAmount(itemAmount);
+				}
+			}
+			
+		} catch (Exception e) {
+			sender.sendMessage("Item not found.");
 			return true;
 		}
-
-		stack.setAmount(itemAmount);
-		player.getInventory().addItem(new ItemStack[] { stack });
-		sender.sendMessage(CraftEssence.premessage + "Giving " + itemAmount
-				+ " of " + stack.getType().toString() + ".");
+		player.getInventory().addItem(stack);
 		return true;
 	}
 }

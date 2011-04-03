@@ -26,6 +26,12 @@ commands:
     description: Gives items to yourself
     usage: |
            /<command> [item] [amount]
+  newitem:
+    aliases:
+      - ni
+    description: Gives items to yourself
+    usage: |
+           /<command> [item] [amount]
   spawnmob:
     aliases:
       - sm

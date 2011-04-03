@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import me.furt.CraftEssence.CraftEssence;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class cePlayerListener extends PlayerListener {
 	private final CraftEssence plugin;
@@ -38,6 +40,12 @@ public class cePlayerListener extends PlayerListener {
 				.toLowerCase()))
 			CraftEssence.godmode.remove(event.getPlayer().getName()
 					.toLowerCase());
+	}
+	
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		Player player = event.getPlayer();
+		Location loc = player.getWorld().getSpawnLocation();
+		player.teleport(loc);
 	}
 
 	public void sendAlert(Player player, String msg) {

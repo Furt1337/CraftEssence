@@ -4,6 +4,7 @@ import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
@@ -16,6 +17,12 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 
 	public ceEntityListener(CraftEssence instance) {
 		this.plugin = instance;
+	}
+	
+	@Override
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
+		 /*if ( event.getEntity() instanceof CraftCreeper ) 
+			 event.setCancelled(true);*/
 	}
 
 	public void onEntityDamage(EntityDamageEvent event) {
@@ -73,13 +80,11 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 
 	@Override
 	public boolean isCancelled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void setCancelled(boolean arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
