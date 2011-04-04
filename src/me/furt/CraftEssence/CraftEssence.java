@@ -43,7 +43,6 @@ public class CraftEssence extends JavaPlugin {
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions;
-	public Permissions permission = null;
 	public cePlayerListener cepl = new cePlayerListener(this);
 	public ceBlockListener cebl = new ceBlockListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
@@ -161,9 +160,9 @@ public class CraftEssence extends JavaPlugin {
 		Plugin test = this.getServer().getPluginManager()
 				.getPlugin("Permissions");
 
-		if (CraftEssence.Permissions == null) {
+		if (Permissions == null) {
 			if (test != null) {
-				CraftEssence.Permissions = ((Permissions) test).getHandler();
+				Permissions = ((Permissions) test).getHandler();
 
 			} else {
 				log.info("Permission system not detected, disabling CraftEssence");
@@ -531,22 +530,28 @@ public class CraftEssence extends JavaPlugin {
 
 	public String getPrefix(Player player) {
 		World world = player.getWorld();
-		if (this.permission != null) {
-			String userPrefix = this.permission.getHandler()
-					.getUserPermissionString(world.getName(), player.getName(),
-							"prefix");
+		if (Permissions != null) {
+			String userPrefix = Permissions.getUserPermissionString(
+					world.getName(), player.getName(), "prefix");
 			if ((userPrefix != null) && (!userPrefix.isEmpty())) {
 				return userPrefix;
 			}
 
-			String group = this.permission.getHandler().getGroup(
-					world.getName(), player.getName());
-			if (group == null)
+			String group = Permissions.getGroup(world.getName(),
+					player.getName());
+			if (group == null) {
+				CraftEssence.log.log(Level.SEVERE,
+						"[CraftEssence] Group cannot be found for player: "
+								+ player.getName());
 				return null;
-			String groupPrefix = this.permission.getHandler().getGroupPrefix(
-					world.getName(), group);
+			}
+			String groupPrefix = Permissions.getGroupPrefix(world.getName(),
+					group);
 			return groupPrefix;
 		}
+		CraftEssence.log
+				.log(Level.SEVERE,
+						"[CraftEssence] Permissions resulted in null for prefix function");
 		return null;
 	}
 }

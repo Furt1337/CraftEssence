@@ -1,7 +1,5 @@
 package me.furt.CraftEssence.listener;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import me.furt.CraftEssence.CraftEssence;
 import org.bukkit.ChatColor;
@@ -16,8 +14,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class cePlayerListener extends PlayerListener {
 	private final CraftEssence plugin;
-	private HashMap<Player, Long> playerCooldown = new HashMap<Player, Long>();
-	private HashMap<Player, Long> playerAlertCooldown = new HashMap<Player, Long>();
 
 	public cePlayerListener(CraftEssence instance) {
 		this.plugin = instance;
@@ -46,35 +42,6 @@ public class cePlayerListener extends PlayerListener {
 		Player player = event.getPlayer();
 		Location loc = player.getWorld().getSpawnLocation();
 		player.teleport(loc);
-	}
-
-	public void sendAlert(Player player, String msg) {
-		Long time = Long.valueOf(new Date().getTime());
-		if (this.playerAlertCooldown.containsKey(player)) {
-			this.playerAlertCooldown.remove(player);
-		}
-		player.sendMessage(msg);
-		this.playerAlertCooldown.put(player, time);
-	}
-
-	public boolean getAlertable(Player player) {
-		Long time = Long.valueOf(new Date().getTime());
-		if (this.playerAlertCooldown.containsKey(player)) {
-			Long old = Long.valueOf(((Long) this.playerAlertCooldown
-					.get(player)).longValue());
-
-			return time.longValue() - old.longValue() > 10000L;
-		}
-
-		return true;
-	}
-
-	public void setCooldown(Player player) {
-		Long time = Long.valueOf(new Date().getTime());
-		if (this.playerCooldown.containsKey(player)) {
-			this.playerCooldown.remove(player);
-		}
-		this.playerCooldown.put(player, time);
 	}
 
 	public void onPlayerChat(PlayerChatEvent event) {
