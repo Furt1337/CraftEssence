@@ -51,7 +51,7 @@ public class BanCommand implements CommandExecutor {
 			this.addBan(args[0]);
 			p.kickPlayer("You have been banned, reason:" + msg);
 			plugin.getServer().broadcastMessage(
-					"§6" + args[0] + "has been banned.");
+					"§6" + args[0] + " has been banned.");
 			CraftEssence.log.info("[CraftEssence] " + args[0]
 					+ " has been banned.");
 			return true;
