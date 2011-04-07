@@ -181,7 +181,7 @@ public class CraftEssence extends JavaPlugin {
 
 		if (!new File(getDataFolder(), "motd.txt").exists()) {
 			this.createMotdConfig();
-			log.info("motd.properties not found, creating.");
+			log.info("motd.txt not found, creating.");
 		}
 		if (!new File(getDataFolder(), "bans.txt").exists()) {
 			this.createBansConfig();
