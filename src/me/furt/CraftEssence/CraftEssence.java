@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +32,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.config.Configuration;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -47,21 +49,21 @@ public class CraftEssence extends JavaPlugin {
 	public ceBlockListener cebl = new ceBlockListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
 
-	public void onDisable() {
-		PluginDescriptionFile pdfFile = this.getDescription();
-		log.info(pdfFile.getName() + " Disabled");
-
-	}
-
 	public void onEnable() {
+		registerEvents();
 		setupPermissions();
 		checkFiles();
-		registerEvents();
 		sqlConnection();
 		addCommands();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " v" + pdfFile.getVersion()
 				+ " is enabled!");
+	}
+
+	public void onDisable() {
+		PluginDescriptionFile pdfFile = this.getDescription();
+		log.info(pdfFile.getName() + " Disabled");
+
 	}
 
 	private void addCommands() {
@@ -76,7 +78,6 @@ public class CraftEssence extends JavaPlugin {
 		// getCommand("help").setExecutor(new HelpCommand(this));
 		getCommand("home").setExecutor(new HomeCommand(this));
 		getCommand("item").setExecutor(new ItemCommand(this));
-		// getCommand("newitem").setExecutor(new NewItemCommand(this));
 		getCommand("jump").setExecutor(new JumpCommand(this));
 		getCommand("kick").setExecutor(new KickCommand(this));
 		getCommand("kill").setExecutor(new KillCommand(this));
@@ -186,6 +187,22 @@ public class CraftEssence extends JavaPlugin {
 			this.createBansConfig();
 			log.info("bans.txt not found, creating.");
 		}
+	}
+
+	public void createMobBlacklist(String world) {
+		try {
+			new File("plugins" + File.separator + "CraftEssence"
+					+ File.separator + "MobBlackList", world + ".txt")
+					.createNewFile();
+			FileWriter fstream = new FileWriter(new File("plugins"
+					+ File.separator + "CraftEssence" + File.separator
+					+ "MobBlackList", world + ".txt"));
+			BufferedWriter out = new BufferedWriter(fstream);
+			out.close();
+			fstream.close();
+		} catch (IOException ex) {
+			setEnabled(false);
+		}
 
 	}
 
@@ -261,6 +278,21 @@ public class CraftEssence extends JavaPlugin {
 			setEnabled(false);
 		}
 
+	}
+
+	public List<String> spawnList(Configuration config) {
+		config.load();
+		ArrayList<String> spawns = new ArrayList<String>();
+		List<?> worldSpawn = config.getList("worldSpawn");
+		String spawnString = null;
+		Iterator<?> i$;
+		if ((worldSpawn != null) && (worldSpawn.size() > 0))
+			for (i$ = worldSpawn.iterator(); i$.hasNext();) {
+				Object spawn = i$.next();
+				spawnString = (String) spawn;
+				spawns.add("  " + spawnString);
+			}
+		return spawns;
 	}
 
 	public String[] getBans() {
@@ -554,4 +586,41 @@ public class CraftEssence extends JavaPlugin {
 						"[CraftEssence] Permissions resulted in null for prefix function");
 		return null;
 	}
+
+	public String[] getMobs(String world) {
+		ArrayList<String> moblist = new ArrayList<String>();
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(
+					getDataFolder() + File.separator + "MobBlacklist"
+							+ File.separator + world + ".txt"));
+			String str;
+			while ((str = in.readLine()) != null) {
+				moblist.add(str);
+			}
+			in.close();
+		} catch (IOException e) {
+			log.info("[CraftEssence] Could not get ban list");
+		}
+
+		return moblist.toArray(new String[] {});
+	}
+
+	public String[] itemList() {
+		ArrayList<String> itemlist = new ArrayList<String>();
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(
+					getDataFolder() + File.separator + "item.txt"));
+			String str;
+			while ((str = in.readLine()) != null) {
+				itemlist.add(str);
+			}
+			in.close();
+		} catch (IOException e) {
+			log.info("[CraftEssence] Could not get ban list");
+		}
+
+		return itemlist.toArray(new String[] {});
+	}
+	
+	
 }
