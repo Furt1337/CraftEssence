@@ -1,7 +1,5 @@
 package me.furt.CraftEssence.commands;
 
-import info.somethingodd.bukkit.odd.item.OddItem;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,20 +34,62 @@ public class ItemCommand implements CommandExecutor {
 			return false;
 
 		Player player = (Player) sender;
+		String[] itemList = plugin.itemList();
 		int itemAmount = args.length < 2 ? 1 : Integer.parseInt(args[1]);
 		ItemStack stack = null;
-		try {
-			stack = OddItem.getItemStack(args[0]);
-		} catch (IllegalArgumentException iae) {
-			sender.sendMessage(CraftEssence.premessage + "Item " + args[0]
-					+ " unknown. Closest match: " + iae.getMessage());
-			return true;
+		String itemDur;
+		if (!args[0].contains(";")) {
+			for (String list : itemList) {
+				String[] listSplit = list.split("-");
+				String[] itemID = listSplit[0].split(";");
+				String[] nameList = listSplit[1].split(":");
+				for (String name : nameList) {
+					if (name.equalsIgnoreCase(args[0])) {
+						if (itemID.length == 2) {
+							itemDur = itemID[1];
+						} else {
+							itemDur = "0";
+						}
+						stack = new ItemStack(Integer.parseInt(itemID[0]));
+						stack.setAmount(itemAmount);
+						stack.setDurability(Short.parseShort(itemDur));
+						player.getInventory().addItem(stack);
+						sender.sendMessage(CraftEssence.premessage
+								+ "You recieve " + itemAmount + " "
+								+ stack.getType().toString().toLowerCase()
+								+ "!");
+						return true;
+					}
+				}
+			}
+			sender.sendMessage(CraftEssence.premessage + "Item: " + args[0]
+					+ " not found.");
+			return false;
+		} else {
+			for (String list : itemList) {
+				String[] listSplit = list.split("-");
+				String[] item = listSplit[0].split(";");
+				String[] itemID = args[0].split(";");
+				if (item[0].equalsIgnoreCase(itemID[0])) {
+					if (itemID.length == 2) {
+						itemDur = itemID[1];
+					} else {
+						itemDur = "0";
+					}
+					stack = new ItemStack(Integer.parseInt(itemID[0]));
+					stack.setAmount(itemAmount);
+					stack.setDurability(Short.parseShort(itemDur));
+					player.getInventory().addItem(stack);
+					sender.sendMessage(CraftEssence.premessage + "You recieve "
+							+ itemAmount + " "
+							+ stack.getType().toString().toLowerCase() + "!");
+					return true;
+				}
+			}
+			sender.sendMessage(CraftEssence.premessage + "Item: " + args[0]
+					+ " not found.");
+			return false;
 		}
 
-		stack.setAmount(itemAmount);
-		player.getInventory().addItem(new ItemStack[] { stack });
-		sender.sendMessage(CraftEssence.premessage + "Giving " + itemAmount
-				+ " of " + stack.getType().toString() + ".");
-		return true;
 	}
 }
