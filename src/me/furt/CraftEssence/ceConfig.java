@@ -10,6 +10,7 @@ public class ceConfig {
 	public static String mysqlDB;
 	public static boolean prayer;
 	public static int prayAmount;
+	public static List<String> worldSpawn;
 
 	static boolean Load(Configuration config) {
 		config.load();
@@ -24,6 +25,8 @@ public class ceConfig {
 			config.setProperty("prayer", true);
 		if (!keys.contains("prayerAmount"))
 			config.setProperty("prayerAmount", 3);
+		if (!keys.contains("worldSpawn"))
+			config.setProperty("worldSpawn", "");
 		if (!config.save()) {
 			CraftEssence.log
 					.severe("[CraftEssence] Error while writing to config.yml");
@@ -35,6 +38,7 @@ public class ceConfig {
 		mysqlPass = config.getString("mysqlPass");
 		prayer = config.getBoolean("prayer", true);
 		prayAmount = config.getInt("prayAmount", 3);
+		worldSpawn = config.getStringList("worldSpawn", null);
 		return true;
 	}
 

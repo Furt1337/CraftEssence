@@ -4,6 +4,7 @@ import java.util.List;
 import me.furt.CraftEssence.CraftEssence;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -30,18 +31,20 @@ public class cePlayerListener extends PlayerListener {
 			}
 		}
 	}
+	
+	/*@Override
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		Player player = event.getPlayer();
+		World world = player.getWorld();
+		Location loc = world.getSpawnLocation();
+		player.teleport(loc);
+	}*/
 
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		if (CraftEssence.godmode.contains(event.getPlayer().getName()
 				.toLowerCase()))
 			CraftEssence.godmode.remove(event.getPlayer().getName()
 					.toLowerCase());
-	}
-	
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		Player player = event.getPlayer();
-		Location loc = player.getWorld().getSpawnLocation();
-		player.teleport(loc);
 	}
 
 	public void onPlayerChat(PlayerChatEvent event) {
