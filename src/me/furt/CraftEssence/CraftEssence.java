@@ -599,7 +599,7 @@ public class CraftEssence extends JavaPlugin {
 			}
 			in.close();
 		} catch (IOException e) {
-			log.info("[CraftEssence] Could not get ban list");
+			log.info("[CraftEssence] Could not get mob blacklist.");
 		}
 
 		return moblist.toArray(new String[] {});
@@ -616,7 +616,7 @@ public class CraftEssence extends JavaPlugin {
 			}
 			in.close();
 		} catch (IOException e) {
-			log.info("[CraftEssence] Could not get ban list");
+			log.info("[CraftEssence] Could not get item list.");
 		}
 
 		return itemlist.toArray(new String[] {});
