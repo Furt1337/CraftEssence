@@ -8,12 +8,30 @@ import org.bukkit.entity.Player;
 
 import me.furt.CraftEssence.CraftEssence;
 
-public class CompassCommand implements CommandExecutor{
+public class CompassCommand implements CommandExecutor {
 	CraftEssence plugin;
+
 	public CompassCommand(CraftEssence instance) {
 		this.plugin = instance;
 	}
-	
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command,
+			String label, String[] args) {
+		if (!plugin.hasPermission(sender, command.getName().toLowerCase()))
+			return true;
+
+		Player player = (Player) sender;
+		double degreeRotation = ((player.getLocation().getYaw() - 90) % 360);
+
+		if (degreeRotation < 0) {
+			degreeRotation += 360.0;
+		}
+		player.sendMessage(ChatColor.RED + "Compass: "
+				+ this.getDirection(degreeRotation));
+		return true;
+	}
+
 	private String getDirection(double degrees) {
 		if (0 <= degrees && degrees < 22.5) {
 			return "N";
@@ -37,30 +55,4 @@ public class CompassCommand implements CommandExecutor{
 			return "ERROR";
 		}
 	}
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender, "craftessence.compass")) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		}
-		if (plugin.isPlayer(sender) == false) {
-			CraftEssence.log.info("[CraftEssence] /compass is not a console command.");
-			return true;
-		}
-		Player player = (Player) sender;
-		double degreeRotation = ((player.getLocation().getYaw() - 90) % 360);
-
-		if (degreeRotation < 0) {
-			degreeRotation += 360.0;
-		}
-		player.sendMessage(ChatColor.RED + "Compass: "
-				+ this.getDirection(degreeRotation));
-		return true;
-	}
-
 }
