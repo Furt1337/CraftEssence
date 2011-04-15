@@ -17,10 +17,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.persistence.PersistenceException;
+
 import me.furt.CraftEssence.commands.*;
 import me.furt.CraftEssence.listener.ceBlockListener;
 import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
+import me.furt.CraftEssence.sql.HomeTable;
 import me.furt.CraftEssence.sql.ceConnector;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -78,7 +81,6 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("give").setExecutor(new GiveCommand(this));
 		getCommand("god").setExecutor(new GodCommand(this));
 		getCommand("heal").setExecutor(new HealCommand(this));
-		// getCommand("help").setExecutor(new HelpCommand(this));
 		getCommand("home").setExecutor(new HomeCommand(this));
 		getCommand("item").setExecutor(new ItemCommand(this));
 		getCommand("jump").setExecutor(new JumpCommand(this));
@@ -254,6 +256,23 @@ public class CraftEssence extends JavaPlugin {
 			}
 		}
 	}
+	
+	private void setupDatabase() {
+        try {
+            //getDatabase().find(HomeTable.class).findRowCount();
+        } catch (PersistenceException ex) {
+            System.out.println("Installing database for " + getDescription().getName() + " due to first time usage");
+            installDDL();
+        }
+    }
+
+    @Override
+    public List<Class<?>> getDatabaseClasses() {
+        List<Class<?>> list = new ArrayList<Class<?>>();
+        //list.add(HomeTable.class);
+        return list;
+    }
+
 
 	public void createMotdConfig() {
 		try {
