@@ -18,37 +18,50 @@ public class MsgCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
+		if ((plugin.isPlayer(sender)) && (args.length != 0)) {
 			if (!CraftEssence.Permissions.has((Player) sender,
 					"craftessence.msg")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
 			}
-		}
-		if (!plugin.isPlayer(sender))
+		} else {
+			sender.sendMessage(CraftEssence.premessage + "I dunno who you are.");
 			return false;
+		}
 
 		Player player = (Player) sender;
-		if (args.length == 0) {
-			return false;
-		} else {
-			String msg = plugin.message(args).replace(args[0], "");
-			Player sendto = plugin.playerMatch(args[0]);
-			if (sendto != null) {
-				if (sendto.getName().equals(player.getName())) {
-					player.sendMessage(CraftEssence.premessage
-							+ "You can't message yourself!");
-				} else {
-					sendto.sendMessage(ChatColor.GRAY + "[MSG]<"
-							+ player.getName() + ">" + msg);
-					player.sendMessage(ChatColor.GRAY + "[MSG]<"
-							+ player.getName() + ">" + msg);
-				}
-			} else {
+		String msg = plugin.message(args).replace(args[0], "");
+		Player sendTo = plugin.playerMatch(args[0]);
+		
+		if (sendTo != null) {
+			if (sendTo.getName().equals(player.getName())) {
 				player.sendMessage(CraftEssence.premessage
-						+ "Couldn't find player " + args[0]);
+						+ "You can't message yourself!");
+			} else {
+				String[] replyArray = CraftEssence.reply.toArray(new String[] {});
+				for (String list : replyArray) {
+					String[] split = list.split(":");
+					if (split[1].equalsIgnoreCase(sendTo.getName().toLowerCase()))
+						CraftEssence.reply.remove(split[0].toLowerCase() + ":"
+								+ sendTo.getName().toLowerCase());
+
+				}
+				CraftEssence.reply.add(player.getName().toLowerCase() + ":"
+						+ sendTo.getName().toLowerCase());
+				sendTo.sendMessage(ChatColor.YELLOW + "[From -> "
+						+ player.getDisplayName() + "] " + ChatColor.WHITE
+						+ msg);
+				player.sendMessage(ChatColor.YELLOW + "[To -> "
+						+ sendTo.getDisplayName() + "] " + ChatColor.WHITE
+						+ msg);
+				if (CraftEssence.afk.contains(sendTo.getName().toLowerCase()))
+					player.sendMessage(ChatColor.YELLOW + sendTo.getName()
+							+ " is currently afk.");
 			}
+		} else {
+			player.sendMessage(CraftEssence.premessage + args[0]
+					+ " is offline or not spelled correctly");
 		}
 		return true;
 	}

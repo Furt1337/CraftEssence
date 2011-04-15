@@ -18,8 +18,14 @@ public class CompassCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (!plugin.hasPermission(sender, command.getName().toLowerCase()))
-			return true;
+		if (plugin.isPlayer(sender)) {
+			Player player = (Player) sender;
+			if (!CraftEssence.Permissions.has(player, "craftessence.compass")) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+		}
 
 		Player player = (Player) sender;
 		double degreeRotation = ((player.getLocation().getYaw() - 90) % 360);

@@ -4,6 +4,16 @@ version: 1.2.1
 author: furt
 description: A general plugin with all commands from hMod
 commands:
+  reply:
+    aliases:
+      - r
+    description: Reply to last player that has /msg you
+    usage: |
+           /<command> [player]
+  afk:
+    description: Flags the player as afk
+    usage: |
+           /<command>
   tp:
     description: Teleport to a player
     usage: |

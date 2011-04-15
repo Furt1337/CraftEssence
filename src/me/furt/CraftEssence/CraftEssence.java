@@ -41,6 +41,8 @@ public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> muteList = new ArrayList<String>();
 	public static ArrayList<String> godmode = new ArrayList<String>();
 	public static ArrayList<String> prayList = new ArrayList<String>();
+	public static ArrayList<String> afk = new ArrayList<String>();
+	public static ArrayList<String> reply = new ArrayList<String>();
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
@@ -67,6 +69,7 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	private void addCommands() {
+		getCommand("afk").setExecutor(new AFKCommand(this));
 		getCommand("clearinventory").setExecutor(
 				new ClearInventoryCommand(this));
 		getCommand("broadcast").setExecutor(new BroadcastCommand(this));
@@ -89,6 +92,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("mute").setExecutor(new MuteCommand(this));
 		getCommand("pardon").setExecutor(new PardonCommand(this));
 		getCommand("playerlist").setExecutor(new PlayerlistCommand(this));
+		getCommand("reply").setExecutor(new ReplyCommand(this));
 		getCommand("sethome").setExecutor(new SetHomeCommand(this));
 		getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
 		getCommand("setwarp").setExecutor(new SetWarpCommand(this));

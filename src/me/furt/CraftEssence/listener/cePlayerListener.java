@@ -3,15 +3,12 @@ package me.furt.CraftEssence.listener;
 import java.util.List;
 import me.furt.CraftEssence.CraftEssence;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class cePlayerListener extends PlayerListener {
 	private final CraftEssence plugin;
