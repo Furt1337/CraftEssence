@@ -39,15 +39,19 @@ public class SpawnCommand implements CommandExecutor {
 			return false;
 
 		Player player = (Player) sender;
-		//this.getSpawn(player);
-		player.teleport(player.getWorld().getSpawnLocation());
+		Location loc = null;
+		loc = SpawnCommand.getSpawn(player);
+		if (loc == null)
+			loc = player.getWorld().getSpawnLocation();
+		
+		player.teleport(loc);
 		sender.sendMessage(CraftEssence.premessage + "Returned to spawn.");
 		return true;
 	}
 	
-	private Location getSpawn(Player player) {
+	public static Location getSpawn(Player player) {
 		String world = player.getWorld().getName();
-		String spawnq = "Select * FROM warp WHERE `name` = 'spawn' AND `world` = '" + world + "'";
+		String spawnq = "Select * FROM warp WHERE `name` = 'spwn' AND `world` = '" + world + "'";
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;

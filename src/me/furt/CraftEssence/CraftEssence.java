@@ -23,7 +23,6 @@ import me.furt.CraftEssence.commands.*;
 import me.furt.CraftEssence.listener.ceBlockListener;
 import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
-import me.furt.CraftEssence.sql.HomeTable;
 import me.furt.CraftEssence.sql.ceConnector;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -227,7 +226,7 @@ public class CraftEssence extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, this.cepl,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.cepl,
-				Event.Priority.Normal, this);
+				Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_KICK, this.cepl,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, this.cebl,
@@ -256,23 +255,30 @@ public class CraftEssence extends JavaPlugin {
 			}
 		}
 	}
-	
-	private void setupDatabase() {
-        try {
-            //getDatabase().find(HomeTable.class).findRowCount();
-        } catch (PersistenceException ex) {
-            System.out.println("Installing database for " + getDescription().getName() + " due to first time usage");
-            installDDL();
-        }
-    }
 
-    @Override
-    public List<Class<?>> getDatabaseClasses() {
-        List<Class<?>> list = new ArrayList<Class<?>>();
-        //list.add(HomeTable.class);
-        return list;
-    }
+	public void setupDatabase() {
+		try {
+			// getDatabase().find(HomeTable.class).findRowCount();
+			// getDatabase().find(WarpTable.class).findRowCount();
+			// getDatabase().find(MailTable.class).findRowCount();
+			// getDatabase().find(KitTable.class).findRowCount();
+			// getDatabase().find(KitItemsTable.class).findRowCount();
+		} catch (PersistenceException ex) {
+			System.out.println("[CraftEssence] Installing database.");
+			installDDL();
+		}
+	}
 
+	@Override
+	public List<Class<?>> getDatabaseClasses() {
+		List<Class<?>> list = new ArrayList<Class<?>>();
+		// list.add(HomeTable.class);
+		// list.add(WarpTable.class);
+		// list.add(MailTable.class);
+		// list.add(KitTable.class);
+		// list.add(KitItemsTable.class);
+		return list;
+	}
 
 	public void createMotdConfig() {
 		try {
@@ -644,6 +650,5 @@ public class CraftEssence extends JavaPlugin {
 
 		return itemlist.toArray(new String[] {});
 	}
-	
-	
+
 }

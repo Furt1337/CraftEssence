@@ -22,34 +22,6 @@ public class SetWarpCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
-	public void setWarp(Player player, Location home, String[] args) {
-		Connection conn = null;
-		Statement stmt = null;
-		int count = 0;
-		double x = home.getX();
-		double y = home.getY();
-		double z = home.getZ();
-		float yaw = home.getYaw();
-		float pitch = home.getPitch();
-		String wname = home.getWorld().getName();
-		try {
-			conn = ceConnector.getConnection();
-			stmt = conn.createStatement();
-			count += stmt.executeUpdate("REPLACE INTO `warp`"
-					+ " (`name`, `world`, `x`, `y`, `z`, `yaw`, `pitch`)"
-					+ " VALUES ('" + args[0] + "', '" + wname + "', '" + x
-					+ "', '" + y + "', '" + z + "', '" + yaw + "', '" + pitch
-					+ "')");
-			stmt.close();
-			player.sendMessage(CraftEssence.premessage + args[0] + " warp set.");
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-			player.sendMessage(CraftEssence.premessage + "Warp did not save.");
-		}
-
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
@@ -69,4 +41,31 @@ public class SetWarpCommand implements CommandExecutor {
 		return true;
 	}
 
+	public void setWarp(Player player, Location warp, String[] args) {
+		Connection conn = null;
+		Statement stmt = null;
+		int count = 0;
+		double x = warp.getX();
+		double y = warp.getY();
+		double z = warp.getZ();
+		float yaw = warp.getYaw();
+		float pitch = warp.getPitch();
+		String wname = warp.getWorld().getName();
+		try {
+			conn = ceConnector.getConnection();
+			stmt = conn.createStatement();
+			count += stmt.executeUpdate("REPLACE INTO `warp`"
+					+ " (`name`, `world`, `x`, `y`, `z`, `yaw`, `pitch`)"
+					+ " VALUES ('" + args[0] + "', '" + wname + "', '" + x
+					+ "', '" + y + "', '" + z + "', '" + yaw + "', '" + pitch
+					+ "')");
+			stmt.close();
+			player.sendMessage(CraftEssence.premessage + args[0] + " warp set.");
+		} catch (SQLException ex) {
+			CraftEssence.log.log(Level.SEVERE,
+					"[CraftEssence]: Find SQL Exception", ex);
+			player.sendMessage(CraftEssence.premessage + "Warp did not save.");
+		}
+
+	}
 }
