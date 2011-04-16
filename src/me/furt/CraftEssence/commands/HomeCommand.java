@@ -26,17 +26,89 @@ public class HomeCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender,
-					"craftessence.home")) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-			Player player = (Player) sender;
+		if (!plugin.isPlayer(sender)) {
+			sender.sendMessage(CraftEssence.premessage
+					+ "Cannot use this command from console.");
+			return true;
+		}
+		if (!CraftEssence.Permissions.has((Player) sender, "craftessence.home")) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
+		}
+
+		Player player = (Player) sender;
+
+		if (args.length == 0) {
 			player.teleport(this.getHome(player));
 			player.sendMessage(CraftEssence.premessage + "Teleporting home...");
 			return true;
+		}
+
+		if (args.length == 1) {
+			if (args[0].equalsIgnoreCase("accept")) {
+				String[] homeArray = CraftEssence.homeInvite
+						.toArray(new String[] {});
+				for (String list : homeArray) {
+					String[] homeSplit = list.split(":");
+					if (homeSplit[1].equalsIgnoreCase(player.getName()
+							.toLowerCase())) {
+						Player p = plugin.getServer().getPlayer(homeSplit[0]);
+						player.teleport(this.getHome(p));
+						sender.sendMessage(CraftEssence.premessage
+								+ "Teleporting to " + p.getDisplayName()
+								+ "'s home...");
+						CraftEssence.homeInvite.remove(list);
+						return true;
+					}
+				}
+				sender.sendMessage(CraftEssence.premessage
+								+ "Must be invited to a home to use this command.");
+				return true;
+			} else {
+				if (plugin.getServer().getPlayer(args[0]) != null) {
+					if (!CraftEssence.Permissions.has((Player) sender,
+							"craftessence.home.admin")) {
+						sender.sendMessage(ChatColor.YELLOW
+								+ "You to dont have proper permissions for that command.");
+						return true;
+					}
+					Player p = plugin.getServer().getPlayer(args[0]);
+					player.teleport(this.getHome(p));
+					sender.sendMessage(CraftEssence.premessage
+							+ "Teleporting to " + player.getDisplayName()
+							+ "'s home...");
+					return true;
+				} else {
+					sender.sendMessage(CraftEssence.premessage
+							+ "Player name could not be found.");
+					return true;
+				}
+			}
+		}
+
+		if (args.length == 2) {
+			if ((args[0].equalsIgnoreCase("invite"))
+					&& (plugin.getServer().getPlayer(args[1]) != null)) {
+				if (!CraftEssence.Permissions.has((Player) sender,
+						"craftessence.home.invite")) {
+					sender.sendMessage(ChatColor.YELLOW
+							+ "You to dont have proper permissions for that command.");
+					return true;
+				}
+				Player p = plugin.getServer().getPlayer(args[1]);
+				CraftEssence.homeInvite.add(player.getName().toLowerCase() + ":" + p.getName().toLowerCase());
+				p.sendMessage(CraftEssence.premessage
+						+ "You have been invited to " + player.getDisplayName()
+						+ "'s home type /home accept to teleport there.");
+				sender.sendMessage(CraftEssence.premessage
+						+ "Home invite sent to " + p.getDisplayName());
+				return true;
+			} else {
+				sender.sendMessage(CraftEssence.premessage
+						+ "Player name could not be found.");
+				return true;
+			}
 		}
 		return false;
 	}

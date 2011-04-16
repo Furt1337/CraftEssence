@@ -45,6 +45,7 @@ public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> prayList = new ArrayList<String>();
 	public static ArrayList<String> afk = new ArrayList<String>();
 	public static ArrayList<String> reply = new ArrayList<String>();
+	public static ArrayList<String> homeInvite = new ArrayList<String>();
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
