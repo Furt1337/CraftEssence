@@ -76,7 +76,7 @@ public class HomeCommand implements CommandExecutor {
 					Player p = plugin.getServer().getPlayer(args[0]);
 					player.teleport(this.getHome(p));
 					sender.sendMessage(CraftEssence.premessage
-							+ "Teleporting to " + player.getDisplayName()
+							+ "Teleporting to " + p.getDisplayName()
 							+ "'s home...");
 					return true;
 				} else {
