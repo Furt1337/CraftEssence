@@ -1,7 +1,10 @@
 package me.furt.CraftEssence.listener;
 
 import java.util.List;
+import java.util.Calendar;
+
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.ceConfig;
 import me.furt.CraftEssence.commands.SpawnCommand;
 
 import org.bukkit.ChatColor;
@@ -11,6 +14,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -19,6 +23,17 @@ public class cePlayerListener extends PlayerListener {
 
 	public cePlayerListener(CraftEssence instance) {
 		this.plugin = instance;
+	}
+
+	public void onPlayerMove(PlayerMoveEvent event) {
+		Player player = event.getPlayer();
+		String pname = player.getName().toLowerCase();
+		if (CraftEssence.afk.contains(pname)) {
+			CraftEssence.afk.remove(pname);
+			plugin.getServer().broadcastMessage(
+					ChatColor.GRAY + "* " + player.getDisplayName()
+							+ " is no longer afk *");
+		}
 	}
 
 	public void onPlayerLogin(PlayerLoginEvent event) {
@@ -32,7 +47,7 @@ public class cePlayerListener extends PlayerListener {
 			}
 		}
 	}
-	
+
 	@Override
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
@@ -140,5 +155,21 @@ public class cePlayerListener extends PlayerListener {
 		}
 
 		return lastPlayer;
+	}
+
+	public void afkRunner() {
+		long current = Calendar.getInstance().getTimeInMillis();
+		String[] afkList = CraftEssence.afk.toArray(new String[] {});
+		for (String list : afkList) {
+			String[] afkSplit = list.split(":");
+			long afkTime = Integer.parseInt(afkSplit[1]);
+			long timeDiff = current - afkTime;
+			if(timeDiff >= ceConfig.afkTimer) {
+				Player player = plugin.getServer().getPlayer(afkSplit[0]);
+				player.kickPlayer("Kicked for being afk for too long.");
+				CraftEssence.afk.remove(list);
+			}
+		}
+		
 	}
 }

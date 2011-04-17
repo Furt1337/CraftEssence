@@ -182,6 +182,12 @@ public class CraftEssence extends JavaPlugin {
 	private void checkFiles() {
 		if (!this.getDataFolder().exists())
 			this.getDataFolder().mkdirs();
+		
+		if (!new File("plugins" + File.separator + "CraftEssence"
+					+ File.separator + "MobBlackList").isDirectory())
+			new File("plugins" + File.separator + "CraftEssence"
+					+ File.separator + "MobBlackList").mkdir();
+		
 
 		ceConfig.Load(getConfiguration());
 
