@@ -53,7 +53,7 @@ public class cePlayerListener extends PlayerListener {
 		Player player = event.getPlayer();
 		Location loc = null;
 		loc = SpawnCommand.getSpawn(player);
-		if (loc == null)
+		if (loc.getX() == 0)
 			loc = player.getWorld().getSpawnLocation();
 		event.setRespawnLocation(loc);
 	}
