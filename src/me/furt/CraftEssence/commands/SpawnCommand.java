@@ -41,7 +41,7 @@ public class SpawnCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		Location loc = null;
 		loc = SpawnCommand.getSpawn(player);
-		if (loc == null)
+		if (loc.getX() == 0)
 			loc = player.getWorld().getSpawnLocation();
 		
 		player.teleport(loc);
