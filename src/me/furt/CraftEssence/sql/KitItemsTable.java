@@ -5,13 +5,12 @@ import javax.persistence.Table;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
 @Entity()
 @Table(name = "ce_kit_items")
 public class KitItemsTable {
-	@NotEmpty
+	@NotNull
 	private int id;
 
 	@NotNull

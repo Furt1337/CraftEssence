@@ -1,8 +1,11 @@
 package me.furt.CraftEssence.commands;
 
+import java.util.List;
+
 import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,7 +29,7 @@ public class PlayerlistCommand implements CommandExecutor {
 				return true;
 			}
 		}
-		StringBuilder online = new StringBuilder();
+
 		int intonline = 0;
 		for (Player p : plugin.getServer().getOnlinePlayers()) {
 			if ((p == null) || (!p.isOnline())) {
@@ -34,22 +37,26 @@ public class PlayerlistCommand implements CommandExecutor {
 			}
 			++intonline;
 		}
+		sender.sendMessage(ChatColor.YELLOW + "Connected players (" + intonline
+				+ "/" + plugin.getServer().getMaxPlayers() + "):");
 
-		for (Player p : plugin.getServer().getOnlinePlayers()) {
-			if ((p == null) || (!p.isOnline())) {
-				continue;
+		StringBuilder online = new StringBuilder();
+		for (int i = 0; i < plugin.getServer().getWorlds().size(); i++) {
+			World world = plugin.getServer().getWorlds().get(i);
+			List<Player> wplayer = world.getPlayers();
+			for (Player p : wplayer) {
+				String color = plugin.getPrefix(p);
+				if (color == null) {
+					color = ChatColor.WHITE.toString();
+				} else {
+					color = color.replaceAll("(&([a-f0-9]))", "§$2");
+				}
+				online.append(online.length() == 0 ? ChatColor.GOLD
+						+ world.getName() + ChatColor.WHITE + ": " : ", ");
+				online.append(color + p.getDisplayName() + ChatColor.WHITE);
 			}
-			online.append(online.length() == 0 ? ChatColor.YELLOW
-					+ "Connected players (" + intonline + "/"
-					+ plugin.getServer().getMaxPlayers() + "): "
-					+ ChatColor.WHITE : ", ");
-			online.append(p.getDisplayName());
-		}
-		if (plugin.isPlayer(sender)) {
-			Player player = (Player) sender;
-			player.sendMessage(online.toString());
-		} else {
-			CraftEssence.log.info(online.toString());
+			sender.sendMessage(online.toString());
+
 		}
 		return true;
 	}

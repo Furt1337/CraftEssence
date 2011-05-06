@@ -6,11 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,10 +15,14 @@ import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
 
 import me.furt.CraftEssence.commands.*;
-import me.furt.CraftEssence.listener.ceBlockListener;
 import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
-import me.furt.CraftEssence.sql.ceConnector;
+import me.furt.CraftEssence.sql.HomeTable;
+import me.furt.CraftEssence.sql.KitItemsTable;
+import me.furt.CraftEssence.sql.KitTable;
+import me.furt.CraftEssence.sql.MailTable;
+import me.furt.CraftEssence.sql.WarpTable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -51,14 +50,13 @@ public class CraftEssence extends JavaPlugin {
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions;
 	public cePlayerListener cepl = new cePlayerListener(this);
-	public ceBlockListener cebl = new ceBlockListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
 
 	public void onEnable() {
 		registerEvents();
 		setupPermissions();
 		checkFiles();
-		sqlConnection();
+		setupDatabase();
 		addCommands();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " v" + pdfFile.getVersion()
@@ -182,12 +180,11 @@ public class CraftEssence extends JavaPlugin {
 	private void checkFiles() {
 		if (!this.getDataFolder().exists())
 			this.getDataFolder().mkdirs();
-		
+
 		if (!new File("plugins" + File.separator + "CraftEssence"
-					+ File.separator + "MobBlackList").isDirectory())
+				+ File.separator + "MobBlackList").isDirectory())
 			new File("plugins" + File.separator + "CraftEssence"
 					+ File.separator + "MobBlackList").mkdir();
-		
 
 		ceConfig.Load(getConfiguration());
 
@@ -236,40 +233,27 @@ public class CraftEssence extends JavaPlugin {
 				Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_KICK, this.cepl,
 				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_DAMAGE, this.cebl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACE, this.cebl,
-				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.ceel,
 				Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.CREATURE_SPAWN, this.ceel,
 				Event.Priority.Highest, this);
 	}
 
-	public void sqlConnection() {
-		Connection conn = ceConnector.createConnection();
-
-		if (conn == null) {
-			log.log(Level.SEVERE,
-					"[CraftEssence] Could not establish SQL connection. Disabling CraftEssence");
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		} else {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void setupDatabase() {
+	private void setupDatabase() {
 		try {
-			// getDatabase().find(HomeTable.class).findRowCount();
-			// getDatabase().find(WarpTable.class).findRowCount();
-			// getDatabase().find(MailTable.class).findRowCount();
-			// getDatabase().find(KitTable.class).findRowCount();
-			// getDatabase().find(KitItemsTable.class).findRowCount();
+			File ebeans = new File("ebean.properties");
+			if (!ebeans.exists()) {
+				try {
+					ebeans.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			getDatabase().find(HomeTable.class).findRowCount();
+			getDatabase().find(WarpTable.class).findRowCount();
+			getDatabase().find(MailTable.class).findRowCount();
+			getDatabase().find(KitTable.class).findRowCount();
+			getDatabase().find(KitItemsTable.class).findRowCount();
 		} catch (PersistenceException ex) {
 			System.out.println("[CraftEssence] Installing database.");
 			installDDL();
@@ -279,11 +263,11 @@ public class CraftEssence extends JavaPlugin {
 	@Override
 	public List<Class<?>> getDatabaseClasses() {
 		List<Class<?>> list = new ArrayList<Class<?>>();
-		// list.add(HomeTable.class);
-		// list.add(WarpTable.class);
-		// list.add(MailTable.class);
-		// list.add(KitTable.class);
-		// list.add(KitItemsTable.class);
+		list.add(HomeTable.class);
+		list.add(WarpTable.class);
+		list.add(MailTable.class);
+		list.add(KitTable.class);
+		list.add(KitItemsTable.class);
 		return list;
 	}
 
@@ -397,164 +381,60 @@ public class CraftEssence extends JavaPlugin {
 		return readMail(player.getName());
 	}
 
-	public List<String> readMail(String player) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String reciever = player;
+	public List<String> readMail(String reciever) {
 		ArrayList<String> mailarray = new ArrayList<String>();
-
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn
-					.prepareStatement("Select * FROM mail WHERE `reciever` = '"
-							+ reciever + "'");
-			rs = ps.executeQuery();
-			conn.commit();
-			while (rs.next()) {
-				mailarray.add(rs.getString("sender") + ": "
-						+ rs.getString("text"));
-			}
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-		} finally {
-			try {
-				if (ps != null) {
-					ps.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-				if (conn != null)
-					conn.close();
-			} catch (SQLException ex) {
-				CraftEssence.log.log(Level.SEVERE,
-						"[CraftEssence]: Find SQL Exception (on close)");
-			}
+		List<MailTable> mt = this.getDatabase().find(MailTable.class).where()
+				.ieq("reciever", reciever).findList();
+		for (MailTable m : mt) {
+			mailarray.add(m.getSender() + ": " + m.getMessage());
 		}
 		return mailarray;
 	}
 
-	public void sendMail(Player player, String string, String string2) {
-		Connection conn = null;
-		Statement stmt = null;
-		int count = 0;
-		try {
-			conn = ceConnector.getConnection();
-			stmt = conn.createStatement();
-			count += stmt.executeUpdate("INSERT INTO `mail`"
-					+ " (`sender`, `reciever`, `text`)" + " VALUES ('"
-					+ player.getName() + "', '" + string + "', '" + string2
-					+ "')");
-			stmt.close();
-			player.sendMessage(CraftEssence.premessage + "Mail sent");
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-			player.sendMessage(CraftEssence.premessage + "Mail error");
-		}
+	public void sendMail(Player player, String targetPlayer, String message) {
+		MailTable mt = new MailTable();
+		mt.setSender(player.getName());
+		mt.setReciever(targetPlayer);
+		mt.setMessage(message);
+		this.getDatabase().save(mt);
+		player.sendMessage(CraftEssence.premessage + "Mail sent");
 	}
 
 	public void clearMail(Player player) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		String query = "DELETE FROM `mail` WHERE `reciever` = '"
-				+ player.getName() + "'";
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn.prepareStatement(query);
-			ps.execute();
-			ps.close();
-			player.sendMessage(CraftEssence.premessage + "Mail deleted");
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-			player.sendMessage(CraftEssence.premessage + "Mail error");
-		}
+		List<MailTable> mt = this.getDatabase().find(MailTable.class).where()
+				.ieq("reciever", player.getName()).findList();
+		for (MailTable m : mt) {
+			if (m == null)
+				continue;
 
+			this.getDatabase().delete(m);
+		}
+		player.sendMessage(CraftEssence.premessage + "Mail deleted");
 	}
 
-	public boolean kitRank(Player player, String[] args) {
-		// String world = player.getWorld().getName();
-		// String rank = "";
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn.prepareStatement("Select * FROM kit WHERE `name` = '"
-					+ args[0] + "'");
-			rs = ps.executeQuery();
-			conn.commit();
-			while (rs.next()) {
-				// rank = rs.getString("rank");
-				return true;
-			}
-
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-			return false;
-		}
-		return false;
+	public boolean hasKitRank(Player player, String[] args) {
+		// TODO kitrank
+		return true;
 	}
 
-	public int kitID(Player player, String[] args) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	public ArrayList<String> getKit(Player player, String[] args) {
 		int id = 0;
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn.prepareStatement("Select * FROM kit WHERE `name` = '"
-					+ args[0] + "'");
-			rs = ps.executeQuery();
-			conn.commit();
-			while (rs.next()) {
-				id = rs.getInt("id");
-			}
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
+		KitTable kid = this.getDatabase().find(KitTable.class).where()
+				.ieq("name", args[0]).findUnique();
+		if (kid != null) {
+			id = kid.getId();
+		} else {
+			player.sendMessage("Kit not found.");
+			return null;
 		}
-		return id;
-	}
-
-	public ArrayList<String> getKit(Player player, Object kitID) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		ArrayList<String> itemarray = new ArrayList<String>();
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn
-					.prepareStatement("Select * FROM `kit_items` WHERE `id` = '"
-							+ kitID + "'");
-			rs = ps.executeQuery();
-			conn.commit();
-			while (rs.next()) {
-				itemarray.add(rs.getString("item") + " "
-						+ rs.getString("quanity"));
-			}
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-		} finally {
-			try {
-				if (ps != null) {
-					ps.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-				if (conn != null)
-					conn.close();
-			} catch (SQLException ex) {
-				CraftEssence.log.log(Level.SEVERE,
-						"[CraftEssence]: Find SQL Exception (on close)");
-			}
+
+		List<KitItemsTable> kt = this.getDatabase().find(KitItemsTable.class)
+				.where().eq("id", id).findList();
+		for (KitItemsTable k : kt) {
+			itemarray.add(k.getItem() + " " + k.getQuanity());
 		}
+
 		return itemarray;
 	}
 
@@ -563,36 +443,14 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public List<String> kitList(String player) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		ArrayList<String> namearray = new ArrayList<String>();
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn.prepareStatement("Select * FROM `kit`");
-			rs = ps.executeQuery();
-			conn.commit();
-			while (rs.next()) {
-				namearray.add(rs.getString("name"));
-			}
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-		} finally {
-			try {
-				if (ps != null) {
-					ps.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-				if (conn != null)
-					conn.close();
-			} catch (SQLException ex) {
-				CraftEssence.log.log(Level.SEVERE,
-						"[CraftEssence]: Find SQL Exception (on close)");
-			}
+
+		List<KitTable> kt = this.getDatabase().find(KitTable.class)
+				.select("name").findList();
+		for (KitTable k : kt) {
+			namearray.add(k.getName());
 		}
+
 		return namearray;
 	}
 

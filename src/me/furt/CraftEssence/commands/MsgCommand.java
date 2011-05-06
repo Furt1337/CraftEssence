@@ -31,7 +31,7 @@ public class MsgCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		String msg = plugin.message(args).replace(args[0], "");
+		String msg = plugin.message(args).replace(args[0], "").trim();
 		Player sendTo = plugin.playerMatch(args[0]);
 		
 		if (sendTo != null) {

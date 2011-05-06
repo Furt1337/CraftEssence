@@ -47,9 +47,8 @@ public class KitCommand implements CommandExecutor {
 			}
 		} else {
 			try {
-				if (plugin.kitRank(player, args) == true) {
-					for (String d : plugin.getKit(player,
-							plugin.kitID(player, args))) {
+				if (plugin.hasKitRank(player, args) == true) {
+					for (String d : plugin.getKit(player, args)) {
 						String[] parts = d.split("[^0-9]+", 2);
 						int id = Integer.parseInt(parts[0]);
 						int amount = parts.length > 1 ? Integer

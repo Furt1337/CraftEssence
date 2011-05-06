@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.avaje.ebean.validation.Length;
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
@@ -18,118 +17,111 @@ import com.avaje.ebean.validation.NotNull;
 public class HomeTable {
 	@Id
     private int id;
-	
-	@NotEmpty
-	@Length(max=30)
-	private String name;
-	
-	@NotEmpty
-	@Length(max=30)
-	private String world;
-	
-	@NotNull
-	private double x;
-	
-	@NotNull
-	private double y;
-	
-	@NotNull
-	private double z;
-	
-	@NotNull
-	private float pitch;
-	
-	@NotNull
-	private float yaw;
-	
+
+    @NotNull
+    private String playerName;
+
+    @NotNull
+    private double x;
+
+    @NotNull
+    private double y;
+
+    @NotNull
+    private double z;
+
+    @NotNull
+    private float pitch;
+
+    @NotNull
+    private float yaw;
+
+    @NotEmpty
+    private String worldName;
+
 	public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-	
-	public String getName() {
-		return name;
+		this.id = id;
 	}
-	
-	public void setName(String name) {
-		this.name = name;
+
+	public int getId() {
+		return id;
 	}
-	
-	public Player getPlayer() {
-		return Bukkit.getServer().getPlayer(name);
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
+	public String getPlayerName() {
+		return playerName;
 	}
 	
 	public void setPlayer(Player player) {
-		this.name = player.getName();
+		this.playerName = player.getName();
 	}
 	
-	public String getWorld() {
-		return world;
+	public Player getPlayer() {
+		return Bukkit.getServer().getPlayer(this.playerName);
 	}
-	
-	public void setWorld(String world) {
-		this.world = world;
+
+	public void setX(double x) {
+		this.x = x;
 	}
-	
+
 	public double getX() {
-        return x;
-    }
+		return x;
+	}
 
-    public void setX(double x) {
-        this.x = x;
-    }
+	public void setY(double y) {
+		this.y = y;
+	}
 
-    public double getY() {
-        return y;
-    }
+	public double getY() {
+		return y;
+	}
 
-    public void setY(double y) {
-        this.y = y;
-    }
+	public void setZ(double z) {
+		this.z = z;
+	}
 
-    public double getZ() {
-        return z;
-    }
+	public double getZ() {
+		return z;
+	}
 
-    public void setZ(double z) {
-        this.z = z;
-    }
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
+	}
 
-    public float getPitch() {
-        return pitch;
-    }
+	public float getPitch() {
+		return pitch;
+	}
 
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
-    }
+	public void setYaw(float yaw) {
+		this.yaw = yaw;
+	}
 
-    public float getYaw() {
-        return yaw;
-    }
+	public float getYaw() {
+		return yaw;
+	}
 
-    public void setYaw(float yaw) {
-        this.yaw = yaw;
-    }
+	public void setWorldName(String worldName) {
+		this.worldName = worldName;
+	}
+
+	public String getWorldName() {
+		return worldName;
+	}
     
     public void setLocation(Location location) {
-        this.world = location.getWorld().getName();
+        this.worldName = location.getWorld().getName();
         this.x = location.getX();
         this.y = location.getY();
         this.z = location.getZ();
         this.yaw = location.getYaw();
         this.pitch = location.getPitch();
-        
     }
 
     public Location getLocation() {
-        World wrld = Bukkit.getServer().getWorld(world);
-        return new Location(wrld, x, y, z, yaw, pitch);
+        World world = Bukkit.getServer().getWorld(this.worldName);
+        return new Location(world, this.x, this.y, this.z, this.yaw, this.pitch);
     }
-
-
-
 }

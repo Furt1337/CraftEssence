@@ -1,11 +1,8 @@
 package me.furt.CraftEssence.listener;
 
 import java.util.List;
-import java.util.Calendar;
-
 import me.furt.CraftEssence.CraftEssence;
-import me.furt.CraftEssence.ceConfig;
-import me.furt.CraftEssence.commands.SpawnCommand;
+import me.furt.CraftEssence.sql.WarpTable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -51,10 +48,16 @@ public class cePlayerListener extends PlayerListener {
 	@Override
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
+		String world = player.getWorld().getName();
 		Location loc = null;
-		loc = SpawnCommand.getSpawn(player);
-		if (loc.getX() == 0)
+		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
+				.ieq("name", "spwn").ieq("world", world).findUnique();
+		if (wt != null)
+			loc = wt.getLocation();
+
+		if (loc == null)
 			loc = player.getWorld().getSpawnLocation();
+
 		event.setRespawnLocation(loc);
 	}
 
@@ -157,19 +160,19 @@ public class cePlayerListener extends PlayerListener {
 		return lastPlayer;
 	}
 
-	public void afkRunner() {
+	/*private void afkRunner() {
 		long current = Calendar.getInstance().getTimeInMillis();
 		String[] afkList = CraftEssence.afk.toArray(new String[] {});
 		for (String list : afkList) {
 			String[] afkSplit = list.split(":");
 			long afkTime = Integer.parseInt(afkSplit[1]);
 			long timeDiff = current - afkTime;
-			if(timeDiff >= ceConfig.afkTimer) {
+			if (timeDiff >= ceConfig.afkTimer) {
 				Player player = plugin.getServer().getPlayer(afkSplit[0]);
 				player.kickPlayer("Kicked for being afk for too long.");
 				CraftEssence.afk.remove(list);
 			}
 		}
-		
-	}
+
+	}*/
 }

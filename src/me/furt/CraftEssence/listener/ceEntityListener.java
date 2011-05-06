@@ -5,21 +5,21 @@ import java.io.File;
 import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.World;
-import org.bukkit.craftbukkit.entity.CraftChicken;
-import org.bukkit.craftbukkit.entity.CraftCow;
-import org.bukkit.craftbukkit.entity.CraftCreeper;
-import org.bukkit.craftbukkit.entity.CraftGhast;
-import org.bukkit.craftbukkit.entity.CraftGiant;
-import org.bukkit.craftbukkit.entity.CraftPig;
-import org.bukkit.craftbukkit.entity.CraftPigZombie;
-import org.bukkit.craftbukkit.entity.CraftSheep;
-import org.bukkit.craftbukkit.entity.CraftSkeleton;
-import org.bukkit.craftbukkit.entity.CraftSlime;
-import org.bukkit.craftbukkit.entity.CraftSpider;
-import org.bukkit.craftbukkit.entity.CraftSquid;
-import org.bukkit.craftbukkit.entity.CraftWolf;
-import org.bukkit.craftbukkit.entity.CraftZombie;
+import org.bukkit.entity.Chicken;
+import org.bukkit.entity.Cow;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Ghast;
+import org.bukkit.entity.Giant;
+import org.bukkit.entity.Pig;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Slime;
+import org.bukkit.entity.Spider;
+import org.bukkit.entity.Squid;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
@@ -46,46 +46,46 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 		String[] mobList = plugin.getMobs(world.getName());
 		for (String creature : mobList) {
 			if (creature.equalsIgnoreCase("Chicken")) {
-				if (event.getEntity() instanceof CraftChicken)
+				if (event.getEntity() instanceof Chicken)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Cow")) {
-				if (event.getEntity() instanceof CraftCow)
+				if (event.getEntity() instanceof Cow)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Creeper")) {
-				if (event.getEntity() instanceof CraftCreeper)
+				if (event.getEntity() instanceof Creeper)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Ghast")) {
-				if (event.getEntity() instanceof CraftGhast)
+				if (event.getEntity() instanceof Ghast)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Giant")) {
-				if (event.getEntity() instanceof CraftGiant)
+				if (event.getEntity() instanceof Giant)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Pig")) {
-				if (event.getEntity() instanceof CraftPig)
+				if (event.getEntity() instanceof Pig)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("PigZombie")) {
-				if (event.getEntity() instanceof CraftPigZombie)
+				if (event.getEntity() instanceof PigZombie)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Sheep")) {
-				if (event.getEntity() instanceof CraftSheep)
+				if (event.getEntity() instanceof Sheep)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Skeleton")) {
-				if (event.getEntity() instanceof CraftSkeleton)
+				if (event.getEntity() instanceof Skeleton)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Slime")) {
-				if (event.getEntity() instanceof CraftSlime)
+				if (event.getEntity() instanceof Slime)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Spider")) {
-				if (event.getEntity() instanceof CraftSpider)
+				if (event.getEntity() instanceof Spider)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Squid")) {
-				if (event.getEntity() instanceof CraftSquid)
+				if (event.getEntity() instanceof Squid)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Wolf")) {
-				if (event.getEntity() instanceof CraftWolf)
+				if (event.getEntity() instanceof Wolf)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Zombie")) {
-				if (event.getEntity() instanceof CraftZombie)
+				if (event.getEntity() instanceof Zombie)
 					event.setCancelled(true);
 			}
 		}

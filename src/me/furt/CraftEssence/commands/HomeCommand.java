@@ -1,14 +1,7 @@
 package me.furt.CraftEssence.commands;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-
 import me.furt.CraftEssence.CraftEssence;
-import me.furt.CraftEssence.sql.ceConnector;
-
+import me.furt.CraftEssence.sql.HomeTable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -26,27 +19,41 @@ public class HomeCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (!plugin.isPlayer(sender)) {
-			sender.sendMessage(CraftEssence.premessage
-					+ "Cannot use this command from console.");
-			return true;
-		}
-		if (!CraftEssence.Permissions.has((Player) sender, "craftessence.home")) {
-			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
-			return true;
+		if (plugin.isPlayer(sender)) {
+			if (!CraftEssence.Permissions.has((Player) sender,
+					"craftessence.home")) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+		} else {
+			return false;
 		}
 
 		Player player = (Player) sender;
 
 		if (args.length == 0) {
-			player.teleport(this.getHome(player));
+			HomeTable home = plugin.getDatabase().find(HomeTable.class).where()
+					.ieq("playerName", player.getName())
+					.ieq("worldName", player.getWorld().getName()).findUnique();
+			if (home == null) {
+				sender.sendMessage(CraftEssence.premessage + "Home location not set.");
+				return true;
+			}
+			Location loc = home.getLocation();
+			player.teleport(loc);
 			player.sendMessage(CraftEssence.premessage + "Teleporting home...");
 			return true;
 		}
 
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("accept")) {
+				if (!CraftEssence.Permissions.has((Player) sender,
+						"craftessence.home.accept")) {
+					sender.sendMessage(ChatColor.YELLOW
+							+ "You to dont have proper permissions for that command.");
+					return true;
+				}
 				String[] homeArray = CraftEssence.homeInvite
 						.toArray(new String[] {});
 				for (String list : homeArray) {
@@ -54,7 +61,12 @@ public class HomeCommand implements CommandExecutor {
 					if (homeSplit[1].equalsIgnoreCase(player.getName()
 							.toLowerCase())) {
 						Player p = plugin.getServer().getPlayer(homeSplit[0]);
-						player.teleport(this.getHome(p));
+						HomeTable home = plugin.getDatabase()
+								.find(HomeTable.class).where()
+								.ieq("playerName", p.getName())
+								.ieq("worldName", p.getWorld().getName())
+								.findUnique();
+						player.teleport(home.getLocation());
 						sender.sendMessage(CraftEssence.premessage
 								+ "Teleporting to " + p.getDisplayName()
 								+ "'s home...");
@@ -63,7 +75,7 @@ public class HomeCommand implements CommandExecutor {
 					}
 				}
 				sender.sendMessage(CraftEssence.premessage
-								+ "Must be invited to a home to use this command.");
+						+ "Must be invited to a home to use this command.");
 				return true;
 			} else {
 				if (plugin.getServer().getPlayer(args[0]) != null) {
@@ -74,7 +86,11 @@ public class HomeCommand implements CommandExecutor {
 						return true;
 					}
 					Player p = plugin.getServer().getPlayer(args[0]);
-					player.teleport(this.getHome(p));
+					HomeTable home = plugin.getDatabase().find(HomeTable.class)
+							.where().ieq("playerName", p.getName())
+							.ieq("worldName", p.getWorld().getName())
+							.findUnique();
+					player.teleport(home.getLocation());
 					sender.sendMessage(CraftEssence.premessage
 							+ "Teleporting to " + p.getDisplayName()
 							+ "'s home...");
@@ -97,7 +113,8 @@ public class HomeCommand implements CommandExecutor {
 					return true;
 				}
 				Player p = plugin.getServer().getPlayer(args[1]);
-				CraftEssence.homeInvite.add(player.getName().toLowerCase() + ":" + p.getName().toLowerCase());
+				CraftEssence.homeInvite.add(player.getName().toLowerCase()
+						+ ":" + p.getName().toLowerCase());
 				p.sendMessage(CraftEssence.premessage
 						+ "You have been invited to " + player.getDisplayName()
 						+ "'s home type /home accept to teleport there.");
@@ -112,57 +129,4 @@ public class HomeCommand implements CommandExecutor {
 		}
 		return false;
 	}
-
-	public Location getHome(Player player) {
-		String world = player.getWorld().getName();
-		String getname = player.getName();
-		String homeq = "Select * FROM home WHERE `name` = '" + getname
-				+ "' AND `world` = '" + world + "'";
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		double x = 0;
-		double y = 0;
-		double z = 0;
-		float pitch = 0;
-		float yaw = 0;
-
-		try {
-			conn = ceConnector.getConnection();
-			ps = conn.prepareStatement(homeq);
-			rs = ps.executeQuery();
-			conn.commit();
-			while (rs.next()) {
-				x = rs.getDouble("x");
-				y = rs.getDouble("y");
-				z = rs.getDouble("z");
-				yaw = rs.getFloat("yaw");
-				pitch = rs.getFloat("pitch");
-
-			}
-		} catch (SQLException ex) {
-			CraftEssence.log.log(Level.SEVERE,
-					"[CraftEssence]: Find SQL Exception", ex);
-		} finally {
-			try {
-				if (ps != null) {
-					ps.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-				if (conn != null)
-					conn.close();
-			} catch (SQLException ex) {
-				CraftEssence.log.log(Level.SEVERE,
-						"[CraftEssence]: Find SQL Exception (on close)");
-			}
-		}
-		if (x != 0)
-			return new Location(player.getWorld(), x, y, z, yaw, pitch);
-
-		return player.getWorld().getSpawnLocation();
-	}
-
 }
