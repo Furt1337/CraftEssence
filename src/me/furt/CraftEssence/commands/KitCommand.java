@@ -53,8 +53,7 @@ public class KitCommand implements CommandExecutor {
 						int id = Integer.parseInt(parts[0]);
 						int amount = parts.length > 1 ? Integer
 								.parseInt(parts[1]) : 1;
-						player.getWorld().dropItem(player.getLocation(),
-								new ItemStack(id, amount));
+						player.getInventory().addItem(new ItemStack(id, amount));
 					}
 					player.sendMessage(CraftEssence.premessage + "Giving "
 							+ args[0].toLowerCase() + " kit.");
