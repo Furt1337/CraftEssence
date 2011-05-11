@@ -3,6 +3,7 @@ package me.furt.CraftEssence.listener;
 import java.io.File;
 
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.sql.UserTable;
 
 import org.bukkit.World;
 import org.bukkit.entity.Chicken;
@@ -94,7 +95,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 	public void onEntityDamage(EntityDamageEvent event) {
 		if ((event.getEntity() instanceof Player)) {
 			Player player = (Player) event.getEntity();
-			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
+			if (this.isGod(player)) {
 				int life = player.getHealth();
 				if (life != 20)
 					player.setHealth(20);
@@ -108,7 +109,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 		event.setCancelled(true);
 		if ((event.getEntity() instanceof Player)) {
 			Player player = (Player) event.getEntity();
-			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
+			if (this.isGod(player)) {
 				int life = player.getHealth();
 				if (life != 20)
 					player.setHealth(20);
@@ -121,7 +122,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if ((event.getEntity() instanceof Player)) {
 			Player player = (Player) event.getEntity();
-			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
+			if (this.isGod(player)) {
 				int life = player.getHealth();
 				if (life != 20)
 					player.setHealth(20);
@@ -134,7 +135,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 	public void onEntityDamageByProjectile(EntityDamageByProjectileEvent event) {
 		if ((event.getEntity() instanceof Player)) {
 			Player player = (Player) event.getEntity();
-			if (CraftEssence.godmode.contains(player.getName().toLowerCase())) {
+			if (this.isGod(player)) {
 				int life = player.getHealth();
 				if (life != 20)
 					player.setHealth(20);
@@ -152,6 +153,16 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 	@Override
 	public void setCancelled(boolean arg0) {
 
+	}
+	
+	public boolean isGod(Player player) {
+		String pName = player.getName();
+		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
+		.ieq("userName", pName).findUnique();
+		if (ut.isGod())
+			return true;
+		
+		return false;
 	}
 
 }

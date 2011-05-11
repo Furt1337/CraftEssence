@@ -3,7 +3,6 @@ package me.furt.CraftEssence.commands;
 import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.HomeTable;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,11 +36,11 @@ public class HomeCommand implements CommandExecutor {
 					.ieq("playerName", player.getName())
 					.ieq("worldName", player.getWorld().getName()).findUnique();
 			if (home == null) {
-				sender.sendMessage(CraftEssence.premessage + "Home location not set.");
+				sender.sendMessage(CraftEssence.premessage
+						+ "Home location not set.");
 				return true;
 			}
-			Location loc = home.getLocation();
-			player.teleport(loc);
+			player.teleport(home.getLocation());
 			player.sendMessage(CraftEssence.premessage + "Teleporting home...");
 			return true;
 		}

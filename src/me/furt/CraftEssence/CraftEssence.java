@@ -7,8 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,10 +19,13 @@ import javax.persistence.PersistenceException;
 import me.furt.CraftEssence.commands.*;
 import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
+import me.furt.CraftEssence.misc.AFKKickTask;
+import me.furt.CraftEssence.misc.AFKMarkerTask;
 import me.furt.CraftEssence.sql.HomeTable;
 import me.furt.CraftEssence.sql.KitItemsTable;
 import me.furt.CraftEssence.sql.KitTable;
 import me.furt.CraftEssence.sql.MailTable;
+import me.furt.CraftEssence.sql.UserTable;
 import me.furt.CraftEssence.sql.WarpTable;
 
 import org.bukkit.ChatColor;
@@ -45,6 +50,10 @@ public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> afk = new ArrayList<String>();
 	public static ArrayList<String> reply = new ArrayList<String>();
 	public static ArrayList<String> homeInvite = new ArrayList<String>();
+	public HashMap<String, Long> users = new HashMap<String, Long>();
+	private Timer etimer = new Timer();
+	private AFKKickTask afkKick;
+	private AFKMarkerTask afkMarker;
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
@@ -58,15 +67,32 @@ public class CraftEssence extends JavaPlugin {
 		checkFiles();
 		setupDatabase();
 		addCommands();
+		checkPlayers();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " v" + pdfFile.getVersion()
 				+ " is enabled!");
 	}
 
 	public void onDisable() {
+		etimer.cancel();
+		etimer = null;
+		afkMarker = null;
+		afkKick = null;
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " Disabled");
 
+	}
+
+	private void checkPlayers() {
+		try {
+			afkMarker = new AFKMarkerTask(this);
+			afkKick = new AFKKickTask(this);
+			etimer.schedule(afkMarker, 1000, 60000);
+			etimer.schedule(afkKick, 2000, 65000);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void addCommands() {
@@ -233,6 +259,8 @@ public class CraftEssence extends JavaPlugin {
 				Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_KICK, this.cepl,
 				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.cepl,
+				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.ceel,
 				Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.CREATURE_SPAWN, this.ceel,
@@ -254,6 +282,8 @@ public class CraftEssence extends JavaPlugin {
 			getDatabase().find(MailTable.class).findRowCount();
 			getDatabase().find(KitTable.class).findRowCount();
 			getDatabase().find(KitItemsTable.class).findRowCount();
+			getDatabase().find(UserTable.class).findRowCount();
+			// getDatabase().find(JailTable.class).findRowCount();
 		} catch (PersistenceException ex) {
 			System.out.println("[CraftEssence] Installing database.");
 			installDDL();
@@ -268,6 +298,8 @@ public class CraftEssence extends JavaPlugin {
 		list.add(MailTable.class);
 		list.add(KitTable.class);
 		list.add(KitItemsTable.class);
+		list.add(UserTable.class);
+		// list.add(JailTable.class);
 		return list;
 	}
 

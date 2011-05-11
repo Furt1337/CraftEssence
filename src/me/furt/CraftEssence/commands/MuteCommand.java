@@ -1,6 +1,7 @@
 package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.sql.UserTable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -28,25 +29,26 @@ public class MuteCommand implements CommandExecutor {
 		}
 		if (args.length == 0)
 			return false;
+		
 		if (plugin.playerMatch(args[0]) != null) {
-			if (CraftEssence.muteList.contains(args[0].toLowerCase())) {
-				CraftEssence.muteList.remove(args[0].toLowerCase());
+			Player player = plugin.getServer().getPlayer(args[0]);
+			String pName = player.getName();
+			UserTable ut = plugin.getDatabase().find(UserTable.class).where()
+					.ieq("userName", pName).findUnique();
+
+			if (ut.isMuted()) {
+				ut.setMuted(false);
 				plugin.getServer().broadcastMessage(
-						CraftEssence.premessage + args[0]
-								+ " has been unmuted.");
-				CraftEssence.log.info("[CraftEssence] " + args[0]
-						+ " has been unmuted.");
+						ChatColor.YELLOW + player.getDisplayName() + " has been unmuted.");
 			} else {
-				CraftEssence.muteList.add(args[0].toLowerCase());
+				ut.setMuted(true);
 				plugin.getServer().broadcastMessage(
-						CraftEssence.premessage + args[0] + " has been muted.");
-				CraftEssence.log.info("[CraftEssence] " + args[0]
-						+ " has been muted.");
+						ChatColor.YELLOW + player.getDisplayName() + " has been muted.");
 			}
+			plugin.getDatabase().save(ut);
+
 		} else {
-			if (plugin.isPlayer(sender))
-				sender.sendMessage("Player could not be found.");
-			CraftEssence.log.info("Player could not be found.");
+			sender.sendMessage("Player could not be found.");
 		}
 		return true;
 	}

@@ -1,6 +1,7 @@
 package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.sql.UserTable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -33,17 +34,21 @@ public class AFKCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		if (CraftEssence.afk.contains(player.getName().toLowerCase())) {
-			CraftEssence.afk.remove(player.getName().toLowerCase());
+		String pName = player.getName();
+		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
+				.ieq("userName", pName).findUnique();
+		if (ut.isAfk()) {
+			ut.setAfk(false);
 			plugin.getServer().broadcastMessage(
-					ChatColor.GRAY + "* " + player.getDisplayName()
-							+ " is no longer afk *");
+					ChatColor.YELLOW + player.getDisplayName()
+							+ " is no longer afk");
 		} else {
-			CraftEssence.afk.add(player.getName().toLowerCase());
+			ut.setAfk(true);
 			plugin.getServer().broadcastMessage(
-					ChatColor.GRAY + "* " + player.getDisplayName()
-							+ " is afk *");
+					ChatColor.YELLOW + player.getDisplayName()
+							+ " has been flaged afk");
 		}
+		plugin.getDatabase().save(ut);
 		return true;
 
 	}

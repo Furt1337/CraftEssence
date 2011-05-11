@@ -13,31 +13,31 @@ import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
 @Entity()
-@Table(name="ce_home")
+@Table(name = "ce_home")
 public class HomeTable {
 	@Id
-    private int id;
+	private int id;
 
-    @NotNull
-    private String playerName;
+	@NotNull
+	private String playerName;
 
-    @NotNull
-    private double x;
+	@NotNull
+	private double x;
 
-    @NotNull
-    private double y;
+	@NotNull
+	private double y;
 
-    @NotNull
-    private double z;
+	@NotNull
+	private double z;
 
-    @NotNull
-    private float pitch;
+	@NotNull
+	private float pitch;
 
-    @NotNull
-    private float yaw;
+	@NotNull
+	private float yaw;
 
-    @NotEmpty
-    private String worldName;
+	@NotEmpty
+	private String worldName;
 
 	public void setId(int id) {
 		this.id = id;
@@ -54,13 +54,13 @@ public class HomeTable {
 	public String getPlayerName() {
 		return playerName;
 	}
-	
+
 	public void setPlayer(Player player) {
 		this.playerName = player.getName();
 	}
-	
+
 	public Player getPlayer() {
-		return Bukkit.getServer().getPlayer(this.playerName);
+		return Bukkit.getServer().getPlayer(playerName);
 	}
 
 	public void setX(double x) {
@@ -110,18 +110,18 @@ public class HomeTable {
 	public String getWorldName() {
 		return worldName;
 	}
-    
-    public void setLocation(Location location) {
-        this.worldName = location.getWorld().getName();
-        this.x = location.getX();
-        this.y = location.getY();
-        this.z = location.getZ();
-        this.yaw = location.getYaw();
-        this.pitch = location.getPitch();
-    }
 
-    public Location getLocation() {
-        World world = Bukkit.getServer().getWorld(this.worldName);
-        return new Location(world, this.x, this.y, this.z, this.yaw, this.pitch);
-    }
+	public void setLocation(Location location) {
+		this.worldName = location.getWorld().getName();
+		this.x = location.getX();
+		this.y = location.getY();
+		this.z = location.getZ();
+		this.yaw = location.getYaw();
+		this.pitch = location.getPitch();
+	}
+
+	public Location getLocation() {
+		World world = Bukkit.getServer().getWorld(worldName);
+		return new Location(world, x, y, z, yaw, pitch);
+	}
 }
