@@ -44,10 +44,7 @@ import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class CraftEssence extends JavaPlugin {
-	public static ArrayList<String> muteList = new ArrayList<String>();
-	public static ArrayList<String> godmode = new ArrayList<String>();
 	public static ArrayList<String> prayList = new ArrayList<String>();
-	public static ArrayList<String> afk = new ArrayList<String>();
 	public static ArrayList<String> reply = new ArrayList<String>();
 	public static ArrayList<String> homeInvite = new ArrayList<String>();
 	public HashMap<String, Long> users = new HashMap<String, Long>();

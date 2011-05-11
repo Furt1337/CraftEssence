@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.sql.UserTable;
 
 public class MsgCommand implements CommandExecutor {
 	CraftEssence plugin;
@@ -55,7 +56,9 @@ public class MsgCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.YELLOW + "[To -> "
 						+ sendTo.getDisplayName() + "] " + ChatColor.WHITE
 						+ msg);
-				if (CraftEssence.afk.contains(sendTo.getName().toLowerCase()))
+				UserTable ut = plugin.getDatabase().find(UserTable.class).where()
+				.ieq("userName", sendTo.getName()).findUnique();
+				if (ut.isAfk())
 					player.sendMessage(ChatColor.YELLOW + sendTo.getName()
 							+ " is currently afk.");
 			}

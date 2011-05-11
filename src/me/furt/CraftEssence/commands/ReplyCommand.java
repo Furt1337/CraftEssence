@@ -1,6 +1,7 @@
 package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.sql.UserTable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -31,7 +32,9 @@ public class ReplyCommand implements CommandExecutor {
 						+ player.getDisplayName() + "] " + ChatColor.WHITE + msg);
 				player.sendMessage(ChatColor.YELLOW + "[To -> "
 						+ sendTo.getDisplayName() + "] " + ChatColor.WHITE + msg);
-				if (CraftEssence.afk.contains(sendTo.getName().toLowerCase()))
+				UserTable ut = plugin.getDatabase().find(UserTable.class).where()
+				.ieq("userName", sendTo.getName()).findUnique();
+				if (ut.isAfk())
 					player.sendMessage(ChatColor.YELLOW + sendTo.getName()
 							+ " is currently afk.");
 				//CraftEssence.reply.remove(sendTo.getName().toLowerCase() + ":" + player.getName().toLowerCase());
