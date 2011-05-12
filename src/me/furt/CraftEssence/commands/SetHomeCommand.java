@@ -34,12 +34,14 @@ public class SetHomeCommand implements CommandExecutor {
 		HomeTable home = plugin.getDatabase().find(HomeTable.class).where()
 				.ieq("playerName", player.getName())
 				.ieq("worldName", player.getWorld().getName()).findUnique();
+
 		if (home == null) {
 			home = new HomeTable();
 			home.setPlayer(player);
 		}
 		home.setLocation(((Player) sender).getLocation());
 		plugin.getDatabase().save(home);
+
 		player.sendMessage(CraftEssence.premessage
 				+ "Your home location is set.");
 		return true;

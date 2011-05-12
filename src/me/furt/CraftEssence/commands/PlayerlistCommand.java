@@ -54,8 +54,10 @@ public class PlayerlistCommand implements CommandExecutor {
 				online.append(online.length() == 0 ? ChatColor.GOLD
 						+ world.getName() + ChatColor.WHITE + ": " : ", ");
 				online.append(color + p.getDisplayName() + ChatColor.WHITE);
+				
+				sender.sendMessage(online.toString());
 			}
-			sender.sendMessage(online.toString());
+			
 
 		}
 		return true;

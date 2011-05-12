@@ -44,6 +44,7 @@ public class AFKCommand implements CommandExecutor {
 							+ " is no longer afk");
 		} else {
 			ut.setAfk(true);
+			ut.setAfkTime(System.currentTimeMillis());
 			plugin.getServer().broadcastMessage(
 					ChatColor.YELLOW + player.getDisplayName()
 							+ " has been flaged afk");

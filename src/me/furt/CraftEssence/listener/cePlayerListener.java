@@ -32,6 +32,7 @@ public class cePlayerListener extends PlayerListener {
 				.ieq("userName", pName).findUnique();
 		if (ut.isAfk()) {
 			ut.setAfk(false);
+			ut.setAfkTime(0);
 			plugin.getDatabase().save(ut);
 			plugin.getServer().broadcastMessage(
 					ChatColor.YELLOW + player.getDisplayName()
@@ -75,10 +76,12 @@ public class cePlayerListener extends PlayerListener {
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 				.ieq("userName", pName).findUnique();
 		ut.setOnline(false);
+		ut.setAfkTime(0);
 		if (ut.isGod()) {
 			ut.setGod(false);
 		}
-		event.setQuitMessage(ChatColor.YELLOW + ut.getDisplyName() + " has left the game");
+		event.setQuitMessage(ChatColor.YELLOW + ut.getDisplyName()
+				+ " has left the game");
 		plugin.getDatabase().save(ut);
 	}
 
@@ -103,6 +106,8 @@ public class cePlayerListener extends PlayerListener {
 
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
+		String pName = player.getName();
+
 		if (this.newPlayer(event)) {
 			Location loc = null;
 			WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
@@ -115,16 +120,28 @@ public class cePlayerListener extends PlayerListener {
 				loc = player.getWorld().getSpawnLocation();
 			player.teleport(loc);
 		}
-		String pName = player.getName();
+
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 				.ieq("userName", pName).findUnique();
+
 		if (ut.getLogins() <= 1)
 			plugin.getServer().broadcastMessage(
 					ChatColor.GOLD + "A new player has joined the server!");
+
 		player.setDisplayName(ut.getDisplyName());
-		event.setJoinMessage(ChatColor.YELLOW + player.getDisplayName() + " joined the game");
+
+		if (ut.isAfk()) {
+			ut.setAfk(false);
+			plugin.getDatabase().save(ut);
+		}
+
+		event.setJoinMessage(ChatColor.YELLOW + player.getDisplayName()
+				+ " joined the game");
+		
 		plugin.users.put(pName, (System.currentTimeMillis()));
+		
 		String[] motd = plugin.getMotd();
+		
 		if (motd == null || motd.length < 1) {
 			player.sendMessage(ChatColor.GRAY + "No Motd set.");
 		} else {
@@ -152,6 +169,7 @@ public class cePlayerListener extends PlayerListener {
 		}
 
 		List<String> mail = plugin.readMail(player);
+		
 		if (mail.isEmpty())
 			player.sendMessage(ChatColor.GRAY + "You have no new mail.");
 		else
@@ -162,15 +180,19 @@ public class cePlayerListener extends PlayerListener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		String pName = player.getName();
+		
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 				.ieq("userName", pName).findUnique();
+		
 		if (ut.isAfk()) {
 			ut.setAfk(false);
+			ut.setAfkTime(0);
 			plugin.getDatabase().save(ut);
 			plugin.getServer().broadcastMessage(
 					ChatColor.YELLOW + player.getDisplayName()
 							+ " is no longer afk");
 		}
+		
 		this.playerActive((PlayerEvent) event);
 	}
 
