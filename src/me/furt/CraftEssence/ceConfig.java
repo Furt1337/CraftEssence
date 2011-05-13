@@ -7,7 +7,7 @@ import org.bukkit.util.config.Configuration;
 public class ceConfig {
 	public static boolean prayer;
 	public static int prayAmount;
-	//public static long afkTimer;
+	public static long afkTimer;
 
 	static boolean Load(Configuration config) {
 		config.load();
@@ -16,6 +16,8 @@ public class ceConfig {
 			config.setProperty("prayer", true);
 		if (!keys.contains("prayerAmount"))
 			config.setProperty("prayerAmount", 3);
+		if(!keys.contains("afkTimer"))
+			config.setProperty("afkTimer", 5);
 		if (!config.save()) {
 			CraftEssence.log
 					.severe("[CraftEssence] Error while writing to config.yml");
@@ -24,7 +26,7 @@ public class ceConfig {
 
 		prayer = config.getBoolean("prayer", true);
 		prayAmount = config.getInt("prayAmount", 3);
-		//afkTimer = config.getInt("afkTimer", 3000);
+		afkTimer = config.getInt("afkTimer", 30000);
 		return true;
 	}
 

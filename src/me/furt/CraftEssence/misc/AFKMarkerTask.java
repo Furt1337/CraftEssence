@@ -19,7 +19,7 @@ public class AFKMarkerTask extends TimerTask {
 		Player[] players = plugin.getServer().getOnlinePlayers();
 		Player player;
 		String playerName;
-		long kickTime = System.currentTimeMillis() - 300000;
+		long kickTime = System.currentTimeMillis() - 120000;
 		for (int i = 0; (players.length - 1) >= i; i++) {
 			long afkTime = 0;
 			player = players[i];
