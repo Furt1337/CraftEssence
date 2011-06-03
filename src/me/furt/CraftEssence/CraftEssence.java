@@ -21,6 +21,7 @@ import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
 import me.furt.CraftEssence.misc.AFKKickTask;
 import me.furt.CraftEssence.misc.AFKMarkerTask;
+import me.furt.CraftEssence.misc.VoteTask;
 import me.furt.CraftEssence.sql.HomeTable;
 import me.furt.CraftEssence.sql.KitItemsTable;
 import me.furt.CraftEssence.sql.KitTable;
@@ -31,6 +32,7 @@ import me.furt.CraftEssence.sql.WarpTable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -48,15 +50,18 @@ public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> reply = new ArrayList<String>();
 	public static ArrayList<String> homeInvite = new ArrayList<String>();
 	public HashMap<String, Long> users = new HashMap<String, Long>();
+	public HashMap<String, String> vote = new HashMap<String, String>();
 	private Timer etimer = new Timer();
 	private AFKKickTask afkKick;
 	private AFKMarkerTask afkMarker;
+	private VoteTask voteTask;
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions;
 	public cePlayerListener cepl = new cePlayerListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
+	public boolean permEnabled;
 
 	public void onEnable() {
 		registerEvents();
@@ -78,6 +83,11 @@ public class CraftEssence extends JavaPlugin {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " Disabled");
 
+	}
+	
+	public void startVoteTimer(int time) {
+		voteTask = new VoteTask(this);
+		etimer.schedule(voteTask, time);
 	}
 
 	private void checkPlayers() {
@@ -191,13 +201,30 @@ public class CraftEssence extends JavaPlugin {
 		if (Permissions == null) {
 			if (test != null) {
 				Permissions = ((Permissions) test).getHandler();
+				this.permEnabled = true;
 
 			} else {
 				log.info("Permission system not detected, disabling CraftEssence");
 				this.getServer().getPluginManager().disablePlugin(this);
+				//log.info("[CraftEssence] Permission system not detected, using internal perm.");
+				//this.permEnabled = false;
 			}
 
 		}
+	}
+
+	public boolean hasPerm(CommandSender sender, Command cmd) {
+		if (this.permEnabled) {
+			if ((!sender.isOp()) && (sender instanceof Player)) {
+				Player p = (Player) sender;
+				return Permissions.has(p, "iConoTrade." + cmd);
+			}
+		} else if ((sender.isOp()) && (sender instanceof Player)) {
+			return true;
+		} else {
+			return false;
+		}
+		return true;
 	}
 
 	private void checkFiles() {
@@ -441,9 +468,15 @@ public class CraftEssence extends JavaPlugin {
 		player.sendMessage(CraftEssence.premessage + "Mail deleted");
 	}
 
-	public boolean hasKitRank(Player player, String[] args) {
-		// TODO kitrank
-		return true;
+	public boolean hasKitRank(Player player, String kitname) {
+		KitTable kid = this.getDatabase().find(KitTable.class).where()
+		.ieq("name", kitname).findUnique();
+		String userGroup = Permissions.getUserPermissionString(
+				player.getWorld().getName(), player.getName(), "group");
+		if(userGroup.equalsIgnoreCase(kid.getRank()))
+			return true;
+		
+		return false;
 	}
 
 	public ArrayList<String> getKit(Player player, String[] args) {

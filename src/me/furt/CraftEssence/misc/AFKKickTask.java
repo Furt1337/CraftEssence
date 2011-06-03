@@ -28,8 +28,8 @@ public class AFKKickTask extends TimerTask {
 					.ieq("userName", playerName).eq("afk", true).findUnique();
 			if (ut != null) {
 				lastMoved = ut.getAfkTime();
-				if (lastMoved < kickTime)
-					player.kickPlayer("'Auto-Kick' You were afk too long...");
+				if ((lastMoved < kickTime) && (!player.isOp()))
+					player.kickPlayer("Auto-Kick: You were afk too long...");
 			}
 		}
 	}
