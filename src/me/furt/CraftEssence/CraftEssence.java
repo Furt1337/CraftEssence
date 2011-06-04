@@ -84,7 +84,7 @@ public class CraftEssence extends JavaPlugin {
 		log.info(pdfFile.getName() + " Disabled");
 
 	}
-	
+
 	public void startVoteTimer(int time) {
 		voteTask = new VoteTask(this);
 		etimer.schedule(voteTask, time);
@@ -204,8 +204,8 @@ public class CraftEssence extends JavaPlugin {
 				this.permEnabled = true;
 
 			} else {
-				//log.info("Permission system not detected, disabling CraftEssence");
-				//this.getServer().getPluginManager().disablePlugin(this);
+				// log.info("Permission system not detected, disabling CraftEssence");
+				// this.getServer().getPluginManager().disablePlugin(this);
 				log.info("[CraftEssence] Permission plugin not detected, using internal permissions.");
 				this.permEnabled = false;
 			}
@@ -465,14 +465,18 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public boolean hasKitRank(Player player, String kitname) {
-		KitTable kid = this.getDatabase().find(KitTable.class).where()
-		.ieq("name", kitname).findUnique();
-		String userGroup = Permissions.getUserPermissionString(
-				player.getWorld().getName(), player.getName(), "group");
-		if(userGroup.equalsIgnoreCase(kid.getRank()))
-			return true;
-		
-		return false;
+		if (!this.permEnabled) {
+			KitTable kid = this.getDatabase().find(KitTable.class).where()
+					.ieq("name", kitname).findUnique();
+			String userGroup = Permissions.getUserPermissionString(player
+					.getWorld().getName(), player.getName(), "group");
+			if (userGroup.equalsIgnoreCase(kid.getRank()))
+				return true;
+
+			return false;
+		}
+
+		return true;
 	}
 
 	public ArrayList<String> getKit(Player player, String[] args) {
