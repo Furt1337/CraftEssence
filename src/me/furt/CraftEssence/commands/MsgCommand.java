@@ -19,15 +19,18 @@ public class MsgCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if ((plugin.isPlayer(sender)) && (args.length != 0)) {
-			if (!CraftEssence.Permissions.has((Player) sender,
-					"craftessence.msg")) {
+		if (plugin.isPlayer(sender)) {
+			if (!plugin.hasPerm(sender, command)) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
 			}
 		} else {
-			sender.sendMessage(CraftEssence.premessage + "I dunno who you are.");
+			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
+			return false;
+		}
+		
+		if (args.length == 0) {
 			return false;
 		}
 

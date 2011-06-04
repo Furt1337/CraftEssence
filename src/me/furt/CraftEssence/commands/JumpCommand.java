@@ -24,15 +24,15 @@ public class JumpCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender,
-					"craftessence.jump")) {
+			if ((!plugin.hasPerm(sender, command)) && (!sender.isOp())) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
 			}
-		}
-		if (!plugin.isPlayer(sender))
+		} else {
+			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
 			return false;
+		}
 
 		Player player = (Player) sender;
 		AimBlock aiming = new AimBlock(player);

@@ -10,8 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import me.furt.CraftEssence.CraftEssence;
 
 public class PardonCommand implements CommandExecutor {
@@ -25,14 +23,14 @@ public class PardonCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender,
-					"craftessence.pardon")) {
+			if ((!plugin.hasPerm(sender, command)) && (!sender.isOp())) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
 			}
 		}
-		if (args.length < 1) {
+		
+		if (args.length == 0) {
 			return false;
 		} else {
 			this.removeBan(args[0]);

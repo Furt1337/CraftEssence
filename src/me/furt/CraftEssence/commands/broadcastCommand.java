@@ -6,7 +6,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class BroadcastCommand implements CommandExecutor {
 	private final CraftEssence plugin;
@@ -19,9 +18,7 @@ public class BroadcastCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			Player player = (Player) sender;
-			if (!CraftEssence.Permissions.has(player,
-					"craftessence.broadcast")) {
+			if ((!plugin.hasPerm(sender, command)) && (!sender.isOp())) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;

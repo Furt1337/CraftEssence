@@ -19,13 +19,13 @@ public class HomeCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!CraftEssence.Permissions.has((Player) sender,
-					"craftessence.home")) {
+			if (!plugin.hasPerm(sender, command)) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
 			}
 		} else {
+			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
 			return false;
 		}
 

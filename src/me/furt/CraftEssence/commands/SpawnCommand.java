@@ -22,15 +22,15 @@ public class SpawnCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			Player player = (Player) sender;
-			if (!CraftEssence.Permissions.has(player, "craftessence.spawn")) {
+			if (!plugin.hasPerm(sender, command)) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
 			}
-		}
-		if (!plugin.isPlayer(sender))
+		} else {
+			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
 			return false;
+		}
 
 		Player player = (Player) sender;
 		String world = player.getWorld().getName();

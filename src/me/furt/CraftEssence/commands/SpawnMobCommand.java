@@ -6,6 +6,7 @@ import me.furt.CraftEssence.misc.Mob;
 import net.minecraft.server.EntitySlime;
 import net.minecraft.server.World;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,12 +24,19 @@ public class SpawnMobCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
+		if (plugin.isPlayer(sender)) {
+			if ((!plugin.hasPerm(sender, command)) && (!sender.isOp())) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+		} else {
+			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
+			return false;
+		}
+		
 		int[] ignore = { 8, 9 };
 		Player player = (Player) sender;
-		if (!CraftEssence.Permissions.has(player, "craftessence.spawnmob")) {
-			player.sendMessage("You do not have permission to use that command.");
-			return true;
-		}
 		if (0 < args.length && args.length < 3) {
 			String[] split1 = args[0].split(":");
 			String[] split0 = new String[1];

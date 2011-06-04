@@ -204,10 +204,10 @@ public class CraftEssence extends JavaPlugin {
 				this.permEnabled = true;
 
 			} else {
-				log.info("Permission system not detected, disabling CraftEssence");
-				this.getServer().getPluginManager().disablePlugin(this);
-				//log.info("[CraftEssence] Permission system not detected, using internal perm.");
-				//this.permEnabled = false;
+				//log.info("Permission system not detected, disabling CraftEssence");
+				//this.getServer().getPluginManager().disablePlugin(this);
+				log.info("[CraftEssence] Permission plugin not detected, using internal permissions.");
+				this.permEnabled = false;
 			}
 
 		}
@@ -217,12 +217,8 @@ public class CraftEssence extends JavaPlugin {
 		if (this.permEnabled) {
 			if ((!sender.isOp()) && (sender instanceof Player)) {
 				Player p = (Player) sender;
-				return Permissions.has(p, "iConoTrade." + cmd);
+				return Permissions.has(p, "craftessence." + cmd);
 			}
-		} else if ((sender.isOp()) && (sender instanceof Player)) {
-			return true;
-		} else {
-			return false;
 		}
 		return true;
 	}

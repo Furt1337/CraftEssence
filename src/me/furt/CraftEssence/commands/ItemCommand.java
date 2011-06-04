@@ -20,18 +20,15 @@ public class ItemCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			Player player = (Player) sender;
-			if (!CraftEssence.Permissions.has(player, "craftessence.item")) {
+			if ((!plugin.hasPerm(sender, command)) && (!sender.isOp())) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
 			}
+		} else {
+			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
+			return false;
 		}
-		if (!plugin.isPlayer(sender))
-			return false;
-
-		if (args.length == 0)
-			return false;
 
 		Player player = (Player) sender;
 		String[] itemList = plugin.itemList();
