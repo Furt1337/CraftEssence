@@ -8,6 +8,7 @@ public class ceConfig {
 	public static boolean prayer;
 	public static int prayAmount;
 	public static long afkTimer;
+	//public static boolean autoUpdate;
 
 	static boolean Load(Configuration config) {
 		config.load();
@@ -18,6 +19,8 @@ public class ceConfig {
 			config.setProperty("prayerAmount", 3);
 		if(!keys.contains("afkTimer"))
 			config.setProperty("afkTimer", 5);
+		//if(!keys.contains("autoUpdate"))
+			//config.setProperty("autoUpdate", false);
 		if (!config.save()) {
 			CraftEssence.log
 					.severe("[CraftEssence] Error while writing to config.yml");
@@ -27,6 +30,7 @@ public class ceConfig {
 		prayer = config.getBoolean("prayer", true);
 		prayAmount = config.getInt("prayAmount", 3);
 		afkTimer = config.getInt("afkTimer", 30000);
+		//autoUpdate = config.getBoolean("autoUpdate", false);
 		return true;
 	}
 

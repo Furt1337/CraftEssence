@@ -35,10 +35,10 @@ public class SpawnCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		String world = player.getWorld().getName();
 		Location loc = null;
-		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
-				.ieq("name", "spwn").ieq("world", world).findUnique();
-		if (wt != null)
-			loc = wt.getLocation();
+		WarpTable sl = plugin.getDatabase().find(WarpTable.class).where()
+				.ieq("name", world + "-spwn").findUnique();
+		if (sl != null)
+			loc = sl.getLocation();
 
 		if (loc == null)
 			loc = player.getWorld().getSpawnLocation();

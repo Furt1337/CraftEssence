@@ -4,7 +4,6 @@ import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.WarpTable;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,26 +37,17 @@ public class SetSpawnCommand implements CommandExecutor {
 		int y = (int) player.getLocation().getY();
 		int z = (int) player.getLocation().getZ();
 		world.setSpawnLocation(x, y, z);
-		this.setSpawn(player.getLocation());
-		player.sendMessage(CraftEssence.premessage + "Spawn position modified.");
-		return true;
-	}
-
-	public void setSpawn(Location spawn) {
-		// double x = spawn.getX();
-		// double y = spawn.getY();
-		// double z = spawn.getZ();
-		// float yaw = spawn.getYaw();
-		// float pitch = spawn.getPitch();
-		String wname = spawn.getWorld().getName();
-
-		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
-				.ieq("name", "spwn").ieq("world", wname).findUnique();
+		
+		String wname = player.getWorld().getName();
+		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where().ieq("name", wname + "-spwn").findUnique();
 		if (wt == null) {
 			wt = new WarpTable();
-			wt.setName("spwn");
+			wt.setName(wname + "-spwn");
 		}
-		wt.setLocation(spawn);
+		
+		wt.setLocation(player.getLocation());
 		plugin.getDatabase().save(wt);
+		player.sendMessage(CraftEssence.premessage + "Spawn position modified.");
+		return true;
 	}
 }

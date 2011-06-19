@@ -204,8 +204,6 @@ public class CraftEssence extends JavaPlugin {
 				this.permEnabled = true;
 
 			} else {
-				// log.info("Permission system not detected, disabling CraftEssence");
-				// this.getServer().getPluginManager().disablePlugin(this);
 				log.info("[CraftEssence] Permission plugin not detected, using internal permissions.");
 				this.permEnabled = false;
 			}
@@ -466,11 +464,11 @@ public class CraftEssence extends JavaPlugin {
 
 	public boolean hasKitRank(Player player, String kitname) {
 		if (!this.permEnabled) {
-			KitTable kid = this.getDatabase().find(KitTable.class).where()
+			KitTable kit = this.getDatabase().find(KitTable.class).where()
 					.ieq("name", kitname).findUnique();
-			String userGroup = Permissions.getUserPermissionString(player
-					.getWorld().getName(), player.getName(), "group");
-			if (userGroup.equalsIgnoreCase(kid.getRank()))
+			String userGroup = Permissions.getGroupProperName(player.getWorld()
+					.getName(), player.getName());
+			if (userGroup.equalsIgnoreCase(kit.getRank()))
 				return true;
 
 			return false;
@@ -481,10 +479,10 @@ public class CraftEssence extends JavaPlugin {
 
 	public ArrayList<String> getKit(Player player, String[] args) {
 		int id = 0;
-		KitTable kid = this.getDatabase().find(KitTable.class).where()
+		KitTable kit = this.getDatabase().find(KitTable.class).where()
 				.ieq("name", args[0]).findUnique();
-		if (kid != null) {
-			id = kid.getId();
+		if (kit != null) {
+			id = kit.getId();
 		} else {
 			player.sendMessage("Kit not found.");
 			return null;
@@ -519,13 +517,13 @@ public class CraftEssence extends JavaPlugin {
 	public String getPrefix(Player player) {
 		World world = player.getWorld();
 		if (Permissions != null) {
-			String userPrefix = Permissions.getUserPermissionString(
-					world.getName(), player.getName(), "prefix");
+			String userPrefix = Permissions.getUserPrefix(world.getName(),
+					player.getName());
 			if ((userPrefix != null) && (!userPrefix.isEmpty())) {
 				return userPrefix;
 			}
 
-			String group = Permissions.getGroup(world.getName(),
+			String group = Permissions.getGroupProperName(world.getName(),
 					player.getName());
 			if (group == null) {
 				CraftEssence.log.log(Level.SEVERE,
@@ -533,8 +531,9 @@ public class CraftEssence extends JavaPlugin {
 								+ player.getName());
 				return null;
 			}
-			String groupPrefix = Permissions.getGroupPrefix(world.getName(),
-					group);
+
+			String groupPrefix = Permissions.getGroupRawPrefix(world.getName(),
+					player.getName());
 			return groupPrefix;
 		}
 		CraftEssence.log

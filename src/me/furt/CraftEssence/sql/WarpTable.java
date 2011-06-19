@@ -22,23 +22,22 @@ public class WarpTable {
 	private String name;
 	
 	@NotEmpty
-	@Length(max=30)
 	private String world;
 	
 	@NotNull
-	private double x;
+	private int x;
 	
 	@NotNull
-	private double y;
+	private int y;
 	
 	@NotNull
-	private double z;
+	private int z;
 	
 	@NotNull
-	private float pitch;
+	private int pitch;
 	
 	@NotNull
-	private float yaw;
+	private int yaw;
 	
 	public void setId(int id) {
         this.id = id;
@@ -64,53 +63,53 @@ public class WarpTable {
 		this.world = world;
 	}
 	
-	public double getX() {
+	public int getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(int y) {
         this.y = y;
     }
 
-    public double getZ() {
+    public int getZ() {
         return z;
     }
 
-    public void setZ(double z) {
+    public void setZ(int z) {
         this.z = z;
     }
 
-    public float getPitch() {
+    public int getPitch() {
         return pitch;
     }
 
-    public void setPitch(float pitch) {
+    public void setPitch(int pitch) {
         this.pitch = pitch;
     }
 
-    public float getYaw() {
+    public int getYaw() {
         return yaw;
     }
 
-    public void setYaw(float yaw) {
+    public void setYaw(int yaw) {
         this.yaw = yaw;
     }
     
     public void setLocation(Location location) {
         this.world = location.getWorld().getName();
-        this.x = location.getX();
-        this.y = location.getY();
-        this.z = location.getZ();
-        this.yaw = location.getYaw();
-        this.pitch = location.getPitch();
+        this.x = (int) location.getX();
+        this.y = (int) location.getY();
+        this.z = (int) location.getZ();
+        this.yaw = (int) location.getYaw();
+        this.pitch = (int) location.getPitch();
         
     }
 
