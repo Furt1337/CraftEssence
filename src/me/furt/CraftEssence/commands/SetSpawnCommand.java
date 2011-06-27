@@ -21,7 +21,7 @@ public class SetSpawnCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, command)) && (!sender.isOp())) {
+			if ((!plugin.hasPerm(sender, "setspawn")) && (!sender.isOp())) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -40,6 +40,11 @@ public class SetSpawnCommand implements CommandExecutor {
 		
 		String wname = player.getWorld().getName();
 		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where().ieq("name", wname + "-spwn").findUnique();
+		if (wt != null) {
+			player.sendMessage(CraftEssence.premessage
+					+ "Spawn location is already set.");
+			return true;
+		}
 		if (wt == null) {
 			wt = new WarpTable();
 			wt.setName(wname + "-spwn");

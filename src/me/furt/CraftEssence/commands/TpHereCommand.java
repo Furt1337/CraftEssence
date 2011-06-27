@@ -19,7 +19,7 @@ public class TpHereCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, command)) && (!sender.isOp())) {
+			if ((!plugin.hasPerm(sender, "tphere")) && (!sender.isOp())) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -47,7 +47,7 @@ public class TpHereCommand implements CommandExecutor {
 				Player p = this.plugin.getServer().getPlayer(args[0]);
 				p.teleport(player);
 				sender.sendMessage(CraftEssence.premessage + "Teleporting "
-						+ player.getDisplayName() + " to " + p.getName() + ".");
+						+ p.getName() + " to " + player.getDisplayName() + ".");
 				return true;
 			}
 		}

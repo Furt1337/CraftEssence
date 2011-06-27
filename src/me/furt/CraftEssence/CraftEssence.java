@@ -32,7 +32,6 @@ import me.furt.CraftEssence.sql.WarpTable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -71,8 +70,8 @@ public class CraftEssence extends JavaPlugin {
 		addCommands();
 		checkPlayers();
 		PluginDescriptionFile pdfFile = this.getDescription();
-		log.info(pdfFile.getName() + " v" + pdfFile.getVersion()
-				+ " is enabled!");
+		log.info("[" + pdfFile.getName() + "] v" + pdfFile.getVersion()
+				+ " loaded");
 	}
 
 	public void onDisable() {
@@ -211,11 +210,11 @@ public class CraftEssence extends JavaPlugin {
 		}
 	}
 
-	public boolean hasPerm(CommandSender sender, Command cmd) {
+	public boolean hasPerm(CommandSender sender, String label) {
 		if (this.permEnabled) {
 			if ((!sender.isOp()) && (sender instanceof Player)) {
 				Player p = (Player) sender;
-				return Permissions.has(p, "craftessence." + cmd);
+				return Permissions.has(p, "craftessence." + label);
 			}
 		}
 		return true;

@@ -22,7 +22,7 @@ public class SpawnCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!plugin.hasPerm(sender, command)) {
+			if (!plugin.hasPerm(sender, "spawn")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -37,11 +37,11 @@ public class SpawnCommand implements CommandExecutor {
 		Location loc = null;
 		WarpTable sl = plugin.getDatabase().find(WarpTable.class).where()
 				.ieq("name", world + "-spwn").findUnique();
-		if (sl != null)
+		if (sl != null) {
 			loc = sl.getLocation();
-
-		if (loc == null)
+		} else {
 			loc = player.getWorld().getSpawnLocation();
+		}
 
 		player.teleport(loc);
 		sender.sendMessage(CraftEssence.premessage + "Returned to spawn.");

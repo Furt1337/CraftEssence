@@ -20,7 +20,7 @@ public class SetHomeCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
-			if (!plugin.hasPerm(sender, command)) {
+			if (!plugin.hasPerm(sender, "sethome")) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You to dont have proper permissions for that command.");
 				return true;
@@ -34,7 +34,11 @@ public class SetHomeCommand implements CommandExecutor {
 		HomeTable home = plugin.getDatabase().find(HomeTable.class).where()
 				.ieq("playerName", player.getName())
 				.ieq("worldName", player.getWorld().getName()).findUnique();
-
+		if (home != null) {
+			player.sendMessage(CraftEssence.premessage
+					+ "Your home location is already set.");
+			return true;
+		}
 		if (home == null) {
 			home = new HomeTable();
 			home.setPlayer(player);
