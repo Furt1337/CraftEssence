@@ -19,7 +19,6 @@ public class PardonCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
@@ -35,7 +34,7 @@ public class PardonCommand implements CommandExecutor {
 		} else {
 			this.removeBan(args[0]);
 			plugin.getServer().broadcastMessage(
-					"§6" + args[0] + " has been pardoned.");
+					"ï¿½6" + args[0] + " has been pardoned.");
 			CraftEssence.log.info(args[0] + " has been pardoned.");
 			return true;
 		}

@@ -21,7 +21,6 @@ public class BanCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
@@ -44,7 +43,7 @@ public class BanCommand implements CommandExecutor {
 		if (p == null || !p.isOnline()) {
 			this.addBan(args[0]);
 			plugin.getServer().broadcastMessage(
-					"§6" + args[0] + " has been banned.");
+					"ï¿½6" + args[0] + " has been banned.");
 			CraftEssence.log.info("[CraftEssence] " + args[0]
 					+ " has been banned.");
 			return true;
@@ -52,7 +51,7 @@ public class BanCommand implements CommandExecutor {
 			this.addBan(args[0]);
 			p.kickPlayer("You have been banned, reason:" + msg);
 			plugin.getServer().broadcastMessage(
-					"§6" + args[0] + " has been banned.");
+					"ï¿½6" + args[0] + " has been banned.");
 			CraftEssence.log.info("[CraftEssence] " + args[0]
 					+ " has been banned.");
 			return true;

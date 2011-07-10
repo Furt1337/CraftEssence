@@ -18,7 +18,6 @@ public class PlayerlistCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
@@ -50,7 +49,7 @@ public class PlayerlistCommand implements CommandExecutor {
 				if (color == null) {
 					color = ChatColor.WHITE.toString();
 				} else {
-					color = color.replaceAll("(&([a-f0-9]))", "§$2");
+					color = color.replaceAll("(&([a-f0-9]))", "ï¿½$2");
 				}
 
 				UserTable ac = plugin.getDatabase().find(UserTable.class)

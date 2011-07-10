@@ -15,7 +15,6 @@ public class KickCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (plugin.isPlayer(sender)) {
@@ -51,7 +50,7 @@ public class KickCommand implements CommandExecutor {
 				Player p = plugin.getServer().getPlayer(args[0]);
 				p.kickPlayer("You have been kicked, reason:" + msg);
 				plugin.getServer().broadcastMessage(
-						"§6" + p.getName() + " was kicked.");
+						"ï¿½6" + p.getName() + " was kicked.");
 				CraftEssence.log.info(p.getName()
 						+ " has been kicked.");
 			}
