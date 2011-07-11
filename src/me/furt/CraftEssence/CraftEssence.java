@@ -49,7 +49,8 @@ public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> reply = new ArrayList<String>();
 	public static ArrayList<String> homeInvite = new ArrayList<String>();
 	public HashMap<String, Long> users = new HashMap<String, Long>();
-	public HashMap<String, String> vote = new HashMap<String, String>();
+	public String vote = null;
+	public HashMap<String, String> vuser = new HashMap<String, String>();
 	private Timer etimer = new Timer();
 	private AFKKickTask afkKick;
 	private AFKMarkerTask afkMarker;
@@ -135,7 +136,10 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("top").setExecutor(new TopCommand(this));
 		getCommand("tp").setExecutor(new TpComand(this));
 		getCommand("tphere").setExecutor(new TpHereCommand(this));
+		getCommand("ceuser").setExecutor(new UserCommand(this));
+		getCommand("vote").setExecutor(new VoteCommand(this));
 		getCommand("warp").setExecutor(new WarpCommand(this));
+		getCommand("who").setExecutor(new WhoCommand(this));
 		getCommand("worldlist").setExecutor(new WorldListCommand(this));
 	}
 
@@ -545,7 +549,7 @@ public class CraftEssence extends JavaPlugin {
 		ArrayList<String> moblist = new ArrayList<String>();
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(
-					getDataFolder() + File.separator + "MobBlacklist"
+					getDataFolder() + File.separator + "MobBlackList"
 							+ File.separator + world + ".txt"));
 			String str;
 			while ((str = in.readLine()) != null) {

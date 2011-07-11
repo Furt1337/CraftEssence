@@ -48,7 +48,7 @@ commands:
       - sm
     description: Spawns a creature by player
     usage: |
-           /<command> [mob:size] [amount]
+           /<command> [creature] [amount]
   spawn:
     description: Teleports player to spawn area
     usage: |
@@ -163,3 +163,15 @@ commands:
     description: Mutes player so that they cannot talk in chat
     usage: |
            /<command> [player]
+  vote:
+    description: Players are able to vote on different things
+    usage: |
+           /<command> [player]
+  who:
+    description: Displays player stats
+    usage: |
+           /<command> [player]
+  ceuser:
+    description: Allows a user to change various player settings
+    usage: |
+           /<command> [player] rename [name]
