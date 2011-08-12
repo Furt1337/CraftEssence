@@ -38,8 +38,7 @@ public class SupportCommand implements CommandExecutor {
 		} else {
 			String msg = plugin.message(args);
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (!CraftEssence.Permissions.has((Player) sender,
-						"craftessence.support.op")) {
+				if (!p.hasPermission("craftessence.support.op")) {
 					continue;
 				}
 				p.sendMessage(ChatColor.RED + "[Support]" + ChatColor.GRAY

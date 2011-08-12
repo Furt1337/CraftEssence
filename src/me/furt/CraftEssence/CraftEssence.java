@@ -35,14 +35,10 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
-
-import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> prayList = new ArrayList<String>();
@@ -58,14 +54,12 @@ public class CraftEssence extends JavaPlugin {
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
 			+ ChatColor.YELLOW;
 	public static final Logger log = Logger.getLogger("Minecraft");
-	public static PermissionHandler Permissions;
 	public cePlayerListener cepl = new cePlayerListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
 	public boolean permEnabled;
 
 	public void onEnable() {
 		registerEvents();
-		setupPermissions();
 		checkFiles();
 		setupDatabase();
 		addCommands();
@@ -197,28 +191,12 @@ public class CraftEssence extends JavaPlugin {
 		return lastPlayer;
 	}
 
-	private void setupPermissions() {
-		Plugin test = this.getServer().getPluginManager()
-				.getPlugin("Permissions");
-
-		if (Permissions == null) {
-			if (test != null) {
-				Permissions = ((Permissions) test).getHandler();
-				this.permEnabled = true;
-
-			} else {
-				log.info("[CraftEssence] Permission plugin not detected, using internal permissions.");
-				this.permEnabled = false;
-			}
-
-		}
-	}
-
 	public boolean hasPerm(CommandSender sender, String label) {
 		if (this.permEnabled) {
 			if ((!sender.isOp()) && (sender instanceof Player)) {
 				Player p = (Player) sender;
-				return Permissions.has(p, "craftessence." + label);
+				//return Permissions.has(p, "craftessence." + label);
+				return p.hasPermission("craftessence." + label);
 			}
 		}
 		return true;
@@ -469,8 +447,7 @@ public class CraftEssence extends JavaPlugin {
 		if (!this.permEnabled) {
 			KitTable kit = this.getDatabase().find(KitTable.class).where()
 					.ieq("name", kitname).findUnique();
-			String userGroup = Permissions.getGroupProperName(player.getWorld()
-					.getName(), player.getName());
+			String userGroup = "";
 			if (userGroup.equalsIgnoreCase(kit.getRank()))
 				return true;
 
@@ -519,24 +496,21 @@ public class CraftEssence extends JavaPlugin {
 
 	public String getPrefix(Player player) {
 		World world = player.getWorld();
-		if (Permissions != null) {
-			String userPrefix = Permissions.getUserPrefix(world.getName(),
-					player.getName());
+		if (world != null) {
+			String userPrefix = "";
 			if ((userPrefix != null) && (!userPrefix.isEmpty())) {
 				return userPrefix;
 			}
 
-			String group = Permissions.getGroupProperName(world.getName(),
-					player.getName());
-			if (group == null) {
+			String group = "";
+			if (group == "") {
 				CraftEssence.log.log(Level.SEVERE,
 						"[CraftEssence] Group cannot be found for player: "
 								+ player.getName());
 				return null;
 			}
 
-			String groupPrefix = Permissions.getGroupRawPrefix(world.getName(),
-					player.getName());
+			String groupPrefix = "";
 			return groupPrefix;
 		}
 		CraftEssence.log

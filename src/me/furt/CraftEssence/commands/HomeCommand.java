@@ -47,8 +47,7 @@ public class HomeCommand implements CommandExecutor {
 
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("accept")) {
-				if (!CraftEssence.Permissions.has((Player) sender,
-						"craftessence.home.accept")) {
+				if (!player.hasPermission("craftessence.home.accept")) {
 					sender.sendMessage(ChatColor.YELLOW
 							+ "You to dont have proper permissions for that command.");
 					return true;
@@ -78,8 +77,7 @@ public class HomeCommand implements CommandExecutor {
 				return true;
 			} else {
 				if (plugin.getServer().getPlayer(args[0]) != null) {
-					if (!CraftEssence.Permissions.has((Player) sender,
-							"craftessence.home.admin")) {
+					if (!player.hasPermission("craftessence.home.admin")) {
 						sender.sendMessage(ChatColor.YELLOW
 								+ "You to dont have proper permissions for that command.");
 						return true;
@@ -105,8 +103,7 @@ public class HomeCommand implements CommandExecutor {
 		if (args.length == 2) {
 			if ((args[0].equalsIgnoreCase("invite"))
 					&& (plugin.getServer().getPlayer(args[1]) != null)) {
-				if (!CraftEssence.Permissions.has((Player) sender,
-						"craftessence.home.invite")) {
+				if (!player.hasPermission("craftessence.home.invite")) {
 					sender.sendMessage(ChatColor.YELLOW
 							+ "You to dont have proper permissions for that command.");
 					return true;
