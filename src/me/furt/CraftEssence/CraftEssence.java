@@ -195,7 +195,6 @@ public class CraftEssence extends JavaPlugin {
 		if (this.permEnabled) {
 			if ((!sender.isOp()) && (sender instanceof Player)) {
 				Player p = (Player) sender;
-				//return Permissions.has(p, "craftessence." + label);
 				return p.hasPermission("craftessence." + label);
 			}
 		}
@@ -492,31 +491,6 @@ public class CraftEssence extends JavaPlugin {
 		}
 
 		return namearray;
-	}
-
-	public String getPrefix(Player player) {
-		World world = player.getWorld();
-		if (world != null) {
-			String userPrefix = "";
-			if ((userPrefix != null) && (!userPrefix.isEmpty())) {
-				return userPrefix;
-			}
-
-			String group = "";
-			if (group == "") {
-				CraftEssence.log.log(Level.SEVERE,
-						"[CraftEssence] Group cannot be found for player: "
-								+ player.getName());
-				return null;
-			}
-
-			String groupPrefix = "";
-			return groupPrefix;
-		}
-		CraftEssence.log
-				.log(Level.SEVERE,
-						"[CraftEssence] Permissions resulted in null for prefix function");
-		return null;
 	}
 
 	public String[] getMobs(String world) {

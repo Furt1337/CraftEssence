@@ -88,7 +88,6 @@ public class cePlayerListener extends PlayerListener {
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String pName = player.getName();
-		String prefixData = this.plugin.getPrefix(player);
 		this.playerActive(event);
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 				.ieq("userName", pName).findUnique();
@@ -97,11 +96,7 @@ public class cePlayerListener extends PlayerListener {
 					+ "No one can hear you because your muted.");
 			event.setCancelled(true);
 		}
-		if (prefixData != null) {
-			String prefix = prefixData.replaceAll("(&([a-f0-9]))", "§$2");
-			event.setFormat(event.getFormat().replace("%1$s",
-					prefix + player.getDisplayName() + ChatColor.WHITE));
-		}
+		event.setFormat(event.getFormat().replace("%1$s", player.getDisplayName()));
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) {

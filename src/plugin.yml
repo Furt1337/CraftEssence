@@ -3,7 +3,7 @@ main: me.furt.CraftEssence.CraftEssence
 version: 2.0
 author: furt
 database: true
-description: A general plugin with all commands from hMod
+description: A general plugin with all basic commands needed.
 commands:
   reply:
     aliases:
