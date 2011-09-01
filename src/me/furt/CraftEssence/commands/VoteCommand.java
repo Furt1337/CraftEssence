@@ -1,6 +1,7 @@
 package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.ceConfig;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -19,6 +20,11 @@ public class VoteCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
+		if (ceConfig.enableVote == false) {
+			sender.sendMessage(CraftEssence.premessage
+					+ "Voting is currently disabled.");
+			return true;
+		}
 		if (plugin.isPlayer(sender)) {
 			if ((!plugin.hasPerm(sender, "vote")) && (!sender.isOp())) {
 				sender.sendMessage(ChatColor.YELLOW
@@ -61,7 +67,8 @@ public class VoteCommand implements CommandExecutor {
 			plugin.vote = args[0] + ":" + wn;
 			plugin.vuser.put(player.getName(), "yes");
 			srv.broadcastMessage(CraftEssence.premessage
-					+ "A vote has started to make it day on " + wn + ", to vote type '/vote yes' or '/vote no'");
+					+ "A vote has started to make it day on " + wn
+					+ ", to vote type '/vote yes' or '/vote no'");
 			plugin.startVoteTimer();
 			return true;
 		} else if (args[0].equalsIgnoreCase("night")) {
@@ -75,7 +82,8 @@ public class VoteCommand implements CommandExecutor {
 			plugin.vuser.put(player.getName(), "yes");
 			plugin.startVoteTimer();
 			srv.broadcastMessage(CraftEssence.premessage
-					+ "A vote has started to make it night on " + wn + ", to vote type '/vote yes' or '/vote no'");
+					+ "A vote has started to make it night on " + wn
+					+ ", to vote type '/vote yes' or '/vote no'");
 			return true;
 		} else if (args[0].equalsIgnoreCase("yes")) {
 			if (plugin.vote == null) {

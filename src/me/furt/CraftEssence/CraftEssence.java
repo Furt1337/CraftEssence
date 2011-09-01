@@ -61,7 +61,9 @@ public class CraftEssence extends JavaPlugin {
 		checkFiles();
 		setupDatabase();
 		addCommands();
-		checkPlayers();
+		if (ceConfig.enableAFK == true) {
+			checkPlayers();
+		}
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info("[" + pdfFile.getName() + "] v" + pdfFile.getVersion()
 				+ " loaded");
@@ -79,15 +81,15 @@ public class CraftEssence extends JavaPlugin {
 
 	public void startVoteTimer() {
 		voteTask = new VoteTask(this);
-		etimer.schedule(voteTask, 35000);
+		etimer.schedule(voteTask, ceConfig.voteTimer*1000);
 	}
 
 	private void checkPlayers() {
 		try {
 			afkMarker = new AFKMarkerTask(this);
 			afkKick = new AFKKickTask(this);
-			etimer.schedule(afkMarker, 1000, 60000);
-			etimer.schedule(afkKick, 2000, 65000);
+			etimer.schedule(afkMarker, 1000, ceConfig.afkTimer*1000);
+			etimer.schedule(afkKick, 2000, ceConfig.kickTimer*1000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
