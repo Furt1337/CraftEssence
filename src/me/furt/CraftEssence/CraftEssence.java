@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.PersistenceException;
@@ -31,7 +30,6 @@ import me.furt.CraftEssence.sql.WarpTable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -79,9 +77,9 @@ public class CraftEssence extends JavaPlugin {
 
 	}
 
-	public void startVoteTimer(int time) {
+	public void startVoteTimer() {
 		voteTask = new VoteTask(this);
-		etimer.schedule(voteTask, time);
+		etimer.schedule(voteTask, 35000);
 	}
 
 	private void checkPlayers() {

@@ -1,6 +1,6 @@
 name: CraftEssence
 main: me.furt.CraftEssence.CraftEssence
-version: 2.0
+version: 2.1
 author: furt
 database: true
 description: A general plugin with all basic commands needed.
@@ -34,12 +34,6 @@ commands:
   item:
     aliases:
       - i
-    description: Gives items to yourself
-    usage: |
-           /<command> [item] [amount]
-  newitem:
-    aliases:
-      - ni
     description: Gives items to yourself
     usage: |
            /<command> [item] [amount]
