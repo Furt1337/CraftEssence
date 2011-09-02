@@ -31,9 +31,6 @@ public class UserTable {
 	private boolean muted;
 	
 	@NotNull
-	private boolean god;
-	
-	@NotNull
 	private int logins;
 
 	public void setId(int id) {
@@ -90,14 +87,6 @@ public class UserTable {
 
 	public boolean isMuted() {
 		return muted;
-	}
-
-	public void setGod(boolean god) {
-		this.god = god;
-	}
-
-	public boolean isGod() {
-		return god;
 	}
 
 	public void setLogins(int logins) {

@@ -10,7 +10,7 @@ commands:
       - r
     description: Reply to last player that has /msg you
     usage: |
-           /<command> [player]
+           /<command> [message]
   afk:
     description: Flags the player as afk
     usage: |
@@ -25,6 +25,7 @@ commands:
     description: Teleport a player to you
     usage: |
            /<command> [player]
+           /<command> [playerA] [playerB]
   give:
     aliases:
       - g
@@ -40,7 +41,7 @@ commands:
   spawnmob:
     aliases:
       - sm
-    description: Spawns a creature by player
+    description: Spawns a mob by player
     usage: |
            /<command> [creature] [amount]
   spawn:
@@ -52,9 +53,11 @@ commands:
     usage: |
            /<command>
   home:
-    description: Teleports player to home location
+    description: Teleports player to home location and can invite players to your home
     usage: |
            /<command>
+           /<command> invite [player]
+           /<command> accept
   sethome:
     description: Sets player home location
     usage: |
@@ -92,7 +95,7 @@ commands:
   time:
     description: Sets time day/night
     usage: |
-           /<command> [day:night] [world]
+           /<command> [day:night] <world>
   me:
     description: A emote system
     usage: |
@@ -133,10 +136,6 @@ commands:
     description: Shows players that are online
     usage: |
            /<command>
-  god:
-    description: Enables/Disable invincibility
-    usage: |
-           /<command> [player]
   heal:
     description: Heal yourself or another player
     usage: |
@@ -160,7 +159,7 @@ commands:
   vote:
     description: Players are able to vote on different things
     usage: |
-           /<command> [player]
+           /<command> [day:night:kick] [world:player]
   who:
     description: Displays player stats
     usage: |

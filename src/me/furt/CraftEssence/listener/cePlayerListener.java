@@ -77,9 +77,6 @@ public class cePlayerListener extends PlayerListener {
 				.ieq("userName", pName).findUnique();
 		ut.setOnline(false);
 		ut.setAfkTime(0);
-		if (ut.isGod()) {
-			ut.setGod(false);
-		}
 		event.setQuitMessage(ChatColor.YELLOW + ut.getDisplyName()
 				+ " has left the game");
 		plugin.getDatabase().save(ut);
@@ -249,7 +246,6 @@ public class cePlayerListener extends PlayerListener {
 			ut.setAfk(false);
 			ut.setAfkTime(0);
 			ut.setMuted(false);
-			ut.setGod(false);
 			ut.setLogins(1);
 			plugin.getDatabase().save(ut);
 			return true;

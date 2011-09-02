@@ -28,8 +28,12 @@ public class TpComand implements CommandExecutor {
 			return false;
 		}
 		
-		if (args.length == 0)
-			return false;
+		if (args.length == 0) {
+			plugin.getServer().broadcastMessage("--Teleport Help--");
+			plugin.getServer().broadcastMessage("/tp [player]");
+			plugin.getServer().broadcastMessage("/tp [playera] [playerb]");
+			return true;
+		}
 
 		if (args.length == 1) {
 			Player player = (Player) sender;
