@@ -81,15 +81,15 @@ public class CraftEssence extends JavaPlugin {
 
 	public void startVoteTimer() {
 		voteTask = new VoteTask(this);
-		etimer.schedule(voteTask, ceConfig.voteTimer*1000);
+		etimer.schedule(voteTask, ceConfig.voteTimer * 1000);
 	}
 
 	private void checkPlayers() {
 		try {
 			afkMarker = new AFKMarkerTask(this);
 			afkKick = new AFKKickTask(this);
-			etimer.schedule(afkMarker, 1000, ceConfig.afkTimer*1000);
-			etimer.schedule(afkKick, 2000, ceConfig.kickTimer*1000);
+			etimer.schedule(afkMarker, 1000, ceConfig.afkTimer * 1000);
+			etimer.schedule(afkKick, 2000, ceConfig.kickTimer * 1000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -191,13 +191,11 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public boolean hasPerm(CommandSender sender, String label) {
-		if (this.permEnabled) {
-			if ((!sender.isOp()) && (sender instanceof Player)) {
-				Player p = (Player) sender;
-				return p.hasPermission("craftessence." + label);
-			}
+		if ((!sender.isOp()) && (sender instanceof Player)) {
+			Player p = (Player) sender;
+			return p.hasPermission("craftessence." + label);
 		}
-		return true;
+		return false;
 	}
 
 	private void checkFiles() {
