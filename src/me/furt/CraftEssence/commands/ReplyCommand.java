@@ -18,17 +18,12 @@ public class ReplyCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if (!plugin.hasPerm(sender, "reply")) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		} else {
-			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
-			return false;
+		if (!plugin.hasPerm(sender, "reply", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
-		
+
 		Player player = (Player) sender;
 		String msg = plugin.message(args);
 		String[] replyArray = CraftEssence.reply.toArray(new String[] {});
@@ -39,15 +34,18 @@ public class ReplyCommand implements CommandExecutor {
 				CraftEssence.reply.add(player.getName().toLowerCase() + ":"
 						+ sendTo.getName().toLowerCase());
 				sendTo.sendMessage(ChatColor.YELLOW + "[From -> "
-						+ player.getDisplayName() + "] " + ChatColor.WHITE + msg);
+						+ player.getDisplayName() + "] " + ChatColor.WHITE
+						+ msg);
 				player.sendMessage(ChatColor.YELLOW + "[To -> "
-						+ sendTo.getDisplayName() + "] " + ChatColor.WHITE + msg);
-				UserTable ut = plugin.getDatabase().find(UserTable.class).where()
-				.ieq("userName", sendTo.getName()).findUnique();
+						+ sendTo.getDisplayName() + "] " + ChatColor.WHITE
+						+ msg);
+				UserTable ut = plugin.getDatabase().find(UserTable.class)
+						.where().ieq("userName", sendTo.getName()).findUnique();
 				if (ut.isAfk())
 					player.sendMessage(ChatColor.YELLOW + sendTo.getName()
 							+ " is currently afk.");
-				//CraftEssence.reply.remove(sendTo.getName().toLowerCase() + ":" + player.getName().toLowerCase());
+				// CraftEssence.reply.remove(sendTo.getName().toLowerCase() +
+				// ":" + player.getName().toLowerCase());
 			}
 
 		}

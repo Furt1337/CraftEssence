@@ -15,12 +15,10 @@ public class PlayerlistCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if (!plugin.hasPerm(sender, "list")) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
+		if (!plugin.hasPerm(sender, "list", true)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
 		return true;
 	}

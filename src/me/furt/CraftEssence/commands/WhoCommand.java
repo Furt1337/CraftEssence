@@ -19,11 +19,12 @@ public class WhoCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if ((!plugin.hasPerm(sender, "who")) && (!sender.isOp())) {
+		if (!plugin.hasPerm(sender, "who", true)) {
 			sender.sendMessage(ChatColor.YELLOW
 					+ "You to dont have proper permissions for that command.");
 			return true;
 		}
+		
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 				.ieq("displyName", args[0]).findUnique();
 		if (ut != null) {

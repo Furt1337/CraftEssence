@@ -20,15 +20,10 @@ public class KitCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "kit")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		} else {
-			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
-			return false;
+		if (!plugin.hasPerm(sender, "kit", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
 
 		Player player = (Player) sender;
@@ -52,12 +47,14 @@ public class KitCommand implements CommandExecutor {
 						int id = Integer.parseInt(parts[0]);
 						int amount = parts.length > 1 ? Integer
 								.parseInt(parts[1]) : 1;
-						player.getInventory().addItem(new ItemStack(id, amount));
+						player.getInventory()
+								.addItem(new ItemStack(id, amount));
 					}
 					player.sendMessage(CraftEssence.premessage + "Giving "
 							+ args[0].toLowerCase() + " kit.");
 				} else {
-					player.sendMessage(CraftEssence.premessage + "You do not have proper rank for that kit.");
+					player.sendMessage(CraftEssence.premessage
+							+ "You do not have proper rank for that kit.");
 				}
 			} catch (Exception ex) {
 				player.sendMessage("That kit does not exist");

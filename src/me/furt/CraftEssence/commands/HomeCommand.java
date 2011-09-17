@@ -17,15 +17,10 @@ public class HomeCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if (!plugin.hasPerm(sender, "home")) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		} else {
-			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
-			return false;
+		if (!plugin.hasPerm(sender, "home", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
 
 		Player player = (Player) sender;
@@ -46,7 +41,7 @@ public class HomeCommand implements CommandExecutor {
 
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("accept")) {
-				if (!player.hasPermission("craftessence.home.accept")) {
+				if (!plugin.hasPerm(sender, "home.accept", false)) {
 					sender.sendMessage(ChatColor.YELLOW
 							+ "You to dont have proper permissions for that command.");
 					return true;
@@ -74,35 +69,50 @@ public class HomeCommand implements CommandExecutor {
 				sender.sendMessage(CraftEssence.premessage
 						+ "Must be invited to a home to use this command.");
 				return true;
-			} else {
-				if (plugin.getServer().getPlayer(args[0]) != null) {
-					if (!player.hasPermission("craftessence.home.admin")) {
-						sender.sendMessage(ChatColor.YELLOW
-								+ "You to dont have proper permissions for that command.");
-						return true;
-					}
-					Player p = plugin.getServer().getPlayer(args[0]);
-					HomeTable home = plugin.getDatabase().find(HomeTable.class)
-							.where().ieq("playerName", p.getName())
-							.ieq("worldName", p.getWorld().getName())
-							.findUnique();
-					player.teleport(home.getLocation());
-					sender.sendMessage(CraftEssence.premessage
-							+ "Teleporting to " + p.getDisplayName()
-							+ "'s home...");
-					return true;
-				} else {
-					sender.sendMessage(CraftEssence.premessage
-							+ "Player name could not be found.");
+			} else if (args[0].equalsIgnoreCase("delete")) {
+				if (!plugin.hasPerm(sender, "home.delete", false)) {
+					sender.sendMessage(ChatColor.YELLOW
+							+ "You to dont have proper permissions for that command.");
 					return true;
 				}
+
+				HomeTable ht = plugin.getDatabase().find(HomeTable.class)
+						.where().ieq("playerName", player.getName())
+						.ieq("worldName", player.getWorld().getName())
+						.findUnique();
+				if (ht == null) {
+					sender.sendMessage("oops, somthing happened");
+					return true;
+				}
+				plugin.getDatabase().delete(ht);
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You have deleted your home.");
+
+			} else if (plugin.getServer().getPlayer(args[0]) != null) {
+				if (!plugin.hasPerm(sender, "home.admin", false)) {
+					sender.sendMessage(ChatColor.YELLOW
+							+ "You to dont have proper permissions for that command.");
+					return true;
+				}
+				Player p = plugin.getServer().getPlayer(args[0]);
+				HomeTable home = plugin.getDatabase().find(HomeTable.class)
+						.where().ieq("playerName", p.getName())
+						.ieq("worldName", p.getWorld().getName()).findUnique();
+				player.teleport(home.getLocation());
+				sender.sendMessage(CraftEssence.premessage + "Teleported to "
+						+ p.getDisplayName() + "'s home...");
+				return true;
+			} else {
+				sender.sendMessage(CraftEssence.premessage
+						+ "Player name could not be found.");
+				return true;
 			}
 		}
 
 		if (args.length == 2) {
 			if ((args[0].equalsIgnoreCase("invite"))
 					&& (plugin.getServer().getPlayer(args[1]) != null)) {
-				if (!player.hasPermission("craftessence.home.invite")) {
+				if (!plugin.hasPerm(sender, "home.invite", false)) {
 					sender.sendMessage(ChatColor.YELLOW
 							+ "You to dont have proper permissions for that command.");
 					return true;

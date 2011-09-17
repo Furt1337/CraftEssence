@@ -20,15 +20,10 @@ public class SpawnMobCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "spawnmob")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		} else {
-			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
-			return false;
+		if (!plugin.hasPerm(sender, "spawnmob", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
 
 		Player player = (Player) sender;
@@ -41,9 +36,11 @@ public class SpawnMobCommand implements CommandExecutor {
 			CreatureType ct = this.getType(args[0]);
 			if (ct != null) {
 				player.getWorld().spawnCreature(loc, ct);
-				player.sendMessage(CraftEssence.premessage + "You have spawned a " + ct.getName());
+				player.sendMessage(CraftEssence.premessage
+						+ "You have spawned a " + ct.getName());
 			} else {
-				sender.sendMessage(CraftEssence.premessage + "creature not found.");
+				sender.sendMessage(CraftEssence.premessage
+						+ "creature not found.");
 			}
 			return true;
 		}
@@ -55,15 +52,18 @@ public class SpawnMobCommand implements CommandExecutor {
 				for (int i = 0; i < ammount; i++) {
 					player.getWorld().spawnCreature(loc, ct);
 				}
-				player.sendMessage(CraftEssence.premessage + "You have spawned " + ammount + " " + ct.getName() + "'s");
+				player.sendMessage(CraftEssence.premessage
+						+ "You have spawned " + ammount + " " + ct.getName()
+						+ "'s");
 			} else {
-				sender.sendMessage(CraftEssence.premessage + "creature not found.");	
+				sender.sendMessage(CraftEssence.premessage
+						+ "creature not found.");
 			}
 			return true;
 		}
 		return false;
 	}
-	
+
 	private CreatureType getType(String s) {
 		if (s.equalsIgnoreCase("chicken")) {
 			return CreatureType.CHICKEN;

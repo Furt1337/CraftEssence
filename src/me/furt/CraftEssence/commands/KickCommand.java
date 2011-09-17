@@ -17,13 +17,12 @@ public class KickCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "kick")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
+		if (!plugin.hasPerm(sender, "kick", true)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
+
 		if (args.length == 0)
 			return false;
 
@@ -41,8 +40,7 @@ public class KickCommand implements CommandExecutor {
 				}
 				plugin.getServer().broadcastMessage(
 						ChatColor.RED + p.getName() + " has been kicked.");
-				CraftEssence.log.info(p.getName()
-						+ " has been kicked.");
+				CraftEssence.log.info(p.getName() + " has been kicked.");
 			}
 			return true;
 		} else {
@@ -51,8 +49,7 @@ public class KickCommand implements CommandExecutor {
 				p.kickPlayer("You have been kicked, reason:" + msg);
 				plugin.getServer().broadcastMessage(
 						"�6" + p.getName() + " was kicked.");
-				CraftEssence.log.info(p.getName()
-						+ " has been kicked.");
+				CraftEssence.log.info(p.getName() + " has been kicked.");
 			}
 			return true;
 		}

@@ -17,13 +17,12 @@ public class HealCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "heal")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
+		if (!plugin.hasPerm(sender, "heal", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
+
 		if (args.length == 0) {
 			if (plugin.isPlayer(sender)) {
 				Player player = (Player) sender;
@@ -34,6 +33,7 @@ public class HealCommand implements CommandExecutor {
 			}
 			return false;
 		}
+
 		if (args.length == 1) {
 			if (plugin.playerMatch(args[0]) != null) {
 				Player p = plugin.getServer().getPlayer(args[0]);

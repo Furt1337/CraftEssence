@@ -18,17 +18,12 @@ public class MsgCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if (!plugin.hasPerm(sender, "msg")) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		} else {
-			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
-			return false;
+		if (!plugin.hasPerm(sender, "msg", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
-		
+
 		if (args.length == 0) {
 			return false;
 		}
@@ -36,16 +31,18 @@ public class MsgCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		String msg = plugin.message(args).replace(args[0], "").trim();
 		Player sendTo = plugin.playerMatch(args[0]);
-		
+
 		if (sendTo != null) {
 			if (sendTo.getName().equals(player.getName())) {
 				player.sendMessage(CraftEssence.premessage
 						+ "You can't message yourself!");
 			} else {
-				String[] replyArray = CraftEssence.reply.toArray(new String[] {});
+				String[] replyArray = CraftEssence.reply
+						.toArray(new String[] {});
 				for (String list : replyArray) {
 					String[] split = list.split(":");
-					if (split[1].equalsIgnoreCase(sendTo.getName().toLowerCase()))
+					if (split[1].equalsIgnoreCase(sendTo.getName()
+							.toLowerCase()))
 						CraftEssence.reply.remove(split[0].toLowerCase() + ":"
 								+ sendTo.getName().toLowerCase());
 
@@ -58,8 +55,8 @@ public class MsgCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.YELLOW + "[To -> "
 						+ sendTo.getDisplayName() + "] " + ChatColor.WHITE
 						+ msg);
-				UserTable ut = plugin.getDatabase().find(UserTable.class).where()
-				.ieq("userName", sendTo.getName()).findUnique();
+				UserTable ut = plugin.getDatabase().find(UserTable.class)
+						.where().ieq("userName", sendTo.getName()).findUnique();
 				if (ut.isAfk())
 					player.sendMessage(ChatColor.YELLOW + sendTo.getName()
 							+ " is currently afk.");

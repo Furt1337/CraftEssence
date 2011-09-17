@@ -17,12 +17,10 @@ public class GiveCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "give")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
+		if (!plugin.hasPerm(sender, "give", true)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
 
 		if (args.length < 2)
@@ -40,16 +38,15 @@ public class GiveCommand implements CommandExecutor {
 					String[] listSplit = list.split("-");
 					String[] itemID = listSplit[0].split(";");
 					String[] nameList = listSplit[1].split(":");
-					if(itemID[0].equalsIgnoreCase(args[0])) {
+					if (itemID[0].equalsIgnoreCase(args[0])) {
 						stack = new ItemStack(Integer.parseInt(itemID[0]));
 						stack.setAmount(itemAmount);
 						giveTo.getInventory().addItem(stack);
-						sender.sendMessage(CraftEssence.premessage
-								+ "Giving " + itemAmount + " "
+						sender.sendMessage(CraftEssence.premessage + "Giving "
+								+ itemAmount + " "
 								+ stack.getType().toString().toLowerCase()
 								+ " to " + giveTo.getDisplayName() + ".");
-						giveTo.sendMessage(ChatColor.GRAY
-								+ "You got a gift!");
+						giveTo.sendMessage(ChatColor.GRAY + "You got a gift!");
 						return true;
 					}
 					for (String name : nameList) {

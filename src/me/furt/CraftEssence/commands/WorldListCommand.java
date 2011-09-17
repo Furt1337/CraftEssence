@@ -17,13 +17,12 @@ public class WorldListCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if (!plugin.hasPerm(sender, "worldlist")) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
+		if (!plugin.hasPerm(sender, "worldlist", true)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
+
 		sender.sendMessage(ChatColor.YELLOW + "Worlds running on this Server");
 		for (int i = 0; i < plugin.getServer().getWorlds().size(); i++) {
 			ChatColor color;

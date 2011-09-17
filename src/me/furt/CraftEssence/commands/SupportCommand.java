@@ -17,17 +17,12 @@ public class SupportCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if (!plugin.hasPerm(sender, "support")) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		} else {
-			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
-			return false;
+		if (!plugin.hasPerm(sender, "support", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
-		
+
 		if (args.length < 1) {
 			sender.sendMessage(CraftEssence.premessage
 					+ "To request help from the staff");
@@ -37,13 +32,19 @@ public class SupportCommand implements CommandExecutor {
 		} else {
 			String msg = plugin.message(args);
 			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (!p.hasPermission("craftessence.support.op")) {
+				if (!plugin.hasPerm(p, "support.op", false)) {
+					sender.sendMessage(ChatColor.YELLOW
+							+ "You to dont have proper permissions for that command.");
 					continue;
 				}
 				p.sendMessage(ChatColor.RED + "[Support]" + ChatColor.GRAY
 						+ "<" + ((Player) sender).getDisplayName() + "> "
 						+ ChatColor.WHITE + msg);
 			}
+			plugin.getServer().broadcastMessage(
+					"[Support]" + ChatColor.GRAY + "<"
+							+ ((Player) sender).getDisplayName() + "> "
+							+ ChatColor.WHITE + msg);
 			return true;
 		}
 	}

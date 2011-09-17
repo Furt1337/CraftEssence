@@ -19,11 +19,12 @@ public class UserCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if ((!plugin.hasPerm(sender, "user")) && (!sender.isOp())) {
+		if (!plugin.hasPerm(sender, "user", true)) {
 			sender.sendMessage(ChatColor.YELLOW
 					+ "You to dont have proper permissions for that command.");
 			return true;
 		}
+		
 		if ((args.length == 3) && (args[1].equalsIgnoreCase("rename"))) {
 			UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 					.ieq("userName", args[0]).findUnique();

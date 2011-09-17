@@ -23,18 +23,16 @@ public class BanCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "ban")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
+		if (!plugin.hasPerm(sender, "ban", true)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
-		
+
 		if (args.length == 0) {
 			return false;
 		}
-		
+
 		String msg = plugin.message(args).replace(args[0], "");
 		if (args.length < 2) {
 			msg = " No Grief!";
@@ -57,7 +55,7 @@ public class BanCommand implements CommandExecutor {
 			return true;
 		}
 	}
-	
+
 	public void addBan(String pname) {
 		try {
 			String[] banList = plugin.getBans();

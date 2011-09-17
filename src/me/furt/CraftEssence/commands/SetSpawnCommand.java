@@ -19,15 +19,10 @@ public class SetSpawnCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "setspawn")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		} else {
-			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
-			return false;
+		if (!plugin.hasPerm(sender, "setspawn", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
 
 		Player player = (Player) sender;
@@ -36,9 +31,10 @@ public class SetSpawnCommand implements CommandExecutor {
 		int y = (int) player.getLocation().getY();
 		int z = (int) player.getLocation().getZ();
 		world.setSpawnLocation(x, y, z);
-		
+
 		String wname = player.getWorld().getName();
-		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where().ieq("name", wname + "-spwn").findUnique();
+		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
+				.ieq("name", wname + "-spwn").findUnique();
 		if (wt != null) {
 			player.sendMessage(CraftEssence.premessage
 					+ "Spawn location is already set.");
@@ -48,7 +44,7 @@ public class SetSpawnCommand implements CommandExecutor {
 			wt = new WarpTable();
 			wt.setName(wname + "-spwn");
 		}
-		
+
 		wt.setLocation(player.getLocation());
 		plugin.getDatabase().save(wt);
 		player.sendMessage(CraftEssence.premessage + "Spawn position modified.");

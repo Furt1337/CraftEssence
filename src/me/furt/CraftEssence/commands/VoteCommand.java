@@ -25,13 +25,13 @@ public class VoteCommand implements CommandExecutor {
 					+ "Voting is currently disabled.");
 			return true;
 		}
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "vote")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
+
+		if (!plugin.hasPerm(sender, "vote", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
+
 		if (args.length == 0) {
 			sender.sendMessage("-" + ChatColor.AQUA + "Vote Help"
 					+ ChatColor.WHITE + "-");
@@ -46,10 +46,17 @@ public class VoteCommand implements CommandExecutor {
 		World world = player.getWorld();
 		Server srv = plugin.getServer();
 		if (args[0].equalsIgnoreCase("kick")) {
+			if (!plugin.hasPerm(sender, "vote.kick", false)) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+
 			if (plugin.vote != null) {
 				sender.sendMessage("A vote has already been started.");
 				return true;
 			}
+
 			plugin.vote = args[0] + ":" + args[1];
 			plugin.vuser.put(player.getName(), "yes");
 			srv.broadcastMessage(CraftEssence.premessage
@@ -58,6 +65,11 @@ public class VoteCommand implements CommandExecutor {
 			plugin.startVoteTimer();
 			return true;
 		} else if (args[0].equalsIgnoreCase("day")) {
+			if (!plugin.hasPerm(sender, "vote.day", false)) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
 			if (plugin.vote != null) {
 				sender.sendMessage(CraftEssence.premessage
 						+ "A vote has already been started.");
@@ -72,6 +84,11 @@ public class VoteCommand implements CommandExecutor {
 			plugin.startVoteTimer();
 			return true;
 		} else if (args[0].equalsIgnoreCase("night")) {
+			if (!plugin.hasPerm(sender, "vote.night", false)) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
 			if (plugin.vote != null) {
 				sender.sendMessage(CraftEssence.premessage
 						+ "A vote has already been started.");
@@ -109,6 +126,18 @@ public class VoteCommand implements CommandExecutor {
 						+ "There is nothing to vote on.");
 				return true;
 			}
+			return true;
+		} else if (args[0].equalsIgnoreCase("clear")) {
+			if (!plugin.hasPerm(sender, "vote.clear", false)) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You to dont have proper permissions for that command.");
+				return true;
+			}
+			plugin.vote = null;
+			plugin.vuser.clear();
+			plugin.getServer().broadcastMessage(
+					CraftEssence.premessage
+							+ "Current vote timer has been stoped.");
 			return true;
 		} else {
 			if (plugin.vote != null) {

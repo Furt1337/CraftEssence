@@ -18,15 +18,10 @@ public class ItemCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "item")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
-		} else {
-			CraftEssence.log.info("[CraftEssence] Cannot be used in console.");
-			return false;
+		if (!plugin.hasPerm(sender, "item", false)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
 
 		Player player = (Player) sender;
@@ -39,14 +34,13 @@ public class ItemCommand implements CommandExecutor {
 				String[] listSplit = list.split("-");
 				String[] itemID = listSplit[0].split(";");
 				String[] nameList = listSplit[1].split(":");
-				if(itemID[0].equalsIgnoreCase(args[0])) {
+				if (itemID[0].equalsIgnoreCase(args[0])) {
 					stack = new ItemStack(Integer.parseInt(itemID[0]));
 					stack.setAmount(itemAmount);
 					player.getInventory().addItem(stack);
-					sender.sendMessage(CraftEssence.premessage
-							+ "You recieve " + itemAmount + " "
-							+ stack.getType().toString().toLowerCase()
-							+ "!");
+					sender.sendMessage(CraftEssence.premessage + "You recieve "
+							+ itemAmount + " "
+							+ stack.getType().toString().toLowerCase() + "!");
 					return true;
 				}
 				for (String name : nameList) {

@@ -190,12 +190,30 @@ public class CraftEssence extends JavaPlugin {
 		return lastPlayer;
 	}
 
-	public boolean hasPerm(CommandSender sender, String label) {
-		if ((!sender.isOp()) && (sender instanceof Player)) {
-			Player p = (Player) sender;
-			return p.hasPermission("craftessence." + label);
+	public boolean hasPerm(CommandSender sender, String label,
+			boolean consoleUse) {
+		boolean perm = sender.hasPermission("craftessence." + label);
+
+		if (this.console(sender)) {
+			if (consoleUse)
+				return true;
+			
+			log.info("[CraftEssence] This command cannot be used in console.");
+			return false;
+		} else {
+			if (sender.isOp())
+				return true;
+
+			return perm;
 		}
-		return false;
+	}
+
+	public boolean console(CommandSender sender) {
+		if (sender instanceof Player) {
+			return false;
+		}
+		// Needs more checks
+		return true;
 	}
 
 	private void checkFiles() {

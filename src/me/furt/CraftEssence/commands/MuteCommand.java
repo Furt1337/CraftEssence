@@ -18,17 +18,15 @@ public class MuteCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (plugin.isPlayer(sender)) {
-			if ((!plugin.hasPerm(sender, "mute")) && (!sender.isOp())) {
-				sender.sendMessage(ChatColor.YELLOW
-						+ "You to dont have proper permissions for that command.");
-				return true;
-			}
+		if (!plugin.hasPerm(sender, "mute", true)) {
+			sender.sendMessage(ChatColor.YELLOW
+					+ "You to dont have proper permissions for that command.");
+			return true;
 		}
-		
+
 		if (args.length == 0)
 			return false;
-		
+
 		if (plugin.playerMatch(args[0]) != null) {
 			Player player = plugin.getServer().getPlayer(args[0]);
 			String pName = player.getName();
@@ -38,11 +36,13 @@ public class MuteCommand implements CommandExecutor {
 			if (ut.isMuted()) {
 				ut.setMuted(false);
 				plugin.getServer().broadcastMessage(
-						ChatColor.YELLOW + player.getDisplayName() + " has been unmuted.");
+						ChatColor.YELLOW + player.getDisplayName()
+								+ " has been unmuted.");
 			} else {
 				ut.setMuted(true);
 				plugin.getServer().broadcastMessage(
-						ChatColor.YELLOW + player.getDisplayName() + " has been muted.");
+						ChatColor.YELLOW + player.getDisplayName()
+								+ " has been muted.");
 			}
 			plugin.getDatabase().save(ut);
 

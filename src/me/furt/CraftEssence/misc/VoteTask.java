@@ -17,6 +17,9 @@ public class VoteTask extends TimerTask {
 	}
 
 	public void run() {
+		if (plugin.vote == null) {
+			return;
+		}
 		Server srv = plugin.getServer();
 		int yes = 0;
 		int no = 0;
@@ -62,10 +65,16 @@ public class VoteTask extends TimerTask {
 			}
 			if (args[0].equalsIgnoreCase("kick")) {
 				Player p = plugin.getServer().getPlayer(args[1]);
-				p.kickPlayer("You have been voted to be kicked from the server");
-				plugin.getServer().broadcastMessage(
-						CraftEssence.premessage + "Vote ended for kicking "
-								+ args[1] + ", You won the vote.");
+				if (p == null) {
+					plugin.getServer().broadcastMessage(
+							CraftEssence.premessage + "Vote ended for kicking "
+									+ args[1] + ", user is no longer online.");
+				} else {
+					p.kickPlayer("You have been voted to be kicked from the server");
+					plugin.getServer().broadcastMessage(
+							CraftEssence.premessage + "Vote ended for kicking "
+									+ args[1] + ", You won the vote.");
+				}
 			}
 			plugin.vote = null;
 			plugin.vuser.clear();
