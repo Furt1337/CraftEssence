@@ -3,10 +3,14 @@ package me.furt.CraftEssence.listener;
 import java.io.File;
 
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.ceConfig;
+
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;
 import org.bukkit.entity.Pig;
@@ -21,6 +25,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class ceEntityListener extends EntityListener implements Cancellable {
 
@@ -28,6 +33,15 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 
 	public ceEntityListener(CraftEssence instance) {
 		this.plugin = instance;
+	}
+	
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		if (ceConfig.deathMsg) {
+			String deathMsg = event.getDeathMessage();
+			event.setDeathMessage(ChatColor.YELLOW + deathMsg);
+		} else {
+			event.setDeathMessage(null);
+		}
 	}
 
 	@Override
@@ -48,6 +62,9 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Creeper")) {
 				if (event.getEntity() instanceof Creeper)
+					event.setCancelled(true);
+			} else if (creature.equalsIgnoreCase("Enderman")) {
+				if (event.getEntity() instanceof Enderman)
 					event.setCancelled(true);
 			} else if (creature.equalsIgnoreCase("Ghast")) {
 				if (event.getEntity() instanceof Ghast)

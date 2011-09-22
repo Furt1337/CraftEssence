@@ -95,6 +95,8 @@ public class SpawnMobCommand implements CommandExecutor {
 			return CreatureType.WOLF;
 		} else if (s.equalsIgnoreCase("zombie")) {
 			return CreatureType.ZOMBIE;
+		} else if (s.equalsIgnoreCase("enderman")){
+			return CreatureType.ENDERMAN;
 		} else {
 			return null;
 		}
