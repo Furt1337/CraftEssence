@@ -103,6 +103,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("broadcast").setExecutor(new BroadcastCommand(this));
 		getCommand("ban").setExecutor(new BanCommand(this));
 		getCommand("compass").setExecutor(new CompassCommand(this));
+		getCommand("gamemode").setExecutor(new GameModeCommand(this));
 		getCommand("give").setExecutor(new GiveCommand(this));
 		getCommand("heal").setExecutor(new HealCommand(this));
 		getCommand("home").setExecutor(new HomeCommand(this));
@@ -277,6 +278,8 @@ public class CraftEssence extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.ceel,
 				Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.CREATURE_SPAWN, this.ceel,
+				Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_DEATH, this.ceel,
 				Event.Priority.Highest, this);
 	}
 

@@ -168,3 +168,10 @@ commands:
     description: Allows a user to change various player settings
     usage: |
            /<command> [player] rename [name]
+  gamemode:
+    aliases:
+      - gm
+    description: Shows players that are online
+    usage: |
+           /<command> [player] [mode]
+           /<command> [mode]
