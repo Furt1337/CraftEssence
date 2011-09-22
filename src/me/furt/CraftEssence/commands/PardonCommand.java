@@ -32,8 +32,7 @@ public class PardonCommand implements CommandExecutor {
 		} else {
 			this.removeBan(args[0]);
 			plugin.getServer().broadcastMessage(
-					"�6" + args[0] + " has been pardoned.");
-			CraftEssence.log.info(args[0] + " has been pardoned.");
+					CraftEssence.premessage + args[0] + " has been pardoned.");
 			return true;
 		}
 	}
@@ -53,11 +52,8 @@ public class PardonCommand implements CommandExecutor {
 					+ File.separator + "bans.txt"));
 			BufferedWriter out = new BufferedWriter(fstream);
 			for (String b : arraylist) {
-				if (!b.equalsIgnoreCase(pname)) {
+				if (!b.equalsIgnoreCase(pname))
 					out.write(b + "\n");
-					CraftEssence.log.info("Banlist builder.");
-					CraftEssence.log.info(b);
-				}
 			}
 			out.close();
 			fstream.close();

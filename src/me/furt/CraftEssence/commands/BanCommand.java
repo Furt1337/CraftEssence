@@ -40,20 +40,13 @@ public class BanCommand implements CommandExecutor {
 		Player p = plugin.getServer().getPlayer(args[0]);
 		if (p == null || !p.isOnline()) {
 			this.addBan(args[0]);
-			plugin.getServer().broadcastMessage(
-					"�6" + args[0] + " has been banned.");
-			CraftEssence.log.info("[CraftEssence] " + args[0]
-					+ " has been banned.");
-			return true;
 		} else {
 			this.addBan(args[0]);
 			p.kickPlayer("You have been banned, reason:" + msg);
-			plugin.getServer().broadcastMessage(
-					"�6" + args[0] + " has been banned.");
-			CraftEssence.log.info("[CraftEssence] " + args[0]
-					+ " has been banned.");
-			return true;
 		}
+		plugin.getServer().broadcastMessage(
+				CraftEssence.premessage + args[0] + " has been banned.");
+		return true;
 	}
 
 	public void addBan(String pname) {
