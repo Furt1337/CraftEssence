@@ -21,13 +21,10 @@ import me.furt.CraftEssence.listener.cePlayerListener;
 import me.furt.CraftEssence.misc.AFKKickTask;
 import me.furt.CraftEssence.misc.AFKMarkerTask;
 import me.furt.CraftEssence.misc.VoteTask;
-import me.furt.CraftEssence.sql.HomeTable;
 import me.furt.CraftEssence.sql.KitItemsTable;
 import me.furt.CraftEssence.sql.KitTable;
 import me.furt.CraftEssence.sql.MailTable;
 import me.furt.CraftEssence.sql.UserTable;
-import me.furt.CraftEssence.sql.WarpTable;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -61,9 +58,7 @@ public class CraftEssence extends JavaPlugin {
 		checkFiles();
 		setupDatabase();
 		addCommands();
-		if (ceConfig.enableAFK == true) {
-			checkPlayers();
-		}
+		checkPlayers();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info("[" + pdfFile.getName() + "] v" + pdfFile.getVersion()
 				+ " loaded");
@@ -87,10 +82,11 @@ public class CraftEssence extends JavaPlugin {
 	private void checkPlayers() {
 		try {
 			afkMarker = new AFKMarkerTask(this);
-			afkKick = new AFKKickTask(this);
 			etimer.schedule(afkMarker, 1000, ceConfig.afkTimer * 1000);
-			etimer.schedule(afkKick, 2000, ceConfig.kickTimer * 1000);
-
+			if (ceConfig.autoKick) {
+				afkKick = new AFKKickTask(this);
+				etimer.schedule(afkKick, 2000, ceConfig.kickTimer * 1000);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -106,7 +102,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("gamemode").setExecutor(new GameModeCommand(this));
 		getCommand("give").setExecutor(new GiveCommand(this));
 		getCommand("heal").setExecutor(new HealCommand(this));
-		getCommand("home").setExecutor(new HomeCommand(this));
+		// getCommand("home").setExecutor(new HomeCommand(this));
 		getCommand("item").setExecutor(new ItemCommand(this));
 		getCommand("jump").setExecutor(new JumpCommand(this));
 		getCommand("kick").setExecutor(new KickCommand(this));
@@ -120,9 +116,9 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("pardon").setExecutor(new PardonCommand(this));
 		getCommand("playerlist").setExecutor(new PlayerlistCommand(this));
 		getCommand("reply").setExecutor(new ReplyCommand(this));
-		getCommand("sethome").setExecutor(new SetHomeCommand(this));
+		// getCommand("sethome").setExecutor(new SetHomeCommand(this));
 		getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
-		getCommand("setwarp").setExecutor(new SetWarpCommand(this));
+		// getCommand("setwarp").setExecutor(new SetWarpCommand(this));
 		getCommand("spawn").setExecutor(new SpawnCommand(this));
 		getCommand("spawnmob").setExecutor(new SpawnMobCommand(this));
 		getCommand("support").setExecutor(new SupportCommand(this));
@@ -132,7 +128,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("tphere").setExecutor(new TpHereCommand(this));
 		getCommand("ceuser").setExecutor(new UserCommand(this));
 		getCommand("vote").setExecutor(new VoteCommand(this));
-		getCommand("warp").setExecutor(new WarpCommand(this));
+		// getCommand("warp").setExecutor(new WarpCommand(this));
 		getCommand("who").setExecutor(new WhoCommand(this));
 		getCommand("worldlist").setExecutor(new WorldListCommand(this));
 	}
@@ -198,7 +194,7 @@ public class CraftEssence extends JavaPlugin {
 		if (this.console(sender)) {
 			if (consoleUse)
 				return true;
-			
+
 			log.info("[CraftEssence] This command cannot be used in console.");
 			return false;
 		} else {
@@ -293,8 +289,8 @@ public class CraftEssence extends JavaPlugin {
 					e.printStackTrace();
 				}
 			}
-			getDatabase().find(HomeTable.class).findRowCount();
-			getDatabase().find(WarpTable.class).findRowCount();
+			// getDatabase().find(HomeTable.class).findRowCount();
+			// getDatabase().find(WarpTable.class).findRowCount();
 			getDatabase().find(MailTable.class).findRowCount();
 			getDatabase().find(KitTable.class).findRowCount();
 			getDatabase().find(KitItemsTable.class).findRowCount();
@@ -309,8 +305,8 @@ public class CraftEssence extends JavaPlugin {
 	@Override
 	public List<Class<?>> getDatabaseClasses() {
 		List<Class<?>> list = new ArrayList<Class<?>>();
-		list.add(HomeTable.class);
-		list.add(WarpTable.class);
+		// list.add(HomeTable.class);
+		// list.add(WarpTable.class);
 		list.add(MailTable.class);
 		list.add(KitTable.class);
 		list.add(KitItemsTable.class);

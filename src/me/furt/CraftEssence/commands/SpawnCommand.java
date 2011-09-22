@@ -1,4 +1,4 @@
-package me.furt.CraftEssence.commands;
+ package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.WarpTable;
