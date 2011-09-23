@@ -11,6 +11,7 @@ public class ceConfig {
 	public static long afkTimer;
 	public static long kickTimer;
 	public static boolean deathMsg;
+	public static String uniqueMsg;
 
 	static boolean Load(Configuration config) {
 		config.load();
@@ -27,6 +28,8 @@ public class ceConfig {
 			config.setProperty("KICK_TIMER", 300);
 		if(!keys.contains("DEATH_MSG"))
 			config.setProperty("DEATH_MSG", true);
+		if(!keys.contains("UNIQUE_MSG"))
+			config.setProperty("UNIQUE_MSG", "A new player has joined the server!");
 		if (!config.save()) {
 			CraftEssence.log
 					.severe("[CraftEssence] Error while writing to config.yml");
@@ -39,6 +42,7 @@ public class ceConfig {
 		afkTimer = config.getInt("AFK_TIMER", 300);
 		kickTimer = config.getInt("KICK_TIMER", 300);
 		deathMsg = config.getBoolean("DEATH_MSG", true);
+		uniqueMsg = config.getString("UNIQUE_MSG", "A new player has joined the server!");
 		return true;
 	}
 

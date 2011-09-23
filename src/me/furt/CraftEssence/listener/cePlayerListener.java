@@ -2,6 +2,7 @@ package me.furt.CraftEssence.listener;
 
 import java.util.List;
 import me.furt.CraftEssence.CraftEssence;
+import me.furt.CraftEssence.ceConfig;
 import me.furt.CraftEssence.sql.UserTable;
 import me.furt.CraftEssence.sql.WarpTable;
 
@@ -118,7 +119,7 @@ public class cePlayerListener extends PlayerListener {
 
 		if (ut.getLogins() <= 1)
 			plugin.getServer().broadcastMessage(
-					ChatColor.GOLD + "A new player has joined the server!");
+					ChatColor.GOLD + ceConfig.uniqueMsg);
 
 		player.setDisplayName(ut.getDisplyName());
 

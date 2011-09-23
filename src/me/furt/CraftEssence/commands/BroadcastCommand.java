@@ -28,7 +28,6 @@ public class BroadcastCommand implements CommandExecutor {
 		String msg = plugin.message(args);
 		plugin.getServer().broadcastMessage(
 				ChatColor.RED + "[Broadcast] " + ChatColor.YELLOW + msg);
-		CraftEssence.log.info("[Broadcast] " + msg);
 		return true;
 	}
 
