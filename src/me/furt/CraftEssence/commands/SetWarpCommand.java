@@ -4,6 +4,7 @@ import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.WarpTable;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,7 +38,13 @@ public class SetWarpCommand implements CommandExecutor {
 			wt = new WarpTable();
 			wt.setName(args[0]);
 		}
-		wt.setLocation(player.getLocation());
+		Location pl = player.getLocation();
+		wt.setWorld(pl.getWorld().getName());
+		wt.setX(pl.getX());
+		wt.setY(pl.getY());
+		wt.setZ(pl.getZ());
+		wt.setYaw(pl.getYaw());
+		wt.setPitch(pl.getPitch());
 		plugin.getDatabase().save(wt);
 		player.sendMessage(CraftEssence.premessage + args[0] + " warp set.");
 		return true;

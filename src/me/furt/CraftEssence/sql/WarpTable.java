@@ -4,9 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import com.avaje.ebean.validation.Length;
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
@@ -17,105 +14,89 @@ public class WarpTable {
 	@Id
     private int id;
 	
-	@NotEmpty
 	@Length(max=30)
+	@NotEmpty
 	private String name;
 	
 	@NotEmpty
 	private String world;
 	
 	@NotNull
-	private int x;
+	private double x;
 	
 	@NotNull
-	private int y;
+	private double y;
 	
 	@NotNull
-	private int z;
+	private double z;
 	
 	@NotNull
-	private int pitch;
+	private float yaw;
 	
 	@NotNull
-	private int yaw;
-	
-	public void setId(int id) {
-        this.id = id;
-    }
-
+	private float pitch;
+    
     public int getId() {
-        return id;
-    }
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getWorld() {
 		return world;
 	}
-	
+
 	public void setWorld(String world) {
 		this.world = world;
 	}
-	
-	public int getX() {
-        return x;
-    }
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	public double getX() {
+		return x;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public void setX(double x) {
+		this.x = x;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public double getY() {
+		return y;
+	}
 
-    public int getZ() {
-        return z;
-    }
+	public void setY(double y) {
+		this.y = y;
+	}
 
-    public void setZ(int z) {
-        this.z = z;
-    }
+	public double getZ() {
+		return z;
+	}
 
-    public int getPitch() {
-        return pitch;
-    }
+	public void setZ(double z) {
+		this.z = z;
+	}
 
-    public void setPitch(int pitch) {
-        this.pitch = pitch;
-    }
+	public float getYaw() {
+		return yaw;
+	}
 
-    public int getYaw() {
-        return yaw;
-    }
+	public void setYaw(float yaw) {
+		this.yaw = yaw;
+	}
 
-    public void setYaw(int yaw) {
-        this.yaw = yaw;
-    }
-    
-    public void setLocation(Location location) {
-        this.world = location.getWorld().getName();
-        this.x = (int) location.getX();
-        this.y = (int) location.getY();
-        this.z = (int) location.getZ();
-        this.yaw = (int) location.getYaw();
-        this.pitch = (int) location.getPitch();
-        
-    }
+	public float getPitch() {
+		return pitch;
+	}
 
-    public Location getLocation() {
-        World wrld = Bukkit.getServer().getWorld(world);
-        return new Location(wrld, x, y, z, yaw, pitch);
-    }
-
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
+	}
 }

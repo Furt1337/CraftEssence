@@ -3,8 +3,10 @@ package me.furt.CraftEssence.commands;
 import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.WarpTable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -35,7 +37,7 @@ public class WarpCommand implements CommandExecutor {
 				.ieq("name", args[0]).ieq("world", world).findUnique();
 
 		if (wt != null) {
-			loc = wt.getLocation();
+			loc = this.getLocation(wt);
 		} else {
 			sender.sendMessage(CraftEssence.premessage
 					+ "Warp location not found.");
@@ -46,5 +48,11 @@ public class WarpCommand implements CommandExecutor {
 		player.sendMessage(CraftEssence.premessage + "Warping to " + args[0]
 				+ "...");
 		return true;
+	}
+	
+	private Location getLocation(WarpTable sl) {
+		World world = Bukkit.getServer().getWorld(sl.getWorld());
+		return new Location(world, sl.getX(), sl.getY(), sl.getZ(),
+				sl.getYaw(), sl.getPitch());
 	}
 }

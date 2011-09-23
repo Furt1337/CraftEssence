@@ -6,8 +6,10 @@ import me.furt.CraftEssence.ceConfig;
 import me.furt.CraftEssence.sql.UserTable;
 import me.furt.CraftEssence.sql.WarpTable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
@@ -60,13 +62,17 @@ public class cePlayerListener extends PlayerListener {
 		Player player = event.getPlayer();
 		String world = player.getWorld().getName();
 		Location loc = null;
-		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
-				.ieq("name", "spwn").ieq("world", world).findUnique();
-		if (wt != null)
-			loc = wt.getLocation();
+		if (event.isBedSpawn()) {
+			loc = event.getRespawnLocation();
+		} else {
+			WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
+					.ieq("name", "spwn").ieq("world", world).findUnique();
+			if (wt != null)
+				loc = this.getLocation(wt);
 
-		if (loc == null)
-			loc = player.getWorld().getSpawnLocation();
+			if (loc == null)
+				loc = player.getWorld().getSpawnLocation();
+		}
 
 		event.setRespawnLocation(loc);
 	}
@@ -94,7 +100,8 @@ public class cePlayerListener extends PlayerListener {
 					+ "No one can hear you because your muted.");
 			event.setCancelled(true);
 		}
-		event.setFormat(event.getFormat().replace("%1$s", player.getDisplayName()));
+		event.setFormat(event.getFormat().replace("%1$s",
+				player.getDisplayName()));
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -107,7 +114,7 @@ public class cePlayerListener extends PlayerListener {
 					.ieq("name", "spwn")
 					.ieq("world", player.getWorld().getName()).findUnique();
 			if (wt != null)
-				loc = wt.getLocation();
+				loc = this.getLocation(wt);
 
 			if (loc == null)
 				loc = player.getWorld().getSpawnLocation();
@@ -130,11 +137,11 @@ public class cePlayerListener extends PlayerListener {
 
 		event.setJoinMessage(ChatColor.YELLOW + player.getDisplayName()
 				+ " joined the game");
-		
+
 		plugin.users.put(pName, (System.currentTimeMillis()));
-		
+
 		String[] motd = plugin.getMotd();
-		
+
 		if (motd == null || motd.length < 1) {
 			player.sendMessage(ChatColor.GRAY + "No Motd set.");
 		} else {
@@ -162,7 +169,7 @@ public class cePlayerListener extends PlayerListener {
 		}
 
 		List<String> mail = plugin.readMail(player);
-		
+
 		if (mail.isEmpty())
 			player.sendMessage(ChatColor.GRAY + "You have no new mail.");
 		else
@@ -173,10 +180,10 @@ public class cePlayerListener extends PlayerListener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		String pName = player.getName();
-		
+
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 				.ieq("userName", pName).findUnique();
-		
+
 		if (ut.isAfk()) {
 			ut.setAfk(false);
 			ut.setAfkTime(0);
@@ -185,7 +192,7 @@ public class cePlayerListener extends PlayerListener {
 					ChatColor.YELLOW + player.getDisplayName()
 							+ " is no longer afk");
 		}
-		
+
 		this.playerActive((PlayerEvent) event);
 	}
 
@@ -257,5 +264,11 @@ public class cePlayerListener extends PlayerListener {
 			return false;
 		}
 
+	}
+	
+	private Location getLocation(WarpTable sl) {
+		World world = Bukkit.getServer().getWorld(sl.getWorld());
+		return new Location(world, sl.getX(), sl.getY(), sl.getZ(),
+				sl.getYaw(), sl.getPitch());
 	}
 }

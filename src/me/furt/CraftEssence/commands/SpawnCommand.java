@@ -1,10 +1,12 @@
- package me.furt.CraftEssence.commands;
+package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.WarpTable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,11 +30,11 @@ public class SpawnCommand implements CommandExecutor {
 
 		Player player = (Player) sender;
 		String world = player.getWorld().getName();
-		Location loc = null;
+		Location loc;
 		WarpTable sl = plugin.getDatabase().find(WarpTable.class).where()
 				.ieq("name", world + "-spwn").findUnique();
 		if (sl != null) {
-			loc = sl.getLocation();
+			loc = this.getLocation(sl);
 		} else {
 			loc = player.getWorld().getSpawnLocation();
 		}
@@ -40,5 +42,11 @@ public class SpawnCommand implements CommandExecutor {
 		player.teleport(loc);
 		sender.sendMessage(CraftEssence.premessage + "Returned to spawn.");
 		return true;
+	}
+
+	private Location getLocation(WarpTable sl) {
+		World world = Bukkit.getServer().getWorld(sl.getWorld());
+		return new Location(world, sl.getX(), sl.getY(), sl.getZ(),
+				sl.getYaw(), sl.getPitch());
 	}
 }

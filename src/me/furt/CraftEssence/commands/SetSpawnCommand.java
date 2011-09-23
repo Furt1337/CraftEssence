@@ -34,18 +34,18 @@ public class SetSpawnCommand implements CommandExecutor {
 
 		String wname = player.getWorld().getName();
 		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
-				.ieq("name", wname + "-spwn").findUnique();
-		if (wt != null) {
-			player.sendMessage(CraftEssence.premessage
-					+ "Spawn location is already set.");
-			return true;
-		}
+				.ieq("name", wname + "-spwn").ieq("world", wname).findUnique();
 		if (wt == null) {
 			wt = new WarpTable();
 			wt.setName(wname + "-spwn");
 		}
 
-		wt.setLocation(player.getLocation());
+		wt.setX(player.getLocation().getX());
+		wt.setY(player.getLocation().getY());
+		wt.setZ(player.getLocation().getZ());
+		wt.setYaw(player.getLocation().getYaw());
+		wt.setPitch(player.getLocation().getPitch());
+		wt.setWorld(player.getLocation().getWorld().getName());
 		plugin.getDatabase().save(wt);
 		player.sendMessage(CraftEssence.premessage + "Spawn position modified.");
 		return true;

@@ -25,6 +25,8 @@ import me.furt.CraftEssence.sql.KitItemsTable;
 import me.furt.CraftEssence.sql.KitTable;
 import me.furt.CraftEssence.sql.MailTable;
 import me.furt.CraftEssence.sql.UserTable;
+import me.furt.CraftEssence.sql.WarpTable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -290,7 +292,7 @@ public class CraftEssence extends JavaPlugin {
 				}
 			}
 			// getDatabase().find(HomeTable.class).findRowCount();
-			// getDatabase().find(WarpTable.class).findRowCount();
+			getDatabase().find(WarpTable.class).findRowCount();
 			getDatabase().find(MailTable.class).findRowCount();
 			getDatabase().find(KitTable.class).findRowCount();
 			getDatabase().find(KitItemsTable.class).findRowCount();
@@ -306,7 +308,7 @@ public class CraftEssence extends JavaPlugin {
 	public List<Class<?>> getDatabaseClasses() {
 		List<Class<?>> list = new ArrayList<Class<?>>();
 		// list.add(HomeTable.class);
-		// list.add(WarpTable.class);
+		list.add(WarpTable.class);
 		list.add(MailTable.class);
 		list.add(KitTable.class);
 		list.add(KitItemsTable.class);
