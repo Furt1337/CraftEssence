@@ -50,9 +50,9 @@ public class WarpCommand implements CommandExecutor {
 		return true;
 	}
 	
-	private Location getLocation(WarpTable sl) {
-		World world = Bukkit.getServer().getWorld(sl.getWorld());
-		return new Location(world, sl.getX(), sl.getY(), sl.getZ(),
-				sl.getYaw(), sl.getPitch());
+	private Location getLocation(WarpTable wt) {
+		World world = Bukkit.getServer().getWorld(wt.getWorld());
+		return new Location(world, wt.getX(), wt.getY(), wt.getZ(),
+				wt.getYaw(), wt.getPitch());
 	}
 }

@@ -35,9 +35,15 @@ public class SetHomeCommand implements CommandExecutor {
 		}
 		if (home == null) {
 			home = new HomeTable();
-			home.setPlayer(player);
+			home.setPlayerName(player);
 		}
-		home.setLocation(((Player) sender).getLocation());
+		
+		home.setX(player.getLocation().getX());
+		home.setY(player.getLocation().getY());
+		home.setZ(player.getLocation().getZ());
+		home.setYaw(player.getLocation().getYaw());
+		home.setPitch(player.getLocation().getPitch());
+		home.setWorld(player.getLocation().getWorld().getName());
 		plugin.getDatabase().save(home);
 
 		player.sendMessage(CraftEssence.premessage

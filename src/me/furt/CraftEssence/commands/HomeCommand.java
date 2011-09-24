@@ -2,7 +2,10 @@ package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.HomeTable;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,7 +37,7 @@ public class HomeCommand implements CommandExecutor {
 						+ "Home location not set.");
 				return true;
 			}
-			player.teleport(home.getLocation());
+			player.teleport(this.getLocation(home));
 			player.sendMessage(CraftEssence.premessage + "Teleporting home...");
 			return true;
 		}
@@ -58,7 +61,7 @@ public class HomeCommand implements CommandExecutor {
 								.ieq("playerName", p.getName())
 								.ieq("worldName", p.getWorld().getName())
 								.findUnique();
-						player.teleport(home.getLocation());
+						player.teleport(this.getLocation(home));
 						sender.sendMessage(CraftEssence.premessage
 								+ "Teleporting to " + p.getDisplayName()
 								+ "'s home...");
@@ -98,7 +101,7 @@ public class HomeCommand implements CommandExecutor {
 				HomeTable home = plugin.getDatabase().find(HomeTable.class)
 						.where().ieq("playerName", p.getName())
 						.ieq("worldName", p.getWorld().getName()).findUnique();
-				player.teleport(home.getLocation());
+				player.teleport(this.getLocation(home));
 				sender.sendMessage(CraftEssence.premessage + "Teleported to "
 						+ p.getDisplayName() + "'s home...");
 				return true;
@@ -133,5 +136,11 @@ public class HomeCommand implements CommandExecutor {
 			}
 		}
 		return false;
+	}
+	
+	private Location getLocation(HomeTable ht) {
+		World world = Bukkit.getServer().getWorld(ht.getWorld());
+		return new Location(world, ht.getX(), ht.getY(), ht.getZ(),
+				ht.getYaw(), ht.getPitch());
 	}
 }

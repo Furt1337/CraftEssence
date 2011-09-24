@@ -4,9 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.avaje.ebean.validation.NotEmpty;
@@ -37,91 +34,69 @@ public class HomeTable {
 	private float yaw;
 
 	@NotEmpty
-	private String worldName;
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	private String world;
 
 	public int getId() {
 		return id;
 	}
 
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getPlayerName() {
 		return playerName;
 	}
 
-	public void setPlayer(Player player) {
-		this.playerName = player.getName();
-	}
-
-	public Player getPlayer() {
-		return Bukkit.getServer().getPlayer(playerName);
-	}
-
-	public void setX(double x) {
-		this.x = x;
+	public void setPlayerName(Player playerName) {
+		this.playerName = playerName.getName();
 	}
 
 	public double getX() {
 		return x;
 	}
 
-	public void setY(double y) {
-		this.y = y;
+	public void setX(double x) {
+		this.x = x;
 	}
 
 	public double getY() {
 		return y;
 	}
 
-	public void setZ(double z) {
-		this.z = z;
+	public void setY(double y) {
+		this.y = y;
 	}
 
 	public double getZ() {
 		return z;
 	}
 
-	public void setPitch(float pitch) {
-		this.pitch = pitch;
+	public void setZ(double z) {
+		this.z = z;
 	}
 
 	public float getPitch() {
 		return pitch;
 	}
 
-	public void setYaw(float yaw) {
-		this.yaw = yaw;
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
 	}
 
 	public float getYaw() {
 		return yaw;
 	}
 
-	public void setWorldName(String worldName) {
-		this.worldName = worldName;
+	public void setYaw(float yaw) {
+		this.yaw = yaw;
 	}
 
-	public String getWorldName() {
-		return worldName;
+	public String getWorld() {
+		return world;
 	}
 
-	public void setLocation(Location location) {
-		this.worldName = location.getWorld().getName();
-		this.x = location.getX();
-		this.y = location.getY();
-		this.z = location.getZ();
-		this.yaw = location.getYaw();
-		this.pitch = location.getPitch();
-	}
-
-	public Location getLocation() {
-		World world = Bukkit.getServer().getWorld(worldName);
-		return new Location(world, x, y, z, yaw, pitch);
+	public void setWorld(String world) {
+		this.world = world;
 	}
 }
