@@ -161,10 +161,12 @@ public class cePlayerListener extends PlayerListener {
 			String ip = player.getAddress().getAddress().getHostAddress();
 
 			for (String line : motd) {
-				player.sendMessage(plugin.argument(line, new String[] {
-						"+dname,+d", "+name,+n", "+location,+l", "+ip",
-						"+online" }, new String[] { player.getDisplayName(),
-						player.getName(), location, ip, online }));
+				player.sendMessage(plugin.colorizeText(plugin.argument(
+						line,
+						new String[] { "+dname,+d", "+name,+n", "+location,+l",
+								"+ip", "+online" },
+						new String[] { player.getDisplayName(),
+								player.getName(), location, ip, online })));
 			}
 		}
 
@@ -265,7 +267,7 @@ public class cePlayerListener extends PlayerListener {
 		}
 
 	}
-	
+
 	private Location getLocation(WarpTable sl) {
 		World world = Bukkit.getServer().getWorld(sl.getWorld());
 		return new Location(world, sl.getX(), sl.getY(), sl.getZ(),

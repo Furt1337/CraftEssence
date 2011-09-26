@@ -325,8 +325,8 @@ public class CraftEssence extends JavaPlugin {
 			FileWriter fstream = new FileWriter(new File(getDataFolder(),
 					"motd.txt"));
 			BufferedWriter out = new BufferedWriter(fstream);
-			out.write("§4Welcome to our §9Minecraft Server§4,§f +d§4!\n");
-			out.write("§4There are +online players online!\n");
+			out.write("&4Welcome to our §9Minecraft Server&4,&f +d&4!\n");
+			out.write("&4There are +online players online!\n");
 			out.close();
 			fstream.close();
 		} catch (IOException ex) {
@@ -544,6 +544,26 @@ public class CraftEssence extends JavaPlugin {
 		}
 
 		return itemlist.toArray(new String[] {});
+	}
+	
+	public String colorizeText(String string) {
+	    string = string.replaceAll("&0", "§0");
+	    string = string.replaceAll("&1", "§1");
+	    string = string.replaceAll("&2", "§2");
+	    string = string.replaceAll("&3", "§3");
+	    string = string.replaceAll("&4", "§4");
+	    string = string.replaceAll("&5", "§5");
+	    string = string.replaceAll("&6", "§6");
+	    string = string.replaceAll("&7", "§7");
+	    string = string.replaceAll("&8", "§8");
+	    string = string.replaceAll("&9", "§9");
+	    string = string.replaceAll("&a", "§a");
+	    string = string.replaceAll("&b", "§b");
+	    string = string.replaceAll("&c", "§c");
+	    string = string.replaceAll("&d", "§d");
+	    string = string.replaceAll("&e", "§e");
+	    string = string.replaceAll("&f", "§f");
+	    return string;
 	}
 
 }
