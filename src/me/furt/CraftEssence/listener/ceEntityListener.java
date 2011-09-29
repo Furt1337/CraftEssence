@@ -24,6 +24,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -34,13 +35,16 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 	public ceEntityListener(CraftEssence instance) {
 		this.plugin = instance;
 	}
-	
-	public void onPlayerDeath(PlayerDeathEvent event) {
-		if (ceConfig.deathMsg) {
-			String deathMsg = event.getDeathMessage();
-			event.setDeathMessage(ChatColor.YELLOW + deathMsg);
-		} else {
-			event.setDeathMessage(null);
+
+	public void onEntityDeath(EntityDeathEvent event) {
+		if (event instanceof PlayerDeathEvent) {
+			PlayerDeathEvent e = (PlayerDeathEvent) event;
+			String deathMsg = e.getDeathMessage();
+			if (ceConfig.deathMsg) {
+				e.setDeathMessage(ChatColor.YELLOW + deathMsg);
+			} else {
+				e.setDeathMessage(null);
+			}
 		}
 	}
 
