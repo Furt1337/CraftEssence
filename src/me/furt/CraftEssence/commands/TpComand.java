@@ -51,7 +51,7 @@ public class TpComand implements CommandExecutor {
 				sender.sendMessage(CraftEssence.premessage + "Teleporting "
 						+ args[0] + "to " + args[1] + ".");
 
-			CraftEssence.log.info("Teleporting " + args[0] + "to " + args[1]
+			CraftEssence.log.info("Teleporting " + args[0] + " to " + args[1]
 					+ ".");
 		}
 		return false;

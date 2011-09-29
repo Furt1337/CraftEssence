@@ -1,6 +1,6 @@
 name: CraftEssence
 main: me.furt.CraftEssence.CraftEssence
-version: 2.1
+version: 3.0
 author: furt
 database: true
 description: A general plugin with all basic commands needed.

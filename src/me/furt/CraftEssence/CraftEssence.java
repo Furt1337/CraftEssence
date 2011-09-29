@@ -72,6 +72,7 @@ public class CraftEssence extends JavaPlugin {
 		etimer = null;
 		afkMarker = null;
 		afkKick = null;
+		voteTask = null;
 		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info(pdfFile.getName() + " Disabled");
 
@@ -101,6 +102,7 @@ public class CraftEssence extends JavaPlugin {
 				new ClearInventoryCommand(this));
 		getCommand("broadcast").setExecutor(new BroadcastCommand(this));
 		getCommand("ban").setExecutor(new BanCommand(this));
+		getCommand("ceuser").setExecutor(new UserCommand(this));
 		getCommand("compass").setExecutor(new CompassCommand(this));
 		getCommand("gamemode").setExecutor(new GameModeCommand(this));
 		getCommand("give").setExecutor(new GiveCommand(this));
@@ -129,7 +131,6 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("top").setExecutor(new TopCommand(this));
 		getCommand("tp").setExecutor(new TpComand(this));
 		getCommand("tphere").setExecutor(new TpHereCommand(this));
-		getCommand("ceuser").setExecutor(new UserCommand(this));
 		getCommand("vote").setExecutor(new VoteCommand(this));
 		getCommand("warp").setExecutor(new WarpCommand(this));
 		getCommand("who").setExecutor(new WhoCommand(this));

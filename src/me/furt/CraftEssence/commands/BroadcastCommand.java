@@ -27,7 +27,7 @@ public class BroadcastCommand implements CommandExecutor {
 
 		String msg = plugin.message(args);
 		plugin.getServer().broadcastMessage(
-				ChatColor.RED + "[Broadcast] " + ChatColor.YELLOW + msg);
+				ChatColor.RED + "[Broadcast] " + ChatColor.YELLOW + plugin.colorizeText(msg));
 		return true;
 	}
 
