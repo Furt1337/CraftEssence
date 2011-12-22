@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.logging.Logger;
@@ -36,7 +35,6 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 
 public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> prayList = new ArrayList<String>();
@@ -80,16 +78,18 @@ public class CraftEssence extends JavaPlugin {
 
 	public void startVoteTimer() {
 		voteTask = new VoteTask(this);
-		etimer.schedule(voteTask, ceConfig.voteTimer * 1000);
+		etimer.schedule(voteTask, getConfig().getInt("VOTE_TIMER") * 1000);
 	}
 
 	private void checkPlayers() {
 		try {
 			afkMarker = new AFKMarkerTask(this);
-			etimer.schedule(afkMarker, 1000, ceConfig.afkTimer * 1000);
-			if (ceConfig.autoKick) {
+			etimer.schedule(afkMarker, 1000,
+					getConfig().getInt("AFK_TIMER") * 1000);
+			if (getConfig().getBoolean("AUTO_KICK")) {
 				afkKick = new AFKKickTask(this);
-				etimer.schedule(afkKick, 2000, ceConfig.kickTimer * 1000);
+				etimer.schedule(afkKick, 2000,
+						getConfig().getInt("KICK_TIMER") * 1000);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -221,12 +221,22 @@ public class CraftEssence extends JavaPlugin {
 		if (!this.getDataFolder().exists())
 			this.getDataFolder().mkdirs();
 
+		this.getConfig().addDefault("DEATH_MSG", true);
+		this.getConfig().addDefault("KICK_OP", false);
+		this.getConfig().addDefault("KICK_TIMER", 300);
+		this.getConfig().addDefault("AFK_TIMER", 300);
+		this.getConfig().addDefault("UNIQUE_MSG",
+				"A new player has joined the server!");
+		this.getConfig().addDefault("AUTO_KICK", true);
+		this.getConfig().addDefault("VOTE_TIMER", 30);
+		this.getConfig().addDefault("ENABLE_VOTE", true);
+		this.getConfig().options().copyDefaults(true);
+		this.saveConfig();
+
 		if (!new File("plugins" + File.separator + "CraftEssence"
 				+ File.separator + "MobBlackList").isDirectory())
 			new File("plugins" + File.separator + "CraftEssence"
 					+ File.separator + "MobBlackList").mkdir();
-
-		ceConfig.Load(getConfiguration());
 
 		if (!new File(getDataFolder(), "motd.txt").exists()) {
 			this.createMotdConfig();
@@ -349,21 +359,6 @@ public class CraftEssence extends JavaPlugin {
 
 	}
 
-	public List<String> spawnList(Configuration config) {
-		config.load();
-		ArrayList<String> spawns = new ArrayList<String>();
-		List<?> worldSpawn = config.getList("worldSpawn");
-		String spawnString = null;
-		Iterator<?> i$;
-		if ((worldSpawn != null) && (worldSpawn.size() > 0))
-			for (i$ = worldSpawn.iterator(); i$.hasNext();) {
-				Object spawn = i$.next();
-				spawnString = (String) spawn;
-				spawns.add("  " + spawnString);
-			}
-		return spawns;
-	}
-
 	public String[] getBans() {
 		ArrayList<String> banlist = new ArrayList<String>();
 		try {
@@ -446,6 +441,10 @@ public class CraftEssence extends JavaPlugin {
 		mt.setReciever(targetPlayer);
 		mt.setMessage(message);
 		this.getDatabase().save(mt);
+		Player tplayer = this.playerMatch(targetPlayer);
+		if (tplayer != null) {
+			tplayer.sendMessage("You have a message!");
+		}
 		player.sendMessage(CraftEssence.premessage + "Mail sent");
 	}
 
@@ -546,25 +545,25 @@ public class CraftEssence extends JavaPlugin {
 
 		return itemlist.toArray(new String[] {});
 	}
-	
+
 	public String colorizeText(String string) {
-	    string = string.replaceAll("&0", "§0");
-	    string = string.replaceAll("&1", "§1");
-	    string = string.replaceAll("&2", "§2");
-	    string = string.replaceAll("&3", "§3");
-	    string = string.replaceAll("&4", "§4");
-	    string = string.replaceAll("&5", "§5");
-	    string = string.replaceAll("&6", "§6");
-	    string = string.replaceAll("&7", "§7");
-	    string = string.replaceAll("&8", "§8");
-	    string = string.replaceAll("&9", "§9");
-	    string = string.replaceAll("&a", "§a");
-	    string = string.replaceAll("&b", "§b");
-	    string = string.replaceAll("&c", "§c");
-	    string = string.replaceAll("&d", "§d");
-	    string = string.replaceAll("&e", "§e");
-	    string = string.replaceAll("&f", "§f");
-	    return string;
+		string = string.replaceAll("&0", "§0");
+		string = string.replaceAll("&1", "§1");
+		string = string.replaceAll("&2", "§2");
+		string = string.replaceAll("&3", "§3");
+		string = string.replaceAll("&4", "§4");
+		string = string.replaceAll("&5", "§5");
+		string = string.replaceAll("&6", "§6");
+		string = string.replaceAll("&7", "§7");
+		string = string.replaceAll("&8", "§8");
+		string = string.replaceAll("&9", "§9");
+		string = string.replaceAll("&a", "§a");
+		string = string.replaceAll("&b", "§b");
+		string = string.replaceAll("&c", "§c");
+		string = string.replaceAll("&d", "§d");
+		string = string.replaceAll("&e", "§e");
+		string = string.replaceAll("&f", "§f");
+		return string;
 	}
 
 }

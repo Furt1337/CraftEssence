@@ -48,8 +48,8 @@ public class HomeTable {
 		return playerName;
 	}
 
-	public void setPlayerName(Player playerName) {
-		this.playerName = playerName.getName();
+	public void setPlayerName(Player player) {
+		this.playerName = player.getName();
 	}
 
 	public double getX() {

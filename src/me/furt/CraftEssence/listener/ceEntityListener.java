@@ -3,7 +3,6 @@ package me.furt.CraftEssence.listener;
 import java.io.File;
 
 import me.furt.CraftEssence.CraftEssence;
-import me.furt.CraftEssence.ceConfig;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -40,7 +39,7 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 		if (event instanceof PlayerDeathEvent) {
 			PlayerDeathEvent e = (PlayerDeathEvent) event;
 			String deathMsg = e.getDeathMessage();
-			if (ceConfig.deathMsg) {
+			if (plugin.getConfig().getBoolean("DEATH_MSG")) {
 				e.setDeathMessage(ChatColor.YELLOW + deathMsg);
 			} else {
 				e.setDeathMessage(null);

@@ -1,0 +1,68 @@
+=== What is CraftEssence? ===
+Its a rollup of all general commands a server uses such as /spawn and /home there are also unique features such as auto kick when afk.
+
+=== Requirements ==
+* PermissionsBukkit
+
+=== Features ===
+* Greets unique visitors
+* Auto AFK - Flags users afk that are inactive after a time period.
+* Auto Kick - Kicks users that go afk after a time period.
+* Uses Bukkits built in peristance for sqlite and mysql saving.
+* Permissions - Compatible with PermissionsBukkit.
+* Editable items file for adding new items or aliases.
+* Configurable motd.
+* Creature Blacklist
+
+=== Configuration ===
+* ENABLE_VOTE: true "leave this true if you want to use the vote command"
+* VOTE_TIMER: 30 "time is in seconds"
+* ENABLE_AFK: true "leave this true if you want to use the autoafk system"
+* AFK_TIMER: 300 "time in seconds to flag a player afk"
+* KICK_TIMER: 300 "time in seconds to kick the player after being flagged for a time period"
+
+=== Commands, Descriptions, and Permissions ===
+*"/spawn" - Teleports you to spawn - craftessence.spawn
+*"/setspawn" - Sets spawn location - craftessence.setspawn
+*"/home" - Teleports you to home location or spawn if not set - craftessence.home
+*"/home <player>" - Teleports you to a target players home - craftessence.home.admin
+*"/home invite <player>" - Invite player to your home - craftessence.home.invite
+*"/home accept" - accepts players invite and teleports you to there home - craftessence.home.accept
+*"/sethome" - Sets home location - craftessence.sethome
+*"/support" - Sends a message to admins - craftessence.support use craftessence.support.op on the ranks that u want /support to be sent to
+*"/item [id] [amount]" - Adds item to your inventory
+*"/give [player] [id] [amount]" - Adds item to target players inventory
+*"/tp [player] <player>" - Teleports you to target player or player to player
+*"/tphere [player|*]" - Teleports target player to you or all online players - craftessence.tphere
+*"/warp [name]" - Teleports you to selected warp save - craftessence.warp
+*"/setwarp [name]" - Saves warp location - craftessence.setwarp
+*"/playerlist" - Shows online players - craftessence.playerlist
+*"/heal <player>" - Will increase or decrease your life depending on value if no value it will fully heal you - craftessence.heal
+*"/clearinventory [player]" - Clears your inventory or another players - craftessence.clearinventory
+*"/broadcast" - Broadcasts a colored message to all online players - craftessence.broadcast
+*"/me [message]" Roleplay style emotes - craftessence.me
+*"/mail [read:send:delete]" - Send and recieve mail from players - craftessence.mail
+*"/kit [name]" - Self explanitory i think - craftessence.kit
+*"/jump" - Aim crosshair over location and use command and you will tele to there - craftessence.jump
+*"/god <player>" - Toggles you or another player to invincible - craftessence.god
+*"/kill [player|*]" - Kills selected player, yourself, or all players - craftessence.kill
+*"/kick [player|*] <reason>" - Kick player or players with optional message - craftessence.kick
+*"/ban [player] <reason>" - Kicks player and adds them to ban list with optional message - craftessence.ban
+*"/compass" - Tell you the direction you are pointing - craftessence.compass
+*"/pardon [player]" - Removes player from ban list - craftessence.pardon
+*"/msg [player] [message]" - Sends private messages to player - craftessence.msg
+*"/reply" - Send a message to the last player that /msg you - craftessence.reply
+*"/mute [player]" - Toggles a player from being muted to unmuted - craftessence.mute
+*"/worldlist" - List all loaded worlds - craftessence.worldlist
+*"/motd" - Displays the servers message of the day - craftessence.motd
+*"/spawnmob <mobname> [ammount]" - Spawns mob at target location. - craftessence.spawnmob
+*"/afk" - Flags yourself afk, movement will unflag you. - craftessence.afk
+*"/reply" - Replies to the last person who has /msg'd you - craftessence.reply
+*"/vote [clear:day:night:kick]" - Voting command that allows player to vote on time or kick a player - craftessence.vote, craftessence.vote.day, craftessence.vote.night, craftessence.vote.kick, craftessence.vote.clear
+
+=== Todo List ===
+*Option to start unique visitors at a warp point instead of spawn.
+*Enhanced chat settings.
+
+=== Known Issues ===
+Once you set your home/spawn/warp you cannot reset it "working on this issue"

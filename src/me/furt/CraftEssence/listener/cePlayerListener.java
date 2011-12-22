@@ -2,7 +2,6 @@ package me.furt.CraftEssence.listener;
 
 import java.util.List;
 import me.furt.CraftEssence.CraftEssence;
-import me.furt.CraftEssence.ceConfig;
 import me.furt.CraftEssence.sql.UserTable;
 import me.furt.CraftEssence.sql.WarpTable;
 
@@ -125,8 +124,11 @@ public class cePlayerListener extends PlayerListener {
 				.ieq("userName", pName).findUnique();
 
 		if (ut.getLogins() <= 1)
-			plugin.getServer().broadcastMessage(
-					ChatColor.GOLD + ceConfig.uniqueMsg);
+			plugin.getServer()
+					.broadcastMessage(
+							ChatColor.GOLD
+									+ plugin.getConfig()
+											.getString("UNIQUE_MSG"));
 
 		player.setDisplayName(ut.getDisplyName());
 

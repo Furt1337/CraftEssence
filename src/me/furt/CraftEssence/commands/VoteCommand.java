@@ -1,7 +1,6 @@
 package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
-import me.furt.CraftEssence.ceConfig;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -20,7 +19,7 @@ public class VoteCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if (ceConfig.enableVote == false) {
+		if (plugin.getConfig().getBoolean("ENABLE_VOTE") == false) {
 			sender.sendMessage(CraftEssence.premessage
 					+ "Voting is currently disabled.");
 			return true;

@@ -1,6 +1,7 @@
 package me.furt.CraftEssence.sql;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.bukkit.inventory.ItemStack;
@@ -10,8 +11,11 @@ import com.avaje.ebean.validation.NotNull;
 @Entity()
 @Table(name = "ce_kit_items")
 public class KitItemsTable {
-	@NotNull
+	@Id
 	private int id;
+	
+	@NotNull
+	private int itemid;
 
 	@NotNull
 	private int item;
@@ -30,6 +34,14 @@ public class KitItemsTable {
 		this.id = id;
 	}
 	
+	public int getItemid() {
+		return itemid;
+	}
+
+	public void setItemid(int itemid) {
+		this.itemid = itemid;
+	}
+
 	public int getItem() {
 		return item;
 	}

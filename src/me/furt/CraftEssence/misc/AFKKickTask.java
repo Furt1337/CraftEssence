@@ -5,7 +5,6 @@ import java.util.TimerTask;
 import org.bukkit.entity.Player;
 
 import me.furt.CraftEssence.CraftEssence;
-import me.furt.CraftEssence.ceConfig;
 import me.furt.CraftEssence.sql.UserTable;
 
 public class AFKKickTask extends TimerTask {
@@ -19,7 +18,8 @@ public class AFKKickTask extends TimerTask {
 		Player[] players = plugin.getServer().getOnlinePlayers();
 		Player player;
 		String playerName;
-		long kickTime = System.currentTimeMillis() - ((ceConfig.afkTimer*60*1000) - 120000);
+		long kickTime = System.currentTimeMillis()
+				- ((plugin.getConfig().getInt("AFK_TIMER") * 60 * 1000) - 120000);
 		for (int i = 0; (players.length - 1) >= i; i++) {
 			long lastMoved = 0;
 			player = players[i];
