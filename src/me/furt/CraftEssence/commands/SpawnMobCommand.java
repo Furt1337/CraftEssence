@@ -65,38 +65,52 @@ public class SpawnMobCommand implements CommandExecutor {
 	}
 
 	private CreatureType getType(String s) {
-		if (s.equalsIgnoreCase("chicken")) {
+		if (s.equalsIgnoreCase("cavespider")) {
+			return CreatureType.CAVE_SPIDER;
+		} else if (s.equalsIgnoreCase("chicken")) {
 			return CreatureType.CHICKEN;
 		} else if (s.equalsIgnoreCase("cow")) {
 			return CreatureType.COW;
 		} else if (s.equalsIgnoreCase("creeper")) {
 			return CreatureType.CREEPER;
+		} else if (s.equalsIgnoreCase("enderdragon")) {
+			return CreatureType.ENDER_DRAGON;
+		} else if (s.equalsIgnoreCase("enderman")) {
+			return CreatureType.ENDERMAN;
 		} else if (s.equalsIgnoreCase("ghast")) {
 			return CreatureType.GHAST;
 		} else if (s.equalsIgnoreCase("giant")) {
 			return CreatureType.GIANT;
+		} else if (s.equalsIgnoreCase("magmacube")) {
+			return CreatureType.MAGMA_CUBE;
 		} else if (s.equalsIgnoreCase("monster")) {
 			return CreatureType.MONSTER;
+		} else if (s.equalsIgnoreCase("mushroomcow")) {
+			return CreatureType.MUSHROOM_COW;
 		} else if (s.equalsIgnoreCase("pig")) {
 			return CreatureType.PIG;
 		} else if (s.equalsIgnoreCase("pigzombie")) {
 			return CreatureType.PIG_ZOMBIE;
 		} else if (s.equalsIgnoreCase("sheep")) {
 			return CreatureType.SHEEP;
+		} else if (s.equalsIgnoreCase("silverfish")) {
+			return CreatureType.SILVERFISH;
 		} else if (s.equalsIgnoreCase("skeleton")) {
 			return CreatureType.SKELETON;
 		} else if (s.equalsIgnoreCase("slime")) {
 			return CreatureType.SLIME;
+		} else if (s.equalsIgnoreCase("snowman")) {
+			return CreatureType.SNOWMAN;
 		} else if (s.equalsIgnoreCase("spider")) {
 			return CreatureType.SPIDER;
 		} else if (s.equalsIgnoreCase("squid")) {
 			return CreatureType.SQUID;
+		} else if (s.equalsIgnoreCase("villager")) {
+			return CreatureType.VILLAGER;
 		} else if (s.equalsIgnoreCase("wolf")) {
 			return CreatureType.WOLF;
 		} else if (s.equalsIgnoreCase("zombie")) {
 			return CreatureType.ZOMBIE;
-		} else if (s.equalsIgnoreCase("enderman")){
-			return CreatureType.ENDERMAN;
 		} else {
 			return null;
 		}
