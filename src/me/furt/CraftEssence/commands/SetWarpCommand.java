@@ -4,7 +4,6 @@ import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.WarpTable;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,22 +28,17 @@ public class SetWarpCommand implements CommandExecutor {
 		String wname = player.getWorld().getName();
 		WarpTable wt = plugin.getDatabase().find(WarpTable.class).where()
 				.ieq("name", args[0]).ieq("world", wname).findUnique();
-		if (wt != null) {
-			player.sendMessage(CraftEssence.premessage
-					+ "Your warp location is already set.");
-			return true;
-		}
 		if (wt == null) {
 			wt = new WarpTable();
 			wt.setName(args[0]);
 		}
-		Location pl = player.getLocation();
-		wt.setWorld(pl.getWorld().getName());
-		wt.setX(pl.getX());
-		wt.setY(pl.getY());
-		wt.setZ(pl.getZ());
-		wt.setYaw(pl.getYaw());
-		wt.setPitch(pl.getPitch());
+
+		wt.setX(player.getLocation().getX());
+		wt.setY(player.getLocation().getY());
+		wt.setZ(player.getLocation().getZ());
+		wt.setYaw(player.getLocation().getYaw());
+		wt.setPitch(player.getLocation().getPitch());
+		wt.setWorld(player.getLocation().getWorld().getName());
 		plugin.getDatabase().save(wt);
 		player.sendMessage(CraftEssence.premessage + args[0] + " warp set.");
 		return true;
