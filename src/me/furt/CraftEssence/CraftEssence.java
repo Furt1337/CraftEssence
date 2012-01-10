@@ -474,6 +474,62 @@ public class CraftEssence extends JavaPlugin {
 		return true;
 	}
 
+	public void addKit(Player p, String name, int id, short durability, int quanity) {
+		KitTable k = getDatabase().find(KitTable.class).where().ieq("name", name).findUnique();
+		if (k != null) {
+			p.sendMessage(premessage + "Kit name is already in use.");
+		} else {
+			KitTable k1 = new KitTable();
+			k1.setName(name);
+			getDatabase().save(k1);
+			KitItemsTable kit = new KitItemsTable();
+			kit.setItemid(k1.getId());
+			kit.setQuanity(quanity);
+			kit.setDurability(durability);
+			getDatabase().save(kit);
+			p.sendMessage(premessage + "The new kit has been saved, to add more items use the /kit additem command.");
+		}
+	}
+
+	public void removeKit(Player p, String name) {
+		KitTable k = getDatabase().find(KitTable.class).where().ieq("name", name).findUnique();
+		if (k == null) {
+			p.sendMessage(premessage + "Kit not found.");
+		} else {
+			List<KitItemsTable> k1 = getDatabase().find(KitItemsTable.class).where().eq("itemid", k.getId()).findList();
+			if (k1 != null) {
+				for (KitItemsTable k2 : k1)
+					getDatabase().delete(k2);
+			}
+			getDatabase().delete(k);
+			p.sendMessage(premessage + name + " kit has been deleted");
+		}
+	}
+
+	public void addItem(Player p, String name, int id, short durability, int quanity) {
+		KitTable k = getDatabase().find(KitTable.class).where().ieq("name", name).findUnique();
+		if (k != null) {
+			KitItemsTable k1 = new KitItemsTable();
+			k1.setItemid(k.getId());
+			k1.setItem(id);
+			k1.setDurability(durability);
+			k1.setQuanity(quanity);
+			getDatabase().save(k1);
+			p.sendMessage(premessage + "New item added to " + name);
+		}
+	}
+
+	public void removeItem(Player p, String name, int id, short durability) {
+		KitTable k = getDatabase().find(KitTable.class).where().ieq("name", name).findUnique();
+		if (k != null) {
+			KitItemsTable k1 = getDatabase().find(KitItemsTable.class).where().eq("itemid", k.getId()).eq("item", id).eq("durability", durability).findUnique();
+			if (k1 != null) {
+				getDatabase().delete(k1);
+				p.sendMessage(premessage + "Item removed from " + name);
+			}
+		}
+	}
+
 	public ArrayList<String> getKit(Player player, String[] args) {
 		int id = 0;
 		KitTable kit = this.getDatabase().find(KitTable.class).where()
@@ -493,10 +549,6 @@ public class CraftEssence extends JavaPlugin {
 		}
 
 		return itemarray;
-	}
-
-	public List<String> kitList(Player player) {
-		return kitList(player.getName());
 	}
 
 	public List<String> kitList(String player) {
@@ -540,7 +592,7 @@ public class CraftEssence extends JavaPlugin {
 			}
 			in.close();
 		} catch (IOException e) {
-			log.info("[CraftEssence] Could not get item list.");
+			log.info("[CraftEssence] Could not find item.txt");
 		}
 
 		return itemlist.toArray(new String[] {});
