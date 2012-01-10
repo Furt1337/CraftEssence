@@ -2,7 +2,6 @@ package me.furt.CraftEssence.commands;
 
 import me.furt.CraftEssence.CraftEssence;
 import me.furt.CraftEssence.sql.HomeTable;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,26 +24,21 @@ public class SetHomeCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		HomeTable home = plugin.getDatabase().find(HomeTable.class).where()
-				.ieq("playerName", player.getName())
-				.ieq("worldName", player.getWorld().getName()).findUnique();
-		if (home != null) {
-			player.sendMessage(CraftEssence.premessage
-					+ "Your home location is already set.");
-			return true;
+		String wname = player.getWorld().getName();
+		HomeTable ht = plugin.getDatabase().find(HomeTable.class).where()
+				.ieq("name", player.getName()).ieq("world", wname).findUnique();
+		if (ht == null) {
+			ht = new HomeTable();
+			ht.setName(player);
 		}
-		if (home == null) {
-			home = new HomeTable();
-			home.setPlayerName(player);
-		}
-		
-		home.setX(player.getLocation().getX());
-		home.setY(player.getLocation().getY());
-		home.setZ(player.getLocation().getZ());
-		home.setYaw(player.getLocation().getYaw());
-		home.setPitch(player.getLocation().getPitch());
-		home.setWorld(player.getLocation().getWorld().getName());
-		plugin.getDatabase().save(home);
+
+		ht.setX(player.getLocation().getX());
+		ht.setY(player.getLocation().getY());
+		ht.setZ(player.getLocation().getZ());
+		ht.setYaw(player.getLocation().getYaw());
+		ht.setPitch(player.getLocation().getPitch());
+		ht.setWorld(player.getLocation().getWorld().getName());
+		plugin.getDatabase().save(ht);
 
 		player.sendMessage(CraftEssence.premessage
 				+ "Your home location is set.");

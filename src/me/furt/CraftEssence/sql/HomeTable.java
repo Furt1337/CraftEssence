@@ -6,6 +6,7 @@ import javax.persistence.Table;
 
 import org.bukkit.entity.Player;
 
+import com.avaje.ebean.validation.Length;
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
@@ -15,8 +16,12 @@ public class HomeTable {
 	@Id
 	private int id;
 
-	@NotNull
-	private String playerName;
+	@Length(max=30)
+	@NotEmpty
+	private String name;
+	
+	@NotEmpty
+	private String world;
 
 	@NotNull
 	private double x;
@@ -26,15 +31,12 @@ public class HomeTable {
 
 	@NotNull
 	private double z;
-
-	@NotNull
-	private float pitch;
-
+	
 	@NotNull
 	private float yaw;
 
-	@NotEmpty
-	private String world;
+	@NotNull
+	private float pitch;
 
 	public int getId() {
 		return id;
@@ -44,12 +46,20 @@ public class HomeTable {
 		this.id = id;
 	}
 
-	public String getPlayerName() {
-		return playerName;
+	public String getName() {
+		return name;
 	}
 
-	public void setPlayerName(Player player) {
-		this.playerName = player.getName();
+	public void setName(Player player) {
+		this.name = player.getName();
+	}
+
+	public String getWorld() {
+		return world;
+	}
+
+	public void setWorld(String world) {
+		this.world = world;
 	}
 
 	public double getX() {
@@ -76,14 +86,6 @@ public class HomeTable {
 		this.z = z;
 	}
 
-	public float getPitch() {
-		return pitch;
-	}
-
-	public void setPitch(float pitch) {
-		this.pitch = pitch;
-	}
-
 	public float getYaw() {
 		return yaw;
 	}
@@ -92,11 +94,11 @@ public class HomeTable {
 		this.yaw = yaw;
 	}
 
-	public String getWorld() {
-		return world;
+	public float getPitch() {
+		return pitch;
 	}
 
-	public void setWorld(String world) {
-		this.world = world;
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
 	}
 }
