@@ -19,7 +19,7 @@ public class HealCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "heal", false)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
 
@@ -32,31 +32,23 @@ public class HealCommand implements CommandExecutor {
 				return true;
 			}
 			return false;
-		}
-
-		if (args.length == 1) {
+		} else if (args.length == 1) {
 			if (plugin.playerMatch(args[0]) != null) {
 				Player p = plugin.getServer().getPlayer(args[0]);
 				p.setHealth(20);
 				p.sendMessage(CraftEssence.premessage + "You are fully healed!");
-				if (plugin.isPlayer(sender)) {
-					sender.sendMessage(CraftEssence.premessage + "You healed "
-							+ args[0] + ".");
-				} else {
-					CraftEssence.log.info("[CraftEssence] You healed "
-							+ args[0] + ".");
-				}
+				sender.sendMessage(CraftEssence.premessage + "You healed "
+						+ args[0] + ".");
 				return true;
 			} else {
-				if (plugin.isPlayer(sender)) {
-					Player player = (Player) sender;
-					player.sendMessage(CraftEssence.premessage
-							+ "Player not found.");
-				}
-				CraftEssence.log.info("[CraftEssence] Player not found.");
+				sender.sendMessage(CraftEssence.premessage
+						+ "Player not found.");
 				return true;
 			}
+		} else {
+			sender.sendMessage(CraftEssence.premessage
+					+ "Invalid heal command parameter.");
+			return true;
 		}
-		return false;
 	}
 }

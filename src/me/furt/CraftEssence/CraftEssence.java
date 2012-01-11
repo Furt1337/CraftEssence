@@ -120,7 +120,6 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("msg").setExecutor(new MsgCommand(this));
 		getCommand("mute").setExecutor(new MuteCommand(this));
 		getCommand("pardon").setExecutor(new PardonCommand(this));
-		getCommand("playerlist").setExecutor(new PlayerlistCommand(this));
 		getCommand("reply").setExecutor(new ReplyCommand(this));
 		getCommand("sethome").setExecutor(new SetHomeCommand(this));
 		getCommand("setspawn").setExecutor(new SetSpawnCommand(this));

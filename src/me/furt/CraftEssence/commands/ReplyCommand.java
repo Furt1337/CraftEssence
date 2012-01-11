@@ -20,7 +20,7 @@ public class ReplyCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "reply", false)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
 

@@ -21,7 +21,7 @@ public class GameModeCommand implements CommandExecutor {
 			String[] args) {
 		if (!plugin.hasPerm(sender, "gamemode", false)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
 

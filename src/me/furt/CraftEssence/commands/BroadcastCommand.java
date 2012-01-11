@@ -18,16 +18,17 @@ public class BroadcastCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "broadcast", true)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
-		
+
 		if (args.length == 0)
 			return false;
 
 		String msg = plugin.message(args);
 		plugin.getServer().broadcastMessage(
-				ChatColor.RED + "[Broadcast] " + ChatColor.YELLOW + plugin.colorizeText(msg));
+				ChatColor.RED + "[Broadcast] " + ChatColor.YELLOW
+						+ plugin.colorizeText(msg));
 		return true;
 	}
 

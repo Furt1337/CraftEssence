@@ -23,7 +23,7 @@ public class WarpCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "warp", false)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
 
@@ -49,7 +49,7 @@ public class WarpCommand implements CommandExecutor {
 				+ "...");
 		return true;
 	}
-	
+
 	private Location getLocation(WarpTable wt) {
 		World world = Bukkit.getServer().getWorld(wt.getWorld());
 		return new Location(world, wt.getX(), wt.getY(), wt.getZ(),

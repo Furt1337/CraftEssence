@@ -19,7 +19,7 @@ public class CompassCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "compass", false)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
 

@@ -22,7 +22,7 @@ public class HomeCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "home", false)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
 
@@ -137,7 +137,7 @@ public class HomeCommand implements CommandExecutor {
 		}
 		return false;
 	}
-	
+
 	private Location getLocation(HomeTable ht) {
 		World world = Bukkit.getServer().getWorld(ht.getWorld());
 		return new Location(world, ht.getX(), ht.getY(), ht.getZ(),

@@ -22,7 +22,7 @@ public class KitCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "kit", false)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have permission to use that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
 

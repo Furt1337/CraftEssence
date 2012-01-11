@@ -19,13 +19,13 @@ public class ClearInventoryCommand implements CommandExecutor {
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "clear", true)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
-		
+
 		if (args.length == 0)
 			return false;
-		
+
 		if (plugin.playerMatch(args[0]) != null) {
 			Player p = plugin.getServer().getPlayer(args[0]);
 			p.getInventory().clear();

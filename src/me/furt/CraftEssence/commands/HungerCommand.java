@@ -18,10 +18,10 @@ public class HungerCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
-		
+
 		if (!plugin.hasPerm(sender, "hunger", true)) {
 			sender.sendMessage(ChatColor.YELLOW
-					+ "You to dont have proper permissions for that command.");
+					+ "You do not have permission to use /" + label);
 			return true;
 		}
 
@@ -40,7 +40,8 @@ public class HungerCommand implements CommandExecutor {
 				Player p = plugin.getServer().getPlayer(args[0]);
 				p.setFoodLevel(20);
 				p.setSaturation(20);
-				p.sendMessage(CraftEssence.premessage + "You are no longer hungry!");
+				p.sendMessage(CraftEssence.premessage
+						+ "You are no longer hungry!");
 				sender.sendMessage(CraftEssence.premessage + "You fed "
 						+ args[0] + ", they are no longer hungry.");
 				return true;
