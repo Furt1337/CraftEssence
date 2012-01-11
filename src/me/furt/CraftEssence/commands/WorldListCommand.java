@@ -29,8 +29,11 @@ public class WorldListCommand implements CommandExecutor {
 			if (((World) plugin.getServer().getWorlds().get(i))
 					.getEnvironment() == World.Environment.NETHER)
 				color = ChatColor.RED;
-			else {
+			else if (((World) plugin.getServer().getWorlds().get(i))
+					.getEnvironment() == World.Environment.NORMAL) {
 				color = ChatColor.GREEN;
+			} else {
+				color = ChatColor.BLACK;
 			}
 			sender.sendMessage(color
 					+ ((World) plugin.getServer().getWorlds().get(i)).getName());
