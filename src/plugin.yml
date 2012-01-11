@@ -175,3 +175,12 @@ commands:
     usage: |
            /<command> [player] [mode]
            /<command> [mode]
+  hunger:
+    description: Replenishes your hunger bar
+    usage: |
+           /<command>
+           /<command> [player]
+  weather:
+    description: Change weather to rainy, sunny, or thundering
+    usage: |
+           /<command> [sunny:rainy:thunder]
