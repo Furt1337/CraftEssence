@@ -30,11 +30,19 @@ public class WeatherCommand implements CommandExecutor {
 		World world = player.getWorld();
 		if (args[0].equalsIgnoreCase("sunny")) {
 			world.setStorm(false);
+			world.setThundering(false);
+			plugin.getServer().broadcastMessage(CraftEssence.premessage + "Weather is set to sunny");
 			return true;
 		} else if (args[0].equalsIgnoreCase("rainy")) {
 			world.setStorm(true);
+			plugin.getServer().broadcastMessage(CraftEssence.premessage + "Weather is set to rainy");
+			return true;
+		} else if (args[0].equalsIgnoreCase("thunder")) {
+			world.setThundering(true);
+			plugin.getServer().broadcastMessage(CraftEssence.premessage + "Weather is set to thundering");
 			return true;
 		} else {
+			player.sendMessage(CraftEssence.premessage + "Invalid weather command parameter");
 			return true;
 		}
 	}

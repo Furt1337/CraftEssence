@@ -133,6 +133,7 @@ public class CraftEssence extends JavaPlugin {
 		getCommand("tphere").setExecutor(new TpHereCommand(this));
 		getCommand("vote").setExecutor(new VoteCommand(this));
 		getCommand("warp").setExecutor(new WarpCommand(this));
+		getCommand("weather").setExecutor(new WeatherCommand(this));
 		getCommand("who").setExecutor(new WhoCommand(this));
 		getCommand("worldlist").setExecutor(new WorldListCommand(this));
 	}
