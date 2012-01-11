@@ -31,7 +31,7 @@ public class HomeCommand implements CommandExecutor {
 		if (args.length == 0) {
 			HomeTable home = plugin.getDatabase().find(HomeTable.class).where()
 					.ieq("name", player.getName())
-					.ieq("worldName", player.getWorld().getName()).findUnique();
+					.ieq("world", player.getWorld().getName()).findUnique();
 			if (home == null) {
 				sender.sendMessage(CraftEssence.premessage
 						+ "Home location not set.");
@@ -59,7 +59,7 @@ public class HomeCommand implements CommandExecutor {
 						HomeTable home = plugin.getDatabase()
 								.find(HomeTable.class).where()
 								.ieq("name", p.getName())
-								.ieq("worldName", p.getWorld().getName())
+								.ieq("world", p.getWorld().getName())
 								.findUnique();
 						player.teleport(this.getLocation(home));
 						sender.sendMessage(CraftEssence.premessage
@@ -81,7 +81,7 @@ public class HomeCommand implements CommandExecutor {
 
 				HomeTable ht = plugin.getDatabase().find(HomeTable.class)
 						.where().ieq("name", player.getName())
-						.ieq("worldName", player.getWorld().getName())
+						.ieq("world", player.getWorld().getName())
 						.findUnique();
 				if (ht == null) {
 					sender.sendMessage("oops, somthing happened");
@@ -100,7 +100,7 @@ public class HomeCommand implements CommandExecutor {
 				Player p = plugin.getServer().getPlayer(args[0]);
 				HomeTable home = plugin.getDatabase().find(HomeTable.class)
 						.where().ieq("name", p.getName())
-						.ieq("worldName", p.getWorld().getName()).findUnique();
+						.ieq("world", p.getWorld().getName()).findUnique();
 				player.teleport(this.getLocation(home));
 				sender.sendMessage(CraftEssence.premessage + "Teleported to "
 						+ p.getDisplayName() + "'s home...");

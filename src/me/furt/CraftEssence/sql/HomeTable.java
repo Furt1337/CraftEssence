@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.bukkit.entity.Player;
-
 import com.avaje.ebean.validation.Length;
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
@@ -50,8 +48,8 @@ public class HomeTable {
 		return name;
 	}
 
-	public void setName(Player player) {
-		this.name = player.getName();
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getWorld() {

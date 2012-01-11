@@ -29,7 +29,7 @@ public class SetHomeCommand implements CommandExecutor {
 				.ieq("name", player.getName()).ieq("world", wname).findUnique();
 		if (ht == null) {
 			ht = new HomeTable();
-			ht.setName(player);
+			ht.setName(player.getName());
 		}
 
 		ht.setX(player.getLocation().getX());
