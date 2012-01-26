@@ -33,7 +33,7 @@ public class SpawnMobCommand implements CommandExecutor {
 		loc.setY(1.5 + loc.getY());
 
 		if (args.length == 1) {
-			CreatureType ct = this.getType(args[0]);
+			CreatureType ct = this.getType(args[0], sender);
 			if (ct != null) {
 				player.getWorld().spawnCreature(loc, ct);
 				player.sendMessage(CraftEssence.premessage
@@ -46,7 +46,7 @@ public class SpawnMobCommand implements CommandExecutor {
 		}
 
 		if (args.length == 2) {
-			CreatureType ct = this.getType(args[0]);
+			CreatureType ct = this.getType(args[0], sender);
 			int ammount = Integer.parseInt(args[1]);
 			if (ct != null) {
 				for (int i = 0; i < ammount; i++) {
@@ -64,7 +64,7 @@ public class SpawnMobCommand implements CommandExecutor {
 		return false;
 	}
 
-	private CreatureType getType(String s) {
+	private CreatureType getType(String s, CommandSender sender) {
 		if (s.equalsIgnoreCase("cavespider")) {
 			return CreatureType.CAVE_SPIDER;
 		} else if (s.equalsIgnoreCase("chicken")) {
@@ -74,7 +74,13 @@ public class SpawnMobCommand implements CommandExecutor {
 		} else if (s.equalsIgnoreCase("creeper")) {
 			return CreatureType.CREEPER;
 		} else if (s.equalsIgnoreCase("enderdragon")) {
-			return CreatureType.ENDER_DRAGON;
+			if (!plugin.hasPerm(sender, "spawnmob.enderdragon", false)) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You do not have permission to spawn enderdragon.");
+				return null;
+			} else {
+				return CreatureType.ENDER_DRAGON;
+			}
 		} else if (s.equalsIgnoreCase("enderman")) {
 			return CreatureType.ENDERMAN;
 		} else if (s.equalsIgnoreCase("ghast")) {
