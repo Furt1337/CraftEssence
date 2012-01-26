@@ -48,13 +48,13 @@ public class GameModeCommand implements CommandExecutor {
 				return true;
 			}
 
-			if (args[1].equalsIgnoreCase("survival")) {
+			if (args[1].equalsIgnoreCase("survival") || (args[1].equalsIgnoreCase("0"))) {
 				p.setGameMode(GameMode.SURVIVAL);
 				p.sendMessage(CraftEssence.premessage
 						+ "Your gamemode is now set to Survival.");
 				player.sendMessage(CraftEssence.premessage + args[0]
 						+ "'s gamemode is now set to Survival.");
-			} else if (args[1].equalsIgnoreCase("creative")) {
+			} else if (args[1].equalsIgnoreCase("creative") || (args[1].equalsIgnoreCase("1"))) {
 				p.setGameMode(GameMode.CREATIVE);
 				p.sendMessage(CraftEssence.premessage
 						+ "Your gamemode is now set to Creative.");
