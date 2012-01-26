@@ -28,13 +28,14 @@ import org.bukkit.entity.Squid;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import org.bukkit.event.Cancellable;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-public class ceEntityListener extends EntityListener implements Cancellable {
+public class ceEntityListener implements Listener {
 
 	CraftEssence plugin;
 
@@ -42,20 +43,20 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 		this.plugin = instance;
 	}
 
-	public void onEntityDeath(EntityDeathEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onEntityDeath(final EntityDeathEvent event) {
 		if (event instanceof PlayerDeathEvent) {
 			PlayerDeathEvent e = (PlayerDeathEvent) event;
-			String deathMsg = e.getDeathMessage();
 			if (plugin.getConfig().getBoolean("DEATH_MSG")) {
-				e.setDeathMessage(ChatColor.YELLOW + deathMsg);
+				e.setDeathMessage(ChatColor.YELLOW + e.getDeathMessage());
 			} else {
 				e.setDeathMessage(null);
 			}
 		}
 	}
 
-	@Override
-	public void onCreatureSpawn(CreatureSpawnEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onCreatureSpawn(final CreatureSpawnEvent event) {
 		World world = event.getLocation().getWorld();
 		if (!new File("plugins" + File.separator + "CraftEssence"
 				+ File.separator + "MobBlackList", world.getName() + ".txt")
@@ -132,15 +133,5 @@ public class ceEntityListener extends EntityListener implements Cancellable {
 					event.setCancelled(true);
 			}
 		}
-	}
-
-	@Override
-	public boolean isCancelled() {
-		return false;
-	}
-
-	@Override
-	public void setCancelled(boolean arg0) {
-
 	}
 }

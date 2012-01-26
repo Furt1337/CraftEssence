@@ -31,7 +31,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -268,6 +267,9 @@ public class CraftEssence extends JavaPlugin {
 
 	public void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(cepl, this);
+		pm.registerEvents(ceel, this);
+		/*
 		pm.registerEvent(Event.Type.PLAYER_JOIN, this.cepl,
 				Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, this.cepl,
@@ -292,6 +294,7 @@ public class CraftEssence extends JavaPlugin {
 				Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.ceel,
 				Event.Priority.Highest, this);
+		*/
 	}
 
 	private void setupDatabase() {

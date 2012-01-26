@@ -10,24 +10,27 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class cePlayerListener extends PlayerListener {
+public class cePlayerListener implements Listener {
 	private final CraftEssence plugin;
 
 	public cePlayerListener(CraftEssence instance) {
 		this.plugin = instance;
 	}
 
-	public void onPlayerMove(PlayerMoveEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerMove(final PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		String pName = player.getName();
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
@@ -43,7 +46,8 @@ public class cePlayerListener extends PlayerListener {
 		this.playerActive(event);
 	}
 
-	public void onPlayerLogin(PlayerLoginEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerLogin(final PlayerLoginEvent event) {
 		Player player = event.getPlayer();
 		String pName = player.getName();
 		String[] banList = plugin.getBans();
@@ -56,8 +60,8 @@ public class cePlayerListener extends PlayerListener {
 		}
 	}
 
-	@Override
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerRespawn(final PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		String world = player.getWorld().getName();
 		Location loc = null;
@@ -76,7 +80,8 @@ public class cePlayerListener extends PlayerListener {
 		event.setRespawnLocation(loc);
 	}
 
-	public void onPlayerQuit(PlayerQuitEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerQuit(final PlayerQuitEvent event) {
 		String pName = event.getPlayer().getName();
 		plugin.users.remove(pName);
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
@@ -88,7 +93,8 @@ public class cePlayerListener extends PlayerListener {
 		plugin.getDatabase().save(ut);
 	}
 
-	public void onPlayerChat(PlayerChatEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerChat(final PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String pName = player.getName();
 		this.playerActive(event);
@@ -103,7 +109,8 @@ public class cePlayerListener extends PlayerListener {
 				player.getDisplayName()));
 	}
 
-	public void onPlayerJoin(PlayerJoinEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerJoin(final PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		String pName = player.getName();
 
@@ -181,7 +188,8 @@ public class cePlayerListener extends PlayerListener {
 					+ " messages! Type /mail read to view your mail.");
 	}
 
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerInteract(final PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		String pName = player.getName();
 
