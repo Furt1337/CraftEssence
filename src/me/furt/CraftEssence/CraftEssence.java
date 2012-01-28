@@ -10,22 +10,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
-import java.util.logging.Logger;
-
+import java.util.logging.Level;
 import javax.persistence.PersistenceException;
 
 import me.furt.CraftEssence.commands.*;
 import me.furt.CraftEssence.listener.ceEntityListener;
 import me.furt.CraftEssence.listener.cePlayerListener;
-import me.furt.CraftEssence.misc.AFKKickTask;
-import me.furt.CraftEssence.misc.AFKMarkerTask;
-import me.furt.CraftEssence.misc.VoteTask;
 import me.furt.CraftEssence.sql.HomeTable;
 import me.furt.CraftEssence.sql.KitItemsTable;
 import me.furt.CraftEssence.sql.KitTable;
 import me.furt.CraftEssence.sql.MailTable;
 import me.furt.CraftEssence.sql.UserTable;
 import me.furt.CraftEssence.sql.WarpTable;
+import me.furt.CraftEssence.timers.AFKKickTask;
+import me.furt.CraftEssence.timers.AFKMarkerTask;
+import me.furt.CraftEssence.timers.VoteTask;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -48,7 +47,6 @@ public class CraftEssence extends JavaPlugin {
 	private VoteTask voteTask;
 	public final static String premessage = ChatColor.RED + "[CraftEssence] "
 			+ ChatColor.YELLOW;
-	public static final Logger log = Logger.getLogger("Minecraft");
 	public cePlayerListener cepl = new cePlayerListener(this);
 	public ceEntityListener ceel = new ceEntityListener(this);
 	public boolean permEnabled;
@@ -60,8 +58,7 @@ public class CraftEssence extends JavaPlugin {
 		addCommands();
 		checkPlayers();
 		PluginDescriptionFile pdfFile = this.getDescription();
-		log.info("[" + pdfFile.getName() + "] v" + pdfFile.getVersion()
-				+ " loaded");
+		this.logger(Level.INFO, "v" + pdfFile.getVersion() + " Enabled");
 	}
 
 	public void onDisable() {
@@ -71,7 +68,7 @@ public class CraftEssence extends JavaPlugin {
 		afkKick = null;
 		voteTask = null;
 		PluginDescriptionFile pdfFile = this.getDescription();
-		log.info(pdfFile.getName() + " Disabled");
+		this.logger(Level.INFO, "v" + pdfFile.getVersion() + " Disabled");
 
 	}
 
@@ -199,7 +196,7 @@ public class CraftEssence extends JavaPlugin {
 			if (consoleUse)
 				return true;
 
-			log.info("[CraftEssence] This command cannot be used in console.");
+			this.logger(Level.INFO, "This command cannot be used in console.");
 			return false;
 		} else {
 			if (sender.isOp())
@@ -240,11 +237,11 @@ public class CraftEssence extends JavaPlugin {
 
 		if (!new File(getDataFolder(), "motd.txt").exists()) {
 			this.createMotdConfig();
-			log.info("motd.txt not found, creating.");
+			this.logger(Level.INFO, "motd.txt not found, creating.");
 		}
 		if (!new File(getDataFolder(), "bans.txt").exists()) {
 			this.createBansConfig();
-			log.info("bans.txt not found, creating.");
+			this.logger(Level.INFO, "bans.txt not found, creating.");
 		}
 	}
 
@@ -269,32 +266,6 @@ public class CraftEssence extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(cepl, this);
 		pm.registerEvents(ceel, this);
-		/*
-		pm.registerEvent(Event.Type.PLAYER_JOIN, this.cepl,
-				Event.Priority.High, this);
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, this.cepl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_QUIT, this.cepl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_MOVE, this.cepl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, this.cepl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, this.cepl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.cepl,
-				Event.Priority.High, this);
-		pm.registerEvent(Event.Type.PLAYER_KICK, this.cepl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.cepl,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.ceel,
-				Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.CREATURE_SPAWN, this.ceel,
-				Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.ENTITY_DEATH, this.ceel,
-				Event.Priority.Highest, this);
-		*/
 	}
 
 	private void setupDatabase() {
@@ -316,7 +287,7 @@ public class CraftEssence extends JavaPlugin {
 			getDatabase().find(UserTable.class).findRowCount();
 			// getDatabase().find(JailTable.class).findRowCount();
 		} catch (PersistenceException ex) {
-			System.out.println("[CraftEssence] Installing database.");
+			this.logger(Level.INFO, "Installing database.");
 			installDDL();
 		}
 	}
@@ -374,7 +345,7 @@ public class CraftEssence extends JavaPlugin {
 			}
 			in.close();
 		} catch (IOException e) {
-			log.info("[CraftEssence] Could not get ban list");
+			this.logger(Level.WARNING, "Could not get ban list");
 		}
 
 		return banlist.toArray(new String[] {});
@@ -449,7 +420,7 @@ public class CraftEssence extends JavaPlugin {
 		if (tplayer != null) {
 			tplayer.sendMessage("You have a message!");
 		}
-		player.sendMessage(CraftEssence.premessage + "Mail sent");
+		player.sendMessage(premessage + "Mail sent");
 	}
 
 	public void clearMail(Player player) {
@@ -461,7 +432,7 @@ public class CraftEssence extends JavaPlugin {
 
 			this.getDatabase().delete(m);
 		}
-		player.sendMessage(CraftEssence.premessage + "Mail deleted");
+		player.sendMessage(premessage + "Mail deleted");
 	}
 
 	public boolean hasKitRank(Player player, String kitname) {
@@ -478,8 +449,10 @@ public class CraftEssence extends JavaPlugin {
 		return true;
 	}
 
-	public void addKit(Player p, String name, int id, short durability, int quanity) {
-		KitTable k = getDatabase().find(KitTable.class).where().ieq("name", name).findUnique();
+	public void addKit(Player p, String name, int id, short durability,
+			int quanity) {
+		KitTable k = getDatabase().find(KitTable.class).where()
+				.ieq("name", name).findUnique();
 		if (k != null) {
 			p.sendMessage(premessage + "Kit name is already in use.");
 		} else {
@@ -491,16 +464,19 @@ public class CraftEssence extends JavaPlugin {
 			kit.setQuanity(quanity);
 			kit.setDurability(durability);
 			getDatabase().save(kit);
-			p.sendMessage(premessage + "The new kit has been saved, to add more items use the /kit additem command.");
+			p.sendMessage(premessage
+					+ "The new kit has been saved, to add more items use the /kit additem command.");
 		}
 	}
 
 	public void removeKit(Player p, String name) {
-		KitTable k = getDatabase().find(KitTable.class).where().ieq("name", name).findUnique();
+		KitTable k = getDatabase().find(KitTable.class).where()
+				.ieq("name", name).findUnique();
 		if (k == null) {
 			p.sendMessage(premessage + "Kit not found.");
 		} else {
-			List<KitItemsTable> k1 = getDatabase().find(KitItemsTable.class).where().eq("itemid", k.getId()).findList();
+			List<KitItemsTable> k1 = getDatabase().find(KitItemsTable.class)
+					.where().eq("itemid", k.getId()).findList();
 			if (k1 != null) {
 				for (KitItemsTable k2 : k1)
 					getDatabase().delete(k2);
@@ -510,8 +486,10 @@ public class CraftEssence extends JavaPlugin {
 		}
 	}
 
-	public void addItem(Player p, String name, int id, short durability, int quanity) {
-		KitTable k = getDatabase().find(KitTable.class).where().ieq("name", name).findUnique();
+	public void addItem(Player p, String name, int id, short durability,
+			int quanity) {
+		KitTable k = getDatabase().find(KitTable.class).where()
+				.ieq("name", name).findUnique();
 		if (k != null) {
 			KitItemsTable k1 = new KitItemsTable();
 			k1.setItemid(k.getId());
@@ -524,9 +502,12 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public void removeItem(Player p, String name, int id, short durability) {
-		KitTable k = getDatabase().find(KitTable.class).where().ieq("name", name).findUnique();
+		KitTable k = getDatabase().find(KitTable.class).where()
+				.ieq("name", name).findUnique();
 		if (k != null) {
-			KitItemsTable k1 = getDatabase().find(KitItemsTable.class).where().eq("itemid", k.getId()).eq("item", id).eq("durability", durability).findUnique();
+			KitItemsTable k1 = getDatabase().find(KitItemsTable.class).where()
+					.eq("itemid", k.getId()).eq("item", id)
+					.eq("durability", durability).findUnique();
 			if (k1 != null) {
 				getDatabase().delete(k1);
 				p.sendMessage(premessage + "Item removed from " + name);
@@ -579,7 +560,7 @@ public class CraftEssence extends JavaPlugin {
 			}
 			in.close();
 		} catch (IOException e) {
-			log.info("[CraftEssence] Could not get mob blacklist.");
+			this.logger(Level.WARNING, "Could not get mob blacklist.");
 		}
 
 		return moblist.toArray(new String[] {});
@@ -596,7 +577,7 @@ public class CraftEssence extends JavaPlugin {
 			}
 			in.close();
 		} catch (IOException e) {
-			log.info("[CraftEssence] Could not find item.txt");
+			this.logger(Level.WARNING, "Could not find item.txt");
 		}
 
 		return itemlist.toArray(new String[] {});
@@ -620,6 +601,10 @@ public class CraftEssence extends JavaPlugin {
 		string = string.replaceAll("&e", "§e");
 		string = string.replaceAll("&f", "§f");
 		return string;
+	}
+
+	public void logger(Level l, String s) {
+		this.getLogger().log(l, "[CraftEssence] " + s);
 	}
 
 }

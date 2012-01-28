@@ -1,5 +1,7 @@
 package me.furt.CraftEssence.commands;
 
+import java.util.logging.Level;
+
 import me.furt.CraftEssence.CraftEssence;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -39,7 +41,7 @@ public class TimeCommand implements CommandExecutor {
 				plugin.getServer().broadcastMessage(
 						CraftEssence.premessage + world.getName()
 								+ "'s time is set to day.");
-				CraftEssence.log.info("[CraftEssence] " + world.getName()
+				plugin.logger(Level.INFO, world.getName()
 						+ "'s time is set to day");
 				return true;
 			} else if ("night".equalsIgnoreCase(args[0])) {
@@ -47,7 +49,7 @@ public class TimeCommand implements CommandExecutor {
 				plugin.getServer().broadcastMessage(
 						CraftEssence.premessage + world.getName()
 								+ "'s time is set to night.");
-				CraftEssence.log.info("[CraftEssence] " + world.getName()
+				plugin.logger(Level.INFO, world.getName()
 						+ "'s time is set to night");
 				return true;
 			} else {
@@ -56,8 +58,7 @@ public class TimeCommand implements CommandExecutor {
 					player.sendMessage(CraftEssence.premessage
 							+ "/time only supports day/night.");
 				} else {
-					CraftEssence.log
-							.info("[CraftEssence] /time only supports day/night");
+					plugin.logger(Level.INFO, "/time only supports day/night");
 				}
 				return true;
 			}
@@ -71,7 +72,7 @@ public class TimeCommand implements CommandExecutor {
 				plugin.getServer().broadcastMessage(
 						CraftEssence.premessage + world.getName()
 								+ "'s time is set to day.");
-				CraftEssence.log.info("[CraftEssence] " + world.getName()
+				plugin.logger(Level.INFO, world.getName()
 						+ "'s time is set to day");
 				return true;
 			} else if ("night".equalsIgnoreCase(args[0])) {
@@ -79,7 +80,7 @@ public class TimeCommand implements CommandExecutor {
 				plugin.getServer().broadcastMessage(
 						CraftEssence.premessage + world.getName()
 								+ "'s time is set to night.");
-				CraftEssence.log.info("[CraftEssence] " + world.getName()
+				plugin.logger(Level.INFO, world.getName()
 						+ "'s time is set to night");
 				return true;
 			} else {
@@ -88,8 +89,7 @@ public class TimeCommand implements CommandExecutor {
 					player.sendMessage(CraftEssence.premessage
 							+ "/time only supports day/night.");
 				} else {
-					CraftEssence.log
-							.info("[CraftEssence] /time only supports day/night");
+					plugin.logger(Level.INFO, "/time only supports day/night");
 				}
 				return true;
 			}

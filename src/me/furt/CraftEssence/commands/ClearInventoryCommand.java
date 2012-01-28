@@ -1,5 +1,7 @@
 package me.furt.CraftEssence.commands;
 
+import java.util.logging.Level;
+
 import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.ChatColor;
@@ -36,7 +38,7 @@ public class ClearInventoryCommand implements CommandExecutor {
 				p.sendMessage(ChatColor.GRAY + player.getName()
 						+ " cleared your inventory");
 			} else {
-				CraftEssence.log.info("[CraftEssence] " + p.getName()
+				plugin.logger(Level.INFO, p.getName()
 						+ "'s inventory is cleared.");
 				p.sendMessage(ChatColor.GRAY
 						+ "Your inventory has been cleared.");
@@ -48,7 +50,7 @@ public class ClearInventoryCommand implements CommandExecutor {
 				player.sendMessage(CraftEssence.premessage
 						+ "Player is offline or not found");
 			} else {
-				CraftEssence.log.info("Player is offline or not found");
+				plugin.logger(Level.INFO, "Player is offline or not found");
 			}
 		}
 		return true;

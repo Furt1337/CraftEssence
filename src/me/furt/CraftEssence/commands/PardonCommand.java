@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -58,7 +59,7 @@ public class PardonCommand implements CommandExecutor {
 			out.close();
 			fstream.close();
 		} catch (IOException ex) {
-			CraftEssence.log.info("[CraftEssence] " + pname
+			plugin.logger(Level.WARNING,  pname
 					+ "  could not be removed from ban list.");
 		}
 	}

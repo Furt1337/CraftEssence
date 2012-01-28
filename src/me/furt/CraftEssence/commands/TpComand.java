@@ -1,5 +1,7 @@
 package me.furt.CraftEssence.commands;
 
+import java.util.logging.Level;
+
 import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.ChatColor;
@@ -51,8 +53,8 @@ public class TpComand implements CommandExecutor {
 				sender.sendMessage(CraftEssence.premessage + "Teleporting "
 						+ args[0] + "to " + args[1] + ".");
 
-			CraftEssence.log.info("Teleporting " + args[0] + " to " + args[1]
-					+ ".");
+			plugin.logger(Level.INFO,
+					"Teleporting " + args[0] + " to " + args[1] + ".");
 		}
 		return false;
 	}

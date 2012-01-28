@@ -1,5 +1,7 @@
 package me.furt.CraftEssence.commands;
 
+import java.util.logging.Level;
+
 import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.ChatColor;
@@ -36,7 +38,7 @@ public class KillCommand implements CommandExecutor {
 				}
 				plugin.getServer().broadcastMessage(
 						ChatColor.RED + p.getName() + " has died by the gods.");
-				CraftEssence.log.info(p.getName() + " has died by command.");
+				plugin.logger(Level.INFO, p.getName() + " has died by command.");
 			}
 			return true;
 		} else {
@@ -58,8 +60,7 @@ public class KillCommand implements CommandExecutor {
 							ChatColor.GOLD + p.getName()
 									+ " has died by the gods.");
 				}
-				CraftEssence.log.info("[CraftEssence] " + p.getName()
-						+ " has died by command.");
+				plugin.logger(Level.INFO, p.getName() + " has died by command.");
 			}
 			return true;
 		}

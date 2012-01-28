@@ -1,5 +1,7 @@
 package me.furt.CraftEssence.commands;
 
+import java.util.logging.Level;
+
 import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.ChatColor;
@@ -40,7 +42,8 @@ public class KickCommand implements CommandExecutor {
 				}
 				plugin.getServer().broadcastMessage(
 						ChatColor.RED + p.getName() + " has been kicked.");
-				CraftEssence.log.info(p.getName() + " has been kicked.");
+				plugin.getLogger().log(Level.INFO,
+						p.getName() + " has been kicked.");
 			}
 			return true;
 		} else {
@@ -49,7 +52,7 @@ public class KickCommand implements CommandExecutor {
 				p.kickPlayer("You have been kicked, reason:" + msg);
 				plugin.getServer().broadcastMessage(
 						"�6" + p.getName() + " was kicked.");
-				CraftEssence.log.info(p.getName() + " has been kicked.");
+				plugin.logger(Level.INFO, p.getName() + " has been kicked.");
 			}
 			return true;
 		}

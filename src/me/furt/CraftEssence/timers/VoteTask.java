@@ -1,4 +1,4 @@
-package me.furt.CraftEssence.misc;
+package me.furt.CraftEssence.timers;
 
 import java.util.Collection;
 import java.util.Iterator;

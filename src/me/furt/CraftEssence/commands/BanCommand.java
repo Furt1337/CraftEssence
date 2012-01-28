@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import me.furt.CraftEssence.CraftEssence;
 
@@ -72,7 +73,7 @@ public class BanCommand implements CommandExecutor {
 			out.close();
 			fstream.close();
 		} catch (IOException ex) {
-			CraftEssence.log.info("[CraftEssence] Player ban did not save");
+			plugin.logger(Level.WARNING, "Player ban did not save");
 		}
 
 	}
