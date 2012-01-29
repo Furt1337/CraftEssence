@@ -230,10 +230,9 @@ public class CraftEssence extends JavaPlugin {
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
 
-		if (!new File("plugins" + File.separator + "CraftEssence"
-				+ File.separator + "MobBlackList").isDirectory())
-			new File("plugins" + File.separator + "CraftEssence"
-					+ File.separator + "MobBlackList").mkdir();
+		if (!new File(getDataFolder() + File.separator + "MobBlacklist")
+				.isDirectory())
+			new File(getDataFolder() + File.separator + "MobBlacklist").mkdir();
 
 		if (!new File(getDataFolder(), "motd.txt").exists()) {
 			this.createMotdConfig();
@@ -247,12 +246,10 @@ public class CraftEssence extends JavaPlugin {
 
 	public void createMobBlacklist(String world) {
 		try {
-			new File("plugins" + File.separator + "CraftEssence"
-					+ File.separator + "MobBlackList", world + ".txt")
-					.createNewFile();
-			FileWriter fstream = new FileWriter(new File("plugins"
-					+ File.separator + "CraftEssence" + File.separator
-					+ "MobBlackList", world + ".txt"));
+			new File(getDataFolder() + File.separator + "MobBlacklist", world
+					+ ".txt").createNewFile();
+			FileWriter fstream = new FileWriter(new File(getDataFolder()
+					+ File.separator + "MobBlacklist", world + ".txt"));
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.close();
 			fstream.close();

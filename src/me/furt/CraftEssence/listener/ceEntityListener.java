@@ -59,13 +59,12 @@ public class ceEntityListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(final CreatureSpawnEvent event) {
 		World world = event.getLocation().getWorld();
-		if (!new File("plugins" + File.separator + "CraftEssence"
-				+ File.separator + "MobBlackList", world.getName() + ".txt")
-				.exists()) {
+		if (!new File(plugin.getDataFolder() + File.separator + "MobBlacklist",
+				world.getName() + ".txt").exists()) {
 			plugin.createMobBlacklist(world.getName());
 			plugin.getLogger().log(
 					Level.INFO,
-					"MobBlackList for " + world.getName()
+					"MobBlacklist for " + world.getName()
 							+ " has been created.");
 		} else {
 			String[] mobList = plugin.getMobs(world.getName());
