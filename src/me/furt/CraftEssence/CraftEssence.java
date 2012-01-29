@@ -58,7 +58,7 @@ public class CraftEssence extends JavaPlugin {
 		addCommands();
 		checkPlayers();
 		PluginDescriptionFile pdfFile = this.getDescription();
-		this.logger(Level.INFO, "v" + pdfFile.getVersion() + " Enabled");
+		this.getLogger().log(Level.INFO, "v" + pdfFile.getVersion() + " Enabled");
 	}
 
 	public void onDisable() {
@@ -68,7 +68,7 @@ public class CraftEssence extends JavaPlugin {
 		afkKick = null;
 		voteTask = null;
 		PluginDescriptionFile pdfFile = this.getDescription();
-		this.logger(Level.INFO, "v" + pdfFile.getVersion() + " Disabled");
+		this.getLogger().log(Level.INFO, "v" + pdfFile.getVersion() + " Disabled");
 
 	}
 
