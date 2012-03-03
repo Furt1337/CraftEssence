@@ -16,6 +16,7 @@ public class VoteTask extends TimerTask {
 		plugin = instance;
 	}
 
+	@Override
 	public void run() {
 		if (plugin.vote == null) {
 			return;

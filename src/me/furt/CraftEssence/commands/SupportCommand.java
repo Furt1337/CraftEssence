@@ -15,6 +15,7 @@ public class SupportCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
+	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "support", false)) {

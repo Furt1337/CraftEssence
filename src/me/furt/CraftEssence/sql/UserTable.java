@@ -19,6 +19,9 @@ public class UserTable {
 	private String displyName;
 	
 	@NotNull
+	private String ip;
+	
+	@NotNull
 	private boolean online;
 	
 	@NotNull
@@ -55,6 +58,14 @@ public class UserTable {
 
 	public String getDisplyName() {
 		return displyName;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public void setOnline(boolean online) {
