@@ -15,6 +15,7 @@ public class WorldListCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
+	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "worldlist", true)) {
@@ -26,17 +27,17 @@ public class WorldListCommand implements CommandExecutor {
 		sender.sendMessage(ChatColor.YELLOW + "Worlds running on this Server");
 		for (int i = 0; i < plugin.getServer().getWorlds().size(); i++) {
 			ChatColor color;
-			if (((World) plugin.getServer().getWorlds().get(i))
+			if (plugin.getServer().getWorlds().get(i)
 					.getEnvironment() == World.Environment.NETHER)
 				color = ChatColor.RED;
-			else if (((World) plugin.getServer().getWorlds().get(i))
+			else if (plugin.getServer().getWorlds().get(i)
 					.getEnvironment() == World.Environment.NORMAL) {
 				color = ChatColor.GREEN;
 			} else {
 				color = ChatColor.BLACK;
 			}
 			sender.sendMessage(color
-					+ ((World) plugin.getServer().getWorlds().get(i)).getName());
+					+ plugin.getServer().getWorlds().get(i).getName());
 		}
 		return true;
 	}

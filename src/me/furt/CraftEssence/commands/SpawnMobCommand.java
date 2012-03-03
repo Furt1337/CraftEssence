@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class SpawnMobCommand implements CommandExecutor {
@@ -33,7 +33,7 @@ public class SpawnMobCommand implements CommandExecutor {
 		loc.setY(1.5 + loc.getY());
 
 		if (args.length == 1) {
-			CreatureType ct = this.getType(args[0], sender);
+			EntityType ct = this.getType(args[0], sender);
 			if (ct != null) {
 				player.getWorld().spawnCreature(loc, ct);
 				player.sendMessage(CraftEssence.premessage
@@ -46,7 +46,7 @@ public class SpawnMobCommand implements CommandExecutor {
 		}
 
 		if (args.length == 2) {
-			CreatureType ct = this.getType(args[0], sender);
+			EntityType ct = this.getType(args[0], sender);
 			int ammount = Integer.parseInt(args[1]);
 			if (ct != null) {
 				for (int i = 0; i < ammount; i++) {
@@ -64,59 +64,57 @@ public class SpawnMobCommand implements CommandExecutor {
 		return false;
 	}
 
-	private CreatureType getType(String s, CommandSender sender) {
+	private EntityType getType(String s, CommandSender sender) {
 		if (s.equalsIgnoreCase("cavespider")) {
-			return CreatureType.CAVE_SPIDER;
+			return EntityType.CAVE_SPIDER;
 		} else if (s.equalsIgnoreCase("chicken")) {
-			return CreatureType.CHICKEN;
+			return EntityType.CHICKEN;
 		} else if (s.equalsIgnoreCase("cow")) {
-			return CreatureType.COW;
+			return EntityType.COW;
 		} else if (s.equalsIgnoreCase("creeper")) {
-			return CreatureType.CREEPER;
+			return EntityType.CREEPER;
 		} else if (s.equalsIgnoreCase("enderdragon")) {
 			if (!plugin.hasPerm(sender, "spawnmob.enderdragon", false)) {
 				sender.sendMessage(ChatColor.YELLOW
 						+ "You do not have permission to spawn enderdragon.");
 				return null;
 			} else {
-				return CreatureType.ENDER_DRAGON;
+				return EntityType.ENDER_DRAGON;
 			}
 		} else if (s.equalsIgnoreCase("enderman")) {
-			return CreatureType.ENDERMAN;
+			return EntityType.ENDERMAN;
 		} else if (s.equalsIgnoreCase("ghast")) {
-			return CreatureType.GHAST;
+			return EntityType.GHAST;
 		} else if (s.equalsIgnoreCase("giant")) {
-			return CreatureType.GIANT;
+			return EntityType.GIANT;
 		} else if (s.equalsIgnoreCase("magmacube")) {
-			return CreatureType.MAGMA_CUBE;
-		} else if (s.equalsIgnoreCase("monster")) {
-			return CreatureType.MONSTER;
+			return EntityType.MAGMA_CUBE;
 		} else if (s.equalsIgnoreCase("mushroomcow")) {
-			return CreatureType.MUSHROOM_COW;
+			return EntityType.MUSHROOM_COW;
 		} else if (s.equalsIgnoreCase("pig")) {
-			return CreatureType.PIG;
+			return EntityType.PIG;
 		} else if (s.equalsIgnoreCase("pigzombie")) {
-			return CreatureType.PIG_ZOMBIE;
+			return EntityType.PIG_ZOMBIE;
 		} else if (s.equalsIgnoreCase("sheep")) {
-			return CreatureType.SHEEP;
+			return EntityType.SHEEP;
 		} else if (s.equalsIgnoreCase("silverfish")) {
-			return CreatureType.SILVERFISH;
+			return EntityType.SILVERFISH;
 		} else if (s.equalsIgnoreCase("skeleton")) {
-			return CreatureType.SKELETON;
+			return EntityType.SKELETON;
 		} else if (s.equalsIgnoreCase("slime")) {
-			return CreatureType.SLIME;
+			return EntityType.SLIME;
 		} else if (s.equalsIgnoreCase("snowman")) {
-			return CreatureType.SNOWMAN;
+			return EntityType.SNOWMAN;
 		} else if (s.equalsIgnoreCase("spider")) {
-			return CreatureType.SPIDER;
+			return EntityType.SPIDER;
 		} else if (s.equalsIgnoreCase("squid")) {
-			return CreatureType.SQUID;
+			return EntityType.SQUID;
 		} else if (s.equalsIgnoreCase("villager")) {
-			return CreatureType.VILLAGER;
+			return EntityType.VILLAGER;
 		} else if (s.equalsIgnoreCase("wolf")) {
-			return CreatureType.WOLF;
+			return EntityType.WOLF;
 		} else if (s.equalsIgnoreCase("zombie")) {
-			return CreatureType.ZOMBIE;
+			return EntityType.ZOMBIE;
 		} else {
 			return null;
 		}

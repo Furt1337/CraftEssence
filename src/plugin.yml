@@ -118,6 +118,12 @@ commands:
     description: Bans a player from the server
     usage: |
            /<command> [player] [reason]
+  banip:
+   aliases:
+     - ban-ip
+   description: Bans a player from the server by ip
+   usage: |
+          /<command> [player]
   pardon:
     description: Removes a player from the banned list
     usage: |

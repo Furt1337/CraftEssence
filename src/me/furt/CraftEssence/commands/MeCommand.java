@@ -14,6 +14,7 @@ public class MeCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
+	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "me", false)) {
