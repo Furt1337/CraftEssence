@@ -14,6 +14,7 @@ public class AFKKickTask extends TimerTask {
 		plugin = instance;
 	}
 
+	@Override
 	public void run() {
 		Player[] players = plugin.getServer().getOnlinePlayers();
 		Player player;

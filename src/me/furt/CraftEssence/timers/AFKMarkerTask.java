@@ -15,6 +15,7 @@ public class AFKMarkerTask extends TimerTask {
 		plugin = instance;
 	}
 
+	@Override
 	public void run() {
 		Player[] players = plugin.getServer().getOnlinePlayers();
 		Player player;
@@ -26,7 +27,7 @@ public class AFKMarkerTask extends TimerTask {
 			playerName = player.getName();
 			UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 					.ieq("userName", playerName).findUnique();
-			afkTime = (long)plugin.users.get(playerName);
+			afkTime = plugin.users.get(playerName);
 			if (afkTime < kickTime) {
 				if (!ut.isAfk()) {
 					ut.setAfk(true);

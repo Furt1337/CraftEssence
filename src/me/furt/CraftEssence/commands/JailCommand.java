@@ -14,6 +14,7 @@ public class JailCommand implements CommandExecutor {
 		this.plugin = instance;
 	}
 
+	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (!plugin.hasPerm(sender, "jail", true)) {

@@ -51,6 +51,7 @@ public class CraftEssence extends JavaPlugin {
 	public ceEntityListener ceel = new ceEntityListener(this);
 	public boolean permEnabled;
 
+	@Override
 	public void onEnable() {
 		registerEvents();
 		checkFiles();
@@ -61,6 +62,7 @@ public class CraftEssence extends JavaPlugin {
 		this.getLogger().log(Level.INFO, "v" + pdfFile.getVersion() + " Enabled");
 	}
 
+	@Override
 	public void onDisable() {
 		etimer.cancel();
 		etimer = null;
@@ -98,6 +100,7 @@ public class CraftEssence extends JavaPlugin {
 				new ClearInventoryCommand(this));
 		getCommand("broadcast").setExecutor(new BroadcastCommand(this));
 		getCommand("ban").setExecutor(new BanCommand(this));
+		getCommand("banip").setExecutor(new BanIPCommand(this));
 		getCommand("ceuser").setExecutor(new UserCommand(this));
 		getCommand("compass").setExecutor(new CompassCommand(this));
 		getCommand("gamemode").setExecutor(new GameModeCommand(this));

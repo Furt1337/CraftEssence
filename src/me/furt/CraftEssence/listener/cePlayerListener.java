@@ -205,7 +205,7 @@ public class cePlayerListener implements Listener {
 							+ " is no longer afk");
 		}
 
-		this.playerActive((PlayerEvent) event);
+		this.playerActive(event);
 	}
 
 	public Player playerMatch(String name) {
