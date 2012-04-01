@@ -76,18 +76,16 @@ public class CraftEssence extends JavaPlugin {
 
 	public void startVoteTimer() {
 		voteTask = new VoteTask(this);
-		etimer.schedule(voteTask, getConfig().getInt("VOTE_TIMER") * 1000);
+		etimer.schedule(voteTask, getConfig().getInt("VOTE_TIMER") * 60 * 1000);
 	}
 
 	private void checkPlayers() {
 		try {
 			afkMarker = new AFKMarkerTask(this);
-			etimer.schedule(afkMarker, 1000,
-					getConfig().getInt("AFK_TIMER") * 1000);
+			etimer.schedule(afkMarker, 1000, (getConfig().getInt("AFK_TIMER")*60*1000)/2);
 			if (getConfig().getBoolean("AUTO_KICK")) {
 				afkKick = new AFKKickTask(this);
-				etimer.schedule(afkKick, 2000,
-						getConfig().getInt("KICK_TIMER") * 1000);
+				etimer.schedule(afkKick, 2000, (getConfig().getInt("KICK_TIMER")*60*1000)/2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -221,6 +219,7 @@ public class CraftEssence extends JavaPlugin {
 		if (!this.getDataFolder().exists())
 			this.getDataFolder().mkdirs();
 
+		this.getConfig().addDefault("ENABLE_BLACKLIST", false);
 		this.getConfig().addDefault("DEATH_MSG", true);
 		this.getConfig().addDefault("KICK_OP", false);
 		this.getConfig().addDefault("KICK_TIMER", 300);
@@ -233,9 +232,9 @@ public class CraftEssence extends JavaPlugin {
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
 
-		if (!new File(getDataFolder() + File.separator + "MobBlacklist")
+		if (!new File(getDataFolder() + File.separator + "mobblist")
 				.isDirectory())
-			new File(getDataFolder() + File.separator + "MobBlacklist").mkdir();
+			new File(getDataFolder() + File.separator + "mobblist").mkdir();
 
 		if (!new File(getDataFolder(), "motd.txt").exists()) {
 			this.createMotdConfig();
@@ -249,10 +248,10 @@ public class CraftEssence extends JavaPlugin {
 
 	public void createMobBlacklist(String world) {
 		try {
-			new File(getDataFolder() + File.separator + "MobBlacklist", world
+			new File(getDataFolder() + File.separator + "mobblist", world
 					+ ".txt").createNewFile();
 			FileWriter fstream = new FileWriter(new File(getDataFolder()
-					+ File.separator + "MobBlacklist", world + ".txt"));
+					+ File.separator + "mobblist", world + ".txt"));
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.close();
 			fstream.close();
@@ -311,7 +310,7 @@ public class CraftEssence extends JavaPlugin {
 			FileWriter fstream = new FileWriter(new File(getDataFolder(),
 					"motd.txt"));
 			BufferedWriter out = new BufferedWriter(fstream);
-			out.write("&4Welcome to our §9Minecraft Server&4,&f +d&4!\n");
+			out.write("&4Welcome to our &9Minecraft Server&4,&f +d&4!\n");
 			out.write("&4There are +online players online!\n");
 			out.close();
 			fstream.close();
@@ -552,7 +551,7 @@ public class CraftEssence extends JavaPlugin {
 		ArrayList<String> moblist = new ArrayList<String>();
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(
-					getDataFolder() + File.separator + "MobBlackList"
+					getDataFolder() + File.separator + "mobbList"
 							+ File.separator + world + ".txt"));
 			String str;
 			while ((str = in.readLine()) != null) {
@@ -604,7 +603,7 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public void logger(Level l, String s) {
-		this.getLogger().log(l, "[CraftEssence] " + s);
+		this.getLogger().log(l, s);
 	}
 
 }
