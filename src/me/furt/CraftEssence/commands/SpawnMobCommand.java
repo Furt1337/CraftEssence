@@ -35,7 +35,7 @@ public class SpawnMobCommand implements CommandExecutor {
 		if (args.length == 1) {
 			EntityType ct = this.getType(args[0], sender);
 			if (ct != null) {
-				player.getWorld().spawnCreature(loc, ct);
+				player.getWorld().spawnEntity(loc, ct);
 				player.sendMessage(CraftEssence.premessage
 						+ "You have spawned a " + ct.getName());
 			} else {
@@ -50,7 +50,7 @@ public class SpawnMobCommand implements CommandExecutor {
 			int ammount = Integer.parseInt(args[1]);
 			if (ct != null) {
 				for (int i = 0; i < ammount; i++) {
-					player.getWorld().spawnCreature(loc, ct);
+					player.getWorld().spawnEntity(loc, ct);
 				}
 				player.sendMessage(CraftEssence.premessage
 						+ "You have spawned " + ammount + " " + ct.getName()

@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+@SuppressWarnings("deprecation")
 public class cePlayerListener implements Listener {
 	private final CraftEssence plugin;
 
