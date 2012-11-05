@@ -7,12 +7,15 @@ import me.furt.CraftEssence.CraftEssence;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.entity.Bat;
+import org.bukkit.entity.Blaze;
 import org.bukkit.entity.CaveSpider;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Enderman;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;
 import org.bukkit.entity.MagmaCube;
@@ -70,8 +73,18 @@ public class ceEntityListener implements Listener {
 			} else {
 				String[] mobList = plugin.getMobs(world.getName());
 				for (String creature : mobList) {
+					EntityType et = EntityType.fromName(creature);
+					if(et != null && et.equals(event.getEntityType()))
+						event.setCancelled(true);
+					/*
 					if (creature.equalsIgnoreCase("CaveSpider")) {
 						if (event.getEntity() instanceof CaveSpider)
+							event.setCancelled(true);
+					} else if (creature.equalsIgnoreCase("Bat")) {
+						if (event.getEntity() instanceof Bat)
+							event.setCancelled(true);
+					} else if (creature.equalsIgnoreCase("Blaze")) {
+						if (event.getEntity() instanceof Blaze)
 							event.setCancelled(true);
 					} else if (creature.equalsIgnoreCase("Chicken")) {
 						if (event.getEntity() instanceof Chicken)
@@ -137,6 +150,7 @@ public class ceEntityListener implements Listener {
 						if (event.getEntity() instanceof Zombie)
 							event.setCancelled(true);
 					}
+					*/
 				}
 			}
 		}

@@ -28,11 +28,14 @@ public class WorldListCommand implements CommandExecutor {
 		for (int i = 0; i < plugin.getServer().getWorlds().size(); i++) {
 			ChatColor color;
 			if (plugin.getServer().getWorlds().get(i)
-					.getEnvironment() == World.Environment.NETHER)
+					.getEnvironment() == World.Environment.NETHER) {
 				color = ChatColor.RED;
-			else if (plugin.getServer().getWorlds().get(i)
+			} else if (plugin.getServer().getWorlds().get(i)
 					.getEnvironment() == World.Environment.NORMAL) {
 				color = ChatColor.GREEN;
+			} else if (plugin.getServer().getWorlds().get(i)
+					.getEnvironment() == World.Environment.THE_END) {
+				color = ChatColor.BLUE;
 			} else {
 				color = ChatColor.BLACK;
 			}

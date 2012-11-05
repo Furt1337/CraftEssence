@@ -65,6 +65,23 @@ public class SpawnMobCommand implements CommandExecutor {
 	}
 
 	private EntityType getType(String s, CommandSender sender) {
+		if (s.equalsIgnoreCase("enderdragon")) {
+			if (!plugin.hasPerm(sender, "spawnmob.enderdragon", false)) {
+				sender.sendMessage(ChatColor.YELLOW
+						+ "You do not have permission to spawn enderdragon.");
+				return null;
+			} else {
+				return EntityType.ENDER_DRAGON;
+			}
+		} else {
+			EntityType et = EntityType.fromName(s);
+			if(et != null) {
+				return et;
+			} else {
+				return null;
+			}
+		}
+		/*
 		if (s.equalsIgnoreCase("cavespider")) {
 			return EntityType.CAVE_SPIDER;
 		} else if (s.equalsIgnoreCase("chicken")) {
@@ -118,6 +135,6 @@ public class SpawnMobCommand implements CommandExecutor {
 		} else {
 			return null;
 		}
-
+		*/
 	}
 }

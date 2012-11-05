@@ -34,10 +34,10 @@ public class WeatherCommand implements CommandExecutor {
 			plugin.getServer().broadcastMessage(
 					CraftEssence.premessage + "Weather is set to sunny");
 			return true;
-		} else if (args[0].equalsIgnoreCase("rainy")) {
+		} else if (args[0].equalsIgnoreCase("storm")) {
 			world.setStorm(true);
 			plugin.getServer().broadcastMessage(
-					CraftEssence.premessage + "Weather is set to rainy");
+					CraftEssence.premessage + "Weather is set to storm");
 			return true;
 		} else if (args[0].equalsIgnoreCase("thunder")) {
 			world.setThundering(true);

@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
 public class CraftEssence extends JavaPlugin {
 	public static ArrayList<String> prayList = new ArrayList<String>();
@@ -58,6 +59,12 @@ public class CraftEssence extends JavaPlugin {
 		setupDatabase();
 		addCommands();
 		checkPlayers();
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException e) {
+		   this.getLogger().log(Level.WARNING, "PluginMetrics could not start.");
+		}
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.getLogger().log(Level.INFO, "v" + pdfFile.getVersion() + " Enabled");
 	}
@@ -284,7 +291,6 @@ public class CraftEssence extends JavaPlugin {
 			getDatabase().find(KitTable.class).findRowCount();
 			getDatabase().find(KitItemsTable.class).findRowCount();
 			getDatabase().find(UserTable.class).findRowCount();
-			// getDatabase().find(JailTable.class).findRowCount();
 		} catch (PersistenceException ex) {
 			this.logger(Level.INFO, "Installing database.");
 			installDDL();
@@ -300,7 +306,6 @@ public class CraftEssence extends JavaPlugin {
 		list.add(KitTable.class);
 		list.add(KitItemsTable.class);
 		list.add(UserTable.class);
-		// list.add(JailTable.class);
 		return list;
 	}
 
