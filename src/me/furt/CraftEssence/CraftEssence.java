@@ -60,13 +60,15 @@ public class CraftEssence extends JavaPlugin {
 		addCommands();
 		checkPlayers();
 		try {
-		    Metrics metrics = new Metrics(this);
-		    metrics.start();
+			Metrics metrics = new Metrics(this);
+			metrics.start();
 		} catch (IOException e) {
-		   this.getLogger().log(Level.WARNING, "PluginMetrics could not start.");
+			this.getLogger().log(Level.WARNING,
+					"PluginMetrics could not start.");
 		}
 		PluginDescriptionFile pdfFile = this.getDescription();
-		this.getLogger().log(Level.INFO, "v" + pdfFile.getVersion() + " Enabled");
+		this.getLogger().log(Level.INFO,
+				"v" + pdfFile.getVersion() + " Enabled");
 	}
 
 	@Override
@@ -77,7 +79,8 @@ public class CraftEssence extends JavaPlugin {
 		afkKick = null;
 		voteTask = null;
 		PluginDescriptionFile pdfFile = this.getDescription();
-		this.getLogger().log(Level.INFO, "v" + pdfFile.getVersion() + " Disabled");
+		this.getLogger().log(Level.INFO,
+				"v" + pdfFile.getVersion() + " Disabled");
 
 	}
 
@@ -89,10 +92,12 @@ public class CraftEssence extends JavaPlugin {
 	private void checkPlayers() {
 		try {
 			afkMarker = new AFKMarkerTask(this);
-			etimer.schedule(afkMarker, 1000, (getConfig().getInt("AFK_TIMER")*60*1000)/2);
+			etimer.schedule(afkMarker, 1000,
+					(getConfig().getInt("AFK_TIMER") * 60 * 1000) / 2);
 			if (getConfig().getBoolean("AUTO_KICK")) {
 				afkKick = new AFKKickTask(this);
-				etimer.schedule(afkKick, 2000, (getConfig().getInt("KICK_TIMER")*60*1000)/2);
+				etimer.schedule(afkKick, 2000, (getConfig()
+						.getInt("KICK_TIMER") * 60 * 1000) / 2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,7 +110,7 @@ public class CraftEssence extends JavaPlugin {
 				new ClearInventoryCommand(this));
 		getCommand("broadcast").setExecutor(new BroadcastCommand(this));
 		getCommand("ban").setExecutor(new BanCommand(this));
-		getCommand("banip").setExecutor(new BanIPCommand(this));
+		// getCommand("banip").setExecutor(new BanIPCommand(this));
 		getCommand("ceuser").setExecutor(new UserCommand(this));
 		getCommand("compass").setExecutor(new CompassCommand(this));
 		getCommand("gamemode").setExecutor(new GameModeCommand(this));

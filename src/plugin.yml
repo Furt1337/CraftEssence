@@ -118,12 +118,6 @@ commands:
     description: Bans a player from the server
     usage: |
            /<command> [player] [reason]
-  banip:
-   aliases:
-     - ban-ip
-   description: Bans a player from the server by ip
-   usage: |
-          /<command> [player]
   pardon:
     description: Removes a player from the banned list
     usage: |
@@ -177,7 +171,7 @@ commands:
   gamemode:
     aliases:
       - gm
-    description: Shows players that are online
+    description: Sets a players gamemode
     usage: |
            /<command> [player] [mode]
            /<command> [mode]
@@ -187,6 +181,6 @@ commands:
            /<command>
            /<command> [player]
   weather:
-    description: Change weather to rainy, sunny, or thundering
+    description: Change weather to storm, sunny, or thundering
     usage: |
-           /<command> [sunny:rainy:thunder]
+           /<command> [sunny:storm:thunder]

@@ -101,7 +101,7 @@ public class cePlayerListener implements Listener {
 		this.playerActive(event);
 		UserTable ut = plugin.getDatabase().find(UserTable.class).where()
 				.ieq("userName", pName).findUnique();
-		if (ut.isMuted()) {
+		if (ut != null && ut.isMuted()) {
 			player.sendMessage(ChatColor.YELLOW
 					+ "No one can hear you because your muted.");
 			event.setCancelled(true);
