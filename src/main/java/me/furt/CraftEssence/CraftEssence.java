@@ -585,7 +585,7 @@ public class CraftEssence extends JavaPlugin {
 
 	public List<String> kitList(String player) {
 		ArrayList<String> namearray = new ArrayList<String>();
-
+		//TODO
 		List<KitTable> kt = this.getDatabase().find(KitTable.class)
 				.select("name").findList();
 		for (KitTable k : kt) {
@@ -631,22 +631,22 @@ public class CraftEssence extends JavaPlugin {
 	}
 
 	public String colorizeText(String string) {
-		string = string.replaceAll("&0", "§0");
-		string = string.replaceAll("&1", "§1");
-		string = string.replaceAll("&2", "§2");
-		string = string.replaceAll("&3", "§3");
-		string = string.replaceAll("&4", "§4");
-		string = string.replaceAll("&5", "§5");
-		string = string.replaceAll("&6", "§6");
-		string = string.replaceAll("&7", "§7");
-		string = string.replaceAll("&8", "§8");
-		string = string.replaceAll("&9", "§9");
-		string = string.replaceAll("&a", "§a");
-		string = string.replaceAll("&b", "§b");
-		string = string.replaceAll("&c", "§c");
-		string = string.replaceAll("&d", "§d");
-		string = string.replaceAll("&e", "§e");
-		string = string.replaceAll("&f", "§f");
+		string = string.replaceAll("&0", "ï¿½0");
+		string = string.replaceAll("&1", "ï¿½1");
+		string = string.replaceAll("&2", "ï¿½2");
+		string = string.replaceAll("&3", "ï¿½3");
+		string = string.replaceAll("&4", "ï¿½4");
+		string = string.replaceAll("&5", "ï¿½5");
+		string = string.replaceAll("&6", "ï¿½6");
+		string = string.replaceAll("&7", "ï¿½7");
+		string = string.replaceAll("&8", "ï¿½8");
+		string = string.replaceAll("&9", "ï¿½9");
+		string = string.replaceAll("&a", "ï¿½a");
+		string = string.replaceAll("&b", "ï¿½b");
+		string = string.replaceAll("&c", "ï¿½c");
+		string = string.replaceAll("&d", "ï¿½d");
+		string = string.replaceAll("&e", "ï¿½e");
+		string = string.replaceAll("&f", "ï¿½f");
 		return string;
 	}
 
